@@ -6,7 +6,8 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 
-import CheckboxList from "./CheckBoxList";
+import PatternList from "./PatternList";
+
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -46,7 +47,17 @@ const useStyles = makeStyles((theme: Theme) => ({
         flexGrow: 1,
         width: "100%",
         backgroundColor: theme.palette.background.paper,
+        // paddingTop:'70px',
+        // display:'inline-block',
+        alignItems:'center',
+        
     },
+    barSize:{
+        width:'fit-content',
+        display:'flex',
+        margin:'0 auto',
+
+    }
 }));
 
 export default function ScrollableTabsButtonAuto() {
@@ -59,7 +70,7 @@ export default function ScrollableTabsButtonAuto() {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static" color="default">
+            <AppBar position="static" color="default" className={classes.barSize}>
                 <Tabs
                     value={value}
                     onChange={handleChange}
@@ -71,33 +82,13 @@ export default function ScrollableTabsButtonAuto() {
                 >
                     <Tab label="Item One" {...a11yProps(0)} />
                     <Tab label="Item Two" {...a11yProps(1)} />
-                    <Tab label="Item Three" {...a11yProps(2)} />
-                    <Tab label="Item Four" {...a11yProps(3)} />
-                    <Tab label="Item Five" {...a11yProps(4)} />
-                    <Tab label="Item Six" {...a11yProps(5)} />
-                    <Tab label="Item Seven" {...a11yProps(6)} />
                 </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
-                <CheckboxList />
+                <PatternList />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <CheckboxList />
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                <CheckboxList />
-            </TabPanel>
-            <TabPanel value={value} index={3}>
-                <CheckboxList />
-            </TabPanel>
-            <TabPanel value={value} index={4}>
-                <CheckboxList />
-            </TabPanel>
-            <TabPanel value={value} index={5}>
-                <CheckboxList />
-            </TabPanel>
-            <TabPanel value={value} index={6}>
-                <CheckboxList />
+                <PatternList />
             </TabPanel>
         </div>
     );

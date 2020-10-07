@@ -10,6 +10,8 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+// import Link from '@material-ui/core/Link';
+import Link from 'next/link';
 
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -26,8 +28,8 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        root: {
-            display: 'flex',
+        rootd: {
+            display: 'inline-block',
         },
         drawer: {
             [theme.breakpoints.up('sm')]: {
@@ -82,27 +84,33 @@ export default function ResponsiveDrawer(props: Props) {
             <div className={classes.toolbar} />
             <Divider />
             <List>
-                <ListItem button key='Day Plan'>
-                    <ListItemIcon>
-                        <DirectionsRunIcon />
-                    </ListItemIcon>
-                    <ListItemText primary='Day Plan' />
-                </ListItem>
-                <ListItem button key='Tasks'>
-                    <ListItemIcon>
-                        <ListIcon />
-                    </ListItemIcon>
-                    <ListItemText primary='Tasks' />
-                </ListItem>
-                <ListItem button key='Pattern'>
-                    <ListItemIcon>
-                        <TuneIcon />
-                    </ListItemIcon>
-                    <ListItemText primary='Pattern' />
-                </ListItem>
+                <Link href="/DayPlan">
+                    <ListItem button key='Day Plan'>
+                        <ListItemIcon>
+                            <DirectionsRunIcon />
+                        </ListItemIcon>
+                        <ListItemText primary='Day Plan' />
+                    </ListItem>
+                </Link>
+                <Link href="/tasks">
+                    <ListItem button key='Tasks'>
+                        <ListItemIcon>
+                            <ListIcon />
+                        </ListItemIcon>
+                        <ListItemText primary='Tasks' />
+                    </ListItem>
+                </Link>
+                <Link href="/Pattern">
+                    <ListItem button key='Pattern'>
+                        <ListItemIcon>
+                            <TuneIcon />
+                        </ListItemIcon>
+                        <ListItemText primary='Pattern' />
+                    </ListItem>
+                </Link>
                 <ListItem button key='Calendar'>
                     <ListItemIcon>
-                    <DateRangeIcon />
+                        <DateRangeIcon />
                     </ListItemIcon>
                     <ListItemText primary='Calendar' />
                 </ListItem>
@@ -114,7 +122,7 @@ export default function ResponsiveDrawer(props: Props) {
     const container = window !== undefined ? () => window().document.body : undefined;
 
     return (
-        <div className={classes.root}>
+        <div className={classes.rootd}>
             <CssBaseline />
             <AppBar position="fixed" className={classes.appBar}>
                 <Toolbar>

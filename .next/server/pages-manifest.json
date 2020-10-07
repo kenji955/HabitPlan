@@ -1,7 +1,11 @@
 {
+  "/DayPlan": "pages/DayPlan.html",
+  "/DayPlanPhone": "pages/DayPlanPhone.html",
+  "/Pattern": "pages/Pattern.html",
+  "/": "pages/index.html",
+  "/tasks": "pages/tasks.html",
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/tasks": "pages/tasks.js",
-  "/": "pages/index.js"
+  "/404": "pages/404.html"
 }

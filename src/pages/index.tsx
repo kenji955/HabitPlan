@@ -9,7 +9,7 @@ import Container from "@material-ui/core/Container";
 
 import FloatingActionButtonZoom from "../components/view/FloatingActionButton";
 import BottomNavigation from "../components/view/BottomNavigation";
-import DayPlanPC from "./DayPlanPC";
+import DayPlanPC from "./DayPlan";
 import Tasks from "./tasks";
 
 const useStyles = makeStyles({
@@ -51,8 +51,8 @@ const App = () => {
     // );
 
     return (
-        // <DayPlanPC />
-        <Tasks />
+        <DayPlanPC />
+        // <Tasks />
         // <BrowserRouter>{routes}</BrowserRouter>
         // <Container fixed>
         //     <h1>Todo App</h1>

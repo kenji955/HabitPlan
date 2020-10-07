@@ -8,7 +8,7 @@ import Container from "@material-ui/core/Container";
 import FloatingActionButtonZoom from "../components/view/FloatingActionButton";
 import BottomNavigation from '../components/view/BottomNavigation';
 import DenseAppBar from '../components/view/DenseAppBar';
-import CheckboxList from '../components/view/CheckBoxList';
+import TaskList from '../components/view/TaskList';
 import ResponsiveDrawer from '../components/view/ResponsiveDrawer';
 
 const useStyles = makeStyles(
@@ -18,7 +18,7 @@ const useStyles = makeStyles(
                 button: {
                     backgroundColor: "green",
                 },
-                root: {
+                taskList: {
                     display: 'flex',
                     paddingTop: '90px',
                     paddingLeft: '0px',
@@ -39,8 +39,8 @@ const Tasks = () => {
             {/* <Box component="span" m={1} className={classes.button}> */}
             <ResponsiveDrawer />
             {/* <DenseAppBar /> */}
-            <Container className={classes.root}>
-                <CheckboxList />
+            <Container className={classes.taskList}>
+                <TaskList />
             </Container>
             {/* <BottomNavigation /> */}
             {/* </Box> */}

@@ -20,16 +20,21 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function TransitionsModal() {
+interface Props {
+  open: boolean,
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>,
+}
+
+export default function TransitionsModal(props:Props) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  // const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
-    setOpen(true);
+    props.setOpen(true);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    props.setOpen(false);
   };
 
   return (
@@ -41,7 +46,7 @@ export default function TransitionsModal() {
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         className={classes.modal}
-        open={open}
+        open={props.open}
         onClose={handleClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
@@ -49,7 +54,7 @@ export default function TransitionsModal() {
           timeout: 500,
         }}
       >
-        <Fade in={open}>
+        <Fade in={props.open}>
           <div className={classes.paper}>
             <h2 id="transition-modal-title">Transition modal</h2>
             <p id="transition-modal-description">react-transition-group animates me.</p>

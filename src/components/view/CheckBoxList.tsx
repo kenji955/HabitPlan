@@ -11,7 +11,7 @@ import CommentIcon from '@material-ui/icons/Comment';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
+    roots: {
       width: '100%',
       maxWidth: 720,
       margin:'auto',
@@ -38,7 +38,7 @@ export default function CheckboxList() {
   };
 
   return (
-    <List className={classes.root}>
+    <List className={classes.roots}>
       {[0, 1, 2, 3].map((value) => {
         const labelId = `checkbox-list-label-${value}`;
 
