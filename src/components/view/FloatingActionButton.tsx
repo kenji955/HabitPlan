@@ -7,6 +7,9 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 
 import PatternList from "./PatternList";
+import Calendar from './Calendar';
+import Calendar2 from '../test/calendar';
+import Calendar3 from '../test/Calendar3';
 
 
 interface TabPanelProps {
@@ -80,15 +83,15 @@ export default function ScrollableTabsButtonAuto() {
                     scrollButtons="auto"
                     aria-label="scrollable auto tabs example"
                 >
-                    <Tab label="Item One" {...a11yProps(0)} />
-                    <Tab label="Item Two" {...a11yProps(1)} />
+                    <Tab label="Pattern" {...a11yProps(0)} />
+                    <Tab label="Calendar" {...a11yProps(1)} />
                 </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
                 <PatternList />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <PatternList />
+                <Calendar3 />
             </TabPanel>
         </div>
     );
