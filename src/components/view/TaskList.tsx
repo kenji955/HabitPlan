@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function CheckboxList() {
   const classes = useStyles();
   const [checked, setChecked] = React.useState([0]);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(9999);
 
 
   const handleToggle = (value: number) => () => {
@@ -39,7 +39,7 @@ export default function CheckboxList() {
       newChecked.splice(currentIndex, 1);
     }
 
-    setOpen(true);
+    setOpen(value);
     console.log('open:' + open);
     setChecked(newChecked);
   };
@@ -53,7 +53,7 @@ export default function CheckboxList() {
           <ListItem key={value} role={undefined} dense button onClick={handleToggle(value)}>
             <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
             <ListItemSecondaryAction>
-                <TaskModal open={open} setOpen={setOpen} />
+                <TaskModal open={open} setOpen={setOpen} value={value}/>
               <IconButton edge="end" aria-label="comments">
                 {/* <IconButton aria-label="comments"> */}
                 <CommentIcon />

@@ -14,10 +14,10 @@
     "static/development/_ssgManifest.js"
   ],
   "pages": {
-    "/DayPlan": [
+    "/Pattern": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/DayPlan.js"
+      "static/chunks/pages/Pattern.js"
     ],
     "/_app": [
       "static/chunks/main.js",

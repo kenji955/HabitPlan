@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 
 import PatternList from "./PatternList";
+import SimpleSelect from './Select';
 import Calendar from './Calendar';
 import Calendar2 from '../test/calendar';
 import Calendar3 from '../test/Calendar3';
@@ -91,6 +92,7 @@ export default function ScrollableTabsButtonAuto() {
                 <PatternList />
             </TabPanel>
             <TabPanel value={value} index={1}>
+                <SimpleSelect />
                 <Calendar3 />
             </TabPanel>
         </div>
