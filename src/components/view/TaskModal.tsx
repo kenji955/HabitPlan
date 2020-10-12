@@ -3,6 +3,8 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
+import InputN from "./InputNormal";
+import InputR from "./inputRequired";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -36,9 +38,9 @@ export default function TaskModal(props: any) {
 
     return (
         <div>
-            <button type="button" onClick={handleOpen}>
+            {/* <button type="button" onClick={handleOpen}>
                 react-transition-group
-            </button>
+            </button> */}
             <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
@@ -59,6 +61,8 @@ export default function TaskModal(props: any) {
                         <p id="transition-modal-description">
                             react-transition-group animates me.
                         </p>
+                        <InputN  label="testN" />
+                        <InputR label="testR" />
                     </div>
                 </Fade>
             </Modal>

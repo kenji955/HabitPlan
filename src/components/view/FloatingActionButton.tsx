@@ -7,11 +7,11 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 
 import PatternList from "./PatternList";
-import SimpleSelect from './Select';
-import Calendar from './Calendar';
-import Calendar2 from '../test/calendar';
-import Calendar3 from '../test/Calendar3';
-
+import SimpleSelect from "./Select";
+import Calendar from "./Calendar";
+import Calendar2 from "../test/calendar";
+import Calendar3 from "../test/Calendar3";
+import Calendar4 from "../test/calendar4.jsx";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -53,15 +53,13 @@ const useStyles = makeStyles((theme: Theme) => ({
         backgroundColor: theme.palette.background.paper,
         // paddingTop:'70px',
         // display:'inline-block',
-        alignItems:'center',
-        
+        alignItems: "center",
     },
-    barSize:{
-        width:'fit-content',
-        display:'flex',
-        margin:'0 auto',
-
-    }
+    barSize: {
+        width: "fit-content",
+        display: "flex",
+        margin: "0 auto",
+    },
 }));
 
 export default function ScrollableTabsButtonAuto() {
@@ -74,7 +72,11 @@ export default function ScrollableTabsButtonAuto() {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static" color="default" className={classes.barSize}>
+            <AppBar
+                position="static"
+                color="default"
+                className={classes.barSize}
+            >
                 <Tabs
                     value={value}
                     onChange={handleChange}
@@ -89,6 +91,7 @@ export default function ScrollableTabsButtonAuto() {
                 </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
+                <SimpleSelect />
                 <PatternList />
             </TabPanel>
             <TabPanel value={value} index={1}>
