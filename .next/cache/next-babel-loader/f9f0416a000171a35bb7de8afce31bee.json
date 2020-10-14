@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { combineReducers } from '@reduxjs/toolkit';\nimport tasksModule from './tasksModule';\nimport userModule from './userModule';\nvar rootReducer = combineReducers({\n  tasks: tasksModule.reducer,\n  user: userModule.reducer\n});\nexport default rootReducer;","map":null,"metadata":{},"sourceType":"module"}

@@ -2,6 +2,7 @@ import React, { useState, ChangeEvent } from "react";
 import { useRegisterData, useUpdateData, useDelteData } from "./DBFetch";
 
 export default function FormComponent() {
+    
     const registerData = useRegisterData();
     const updateData = useUpdateData();
     const deleteData = useDelteData();
@@ -29,7 +30,9 @@ export default function FormComponent() {
                     }
                 />
             </label>
-            <button onClick={() => registerData({ [keyData]: valueData })}>
+            {/* <button onClick={() => registerData({ [keyData]: valueData })}> */}
+            {/* <button onClick={() => registerData({ [keyData]: valueData })}> */}
+            <button onClick={() => registerData()}>
                 登録
             </button>
             <button onClick={() => updateData({ [keyData]: valueData })}>

@@ -1,13 +1,6 @@
-import { useState } from "react";
-
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 
-import FloatingActionButtonZoom from "../components/view/FloatingActionButton";
-import BottomNavigation from "../components/view/BottomNavigation";
-import DenseAppBar from "../components/view/DenseAppBar";
 import TaskList from "../components/view/TaskList";
 import ResponsiveDrawer from "../components/view/ResponsiveDrawer";
 // import Tooltip from '../components/view/toolTips';
@@ -65,7 +58,7 @@ const Tasks = () => {
             {/* </Box> */}
             <Container className={classes.taskList}>
                 <FirebaseAuthComponent />
-                <ListComponent />
+                {/* <ListComponent /> */}
                 <FormComponent />
             </Container>
         </Container>

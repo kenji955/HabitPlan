@@ -8,6 +8,7 @@ import "firebase/database";
 export default function ListComponent() {
     // dataを取ってくる
   const { data } = useFetchAllData();
+  console.log(data);
     // object形式なので使いやすいように{key, value}形式のリストに変換する
     // また、データが変わらない限り結果は同じなのでメモ化しておく
   const dataList = useMemo(() => Object.entries(data || {}).map(([key, value]) => ({ key, value })), [data]);
