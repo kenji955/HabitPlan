@@ -41,3 +41,9 @@ export type userTask = {
         tasks: tasks;
     };
 };
+
+export type userTaskInfo = {
+    calendar: calendar;
+    pattern: pattern;
+    tasks: tasks;
+};

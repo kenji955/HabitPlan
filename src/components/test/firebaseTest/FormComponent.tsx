@@ -32,9 +32,9 @@ export default function FormComponent() {
             </label>
             {/* <button onClick={() => registerData({ [keyData]: valueData })}> */}
             {/* <button onClick={() => registerData({ [keyData]: valueData })}> */}
-            <button onClick={() => registerData()}>
+            {/* <button onClick={() => registerData({ [keyData]: valueData })}>
                 登録
-            </button>
+            </button> */}
             <button onClick={() => updateData({ [keyData]: valueData })}>
                 更新
             </button>

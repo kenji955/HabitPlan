@@ -17,8 +17,10 @@ import {
     pattern,
     tasks,
     userTask,
+    userTaskInfo,
 } from "../../../modules/userTasksType";
 import { useTabContext } from "@material-ui/lab";
+import { login } from "../../../modules/userModule";
 
 const useReduxFetch = () => {
     const dispatch = useDispatch();
@@ -28,15 +30,38 @@ const useReduxFetch = () => {
 // カスタムフックにしておく
 const useDatabase = () => {
     const { userId } = useSelector((state: RootState) => state.user);
+    const dispatch = useDispatch();
+    const [check, setCheck] = useState("");
     // 同じパスでは毎回同じ結果が得られるのでmemo化しておく
     // return useMemo(() => firebase.database().ref("/sample"), []);
-    return useMemo(() => firebase.database().ref("/users/" + userId), []);
+    const uid = firebase.auth().currentUser;
+    if (!!uid) {
+        if (userId == "") {
+            dispatch(login(uid.uid));
+            setCheck("check");
+            console.log("check");
+        }
+
+        console.log("DBF 1 userId");
+        console.log(userId);
+        return useMemo(() => firebase.database().ref("/users/" + userId), [
+            userId,
+        ]);
+    } else {
+        // ここが原因。ここでuserId取得後にrefを更新できればいい
+        console.log("DBF 2 userId");
+        console.log(userId);
+        return useMemo(() => firebase.database().ref("/users/" + userId), [
+            userId,
+        ]);
+        // return useMemo(() => firebase.database().ref("/users/" + uid.uid), []);
+    }
 };
 
 //   データを取得する
 // hooksを使いたいのでカスタムhooksにしておく
 const useFetchData = (ref: firebase.database.Reference) => {
-    const [data, setData] = useState<any>();
+    const [data, setData] = useState<userTaskInfo>();
     useEffect(() => {
         // イベントリスナーを追加するにはonを使う
         ref.on("value", (snapshot: any) => {
@@ -44,6 +69,8 @@ const useFetchData = (ref: firebase.database.Reference) => {
             // ない場合はnullが返るので存在をチェックしておく
             if (snapshot?.val()) {
                 setData(snapshot.val());
+                console.log("DBF data");
+                console.log(data);
             }
         });
         return () => {
@@ -51,10 +78,10 @@ const useFetchData = (ref: firebase.database.Reference) => {
         };
         // refの変更に応じて再取得する
         //   指定したパスのデータに対する更新をすべて検知するにはvalueを指定すれば良い。
-    }, ["value"]);
+    }, [ref]);
     // データを返却する
-    console.log("data");
-    console.log(data);
+    // console.log("data");
+    // console.log(data);
     return { data };
 };
 
@@ -87,20 +114,19 @@ const useRegisterData = () => {
     const setDocument = useSetDocument(ref);
     // 登録済みのデータを全部取得する
     const { data: registeredData } = useFetchAllData();
-    const dispatch = useReduxFetch();
     const { userTaskInfo } = useSelector((state: RootState) => state.tasks);
-    console.log(userTaskInfo);
     // データを登録する関数を返却する
 
     // 可能であればここの処理はそのままにして、引数でsteteを更新する処理を先に行いたい
     const registerData = useCallback(
-        // (registerData: userTask) => {
-        () => {
+        (registerData: { [key: string]: string }) => {
+            // () => {
+            console.log(userTaskInfo);
             // ここでReduxに保管しているstateを更新する？
             // dispatch(Register({ ...registerData }));
             // 既存のデータと登録するkey-valueを合わせて登録関数に渡す
-            // setDocument({ ...registeredData, ...registerData });
-            setDocument(userTaskInfo);
+            setDocument({ ...registeredData, ...registerData });
+            // setDocument(userTaskInfo);
         },
         [setDocument, registeredData]
     );

@@ -1,20 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { firebase } from "./firebaseTest";
-import { login } from "../../../modules/userModule";
+import { login, logout } from "../../../modules/userModule";
+import { init, allDelete } from "../../../modules/tasksModule";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../modules/rootReducer";
+import { useFetchAllData } from "./DBFetch";
+import { Dispatch } from "@reduxjs/toolkit";
+
+const useReduxFetch = () => {
+    const dispatch = useDispatch();
+    return dispatch;
+};
 
 // ログイン、ログアウトボタン実装
 export default function FirebaseAuthComponent() {
     const loggedin = useFirebaseLogin();
-    // console.log('loggedin');
-    // console.log(loggedin);
+    const dispatch = useReduxFetch();
     if (!loggedin) {
         // ログインしていなければログインボタンを表示
         return <button onClick={() => signInWithPopup()}>ログイン</button>;
     }
     // ログインしているならログアウトボタンを表示
-    return <button onClick={() => signOut()}>ログアウト</button>;
+    return <button onClick={() => useSignOut(dispatch)}>ログアウト</button>;
 }
 
 // ログイン処理
@@ -27,8 +34,11 @@ const signInWithPopup = () => {
 };
 
 // ログアウト処理
-const signOut = () => {
+const useSignOut = (dispatch: Dispatch<any>) => {
     // signOutを呼び出すだけでOK
+    // const dispatch = useReduxFetch();
+    dispatch(logout());
+    dispatch(allDelete());
     return firebase.auth().signOut();
 };
 
@@ -36,20 +46,27 @@ const signOut = () => {
 const useFirebaseLogin = () => {
     // stateでログイン状態を保持
     const [loggedin, setLoggedin] = useState(false);
-    const dispatch = useDispatch();
+    const dispatch = useReduxFetch();
 
-    const { userId } = useSelector((state: RootState) => state.user);
+    const { userTaskInfo } = useSelector((state: RootState) => state.tasks);
 
     useEffect(() => {
         // 現在ログインしているユーザを取得
         firebase.auth().onAuthStateChanged((user) => {
             // ユーザ情報が取れればログイン状態
-            console.log('user');
-            let userIdCheck:string;
-            !!user ? userIdCheck = user.uid : userIdCheck = '';
-            // これをreduxで管理する
-            dispatch(login(userIdCheck));
-            console.log(userId);
+            let userIdCheck: string;
+            console.log('FAC !!user');
+            console.log(!!user);
+            if (!!user) {
+                userIdCheck = user.uid;
+                // console.log('data');
+                // console.log(data);
+                // dispatch(init(data));
+                console.log('FAC userTaskInfo.calendar[0].PatternId');
+                console.log(userTaskInfo.calendar[0].PatternId);
+                // これをreduxで管理する
+                // dispatch(login(userIdCheck));
+            }
 
             setLoggedin(!!user);
         });
