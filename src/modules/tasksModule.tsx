@@ -32,6 +32,21 @@ const initialState: userTask = {
                                 },
                             ],
                         },
+                        [new Date("Thu, 23 May 2020 02:00:00").getDate()]: {
+                            PatternId: 1,
+                            tasks: [
+                                {
+                                    detail1: "testDetail1 23 1",
+                                    detail2: "testDetail2 23 1",
+                                    flug: false,
+                                },
+                                {
+                                    detail1: "testDetail1 23 2",
+                                    detail2: "testDetail2 23 2",
+                                    flug: false,
+                                },
+                            ],
+                        },
                     },
                     
                 },
@@ -175,8 +190,9 @@ const tasksModule = createSlice({
             state = initialState;
             console.log("check allDelete");
         },
-        taskCheckComplete(state: userTask, action: PayloadAction<calendar>) {
-            action.payload;
+        // DayPlanにてタスクをクリックした際に完了フラグをtrueに変更する処理。引数にて年、月、日、タスクのインデックス番号を受け取っている。
+        taskCheckComplete(state: userTask, action: PayloadAction<number[]>) {
+            state.userTaskInfo.calendar[action.payload[0]][action.payload[1]][action.payload[2]].tasks[action.payload[3]].flug = !state.userTaskInfo.calendar[action.payload[0]][action.payload[1]][action.payload[2]].tasks[action.payload[3]].flug;
         },
     },
 });
