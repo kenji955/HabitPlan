@@ -58,15 +58,28 @@ export default function CheckboxList() {
   // const test = userTaskInfo.calendar.filter(function(value){
   //   return value.year == year && value.month == month && value.date == date
   // });
-
+  
   // const test = userTaskInfo.calendar[year][month][date]
   const test = userTaskInfo.calendar;
-
+  
   console.log(test[year][month][22]);
+  
+  // let Achievement:[JSX.Element],NotAchieved:[JSX.Element];
+    const Achievement = test[year][month][22].tasks.filter(function(value){
+      return value.flug == true;
+    });
+    console.log('Achievement');
+    console.log(Achievement);
+
+    const NotAchieved = test[year][month][22].tasks.filter(function(value){
+      return value.flug == false;
+    });
+    console.log('NotAchieved');
+    console.log(NotAchieved);
 
   return (
     <List className={classes.roots}>
-      {test[year][month][22].tasks.map((value,index) => {
+      {NotAchieved.map((value,index) => {
         const labelId = `checkbox-list-label-${value}`;
 
         return (
@@ -84,13 +97,61 @@ export default function CheckboxList() {
             <ListItemText id={labelId} primary={`Line item ${index + 1} ${value.detail1} & ${value.detail2} & ${value.flug}`} />
             <ListItemSecondaryAction>
               <IconButton edge="end" aria-label="comments">
-              {/* <IconButton aria-label="comments"> */}
                 <CommentIcon />
               </IconButton>
             </ListItemSecondaryAction>
           </ListItem>
         );
       })}
+      <p>達成済み</p>
+      {Achievement.map((value,index) => {
+        const labelId = `checkbox-list-label-${value}`;
+
+        return (
+          <ListItem key={year&month&date&index} role={undefined} dense button onClick={handleToggle(index)}>
+            <ListItemIcon>
+              <Checkbox
+                edge="start"
+                checked={value.flug}
+                // checked={checked.indexOf(index) !== -1}
+                tabIndex={-1}
+                disableRipple
+                inputProps={{ 'aria-labelledby': labelId }}
+              />
+            </ListItemIcon>
+            <ListItemText id={labelId} primary={`Line item ${index + 1} ${value.detail1} & ${value.detail2} & ${value.flug}`} />
+            <ListItemSecondaryAction>
+              <IconButton edge="end" aria-label="comments">
+                <CommentIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+        );
+      })}
+      {/* {test[year][month][22].tasks.map((value,index) => {
+        const labelId = `checkbox-list-label-${value}`;
+
+        return (
+          <ListItem key={year&month&date&index} role={undefined} dense button onClick={handleToggle(index)}>
+            <ListItemIcon>
+              <Checkbox
+                edge="start"
+                checked={value.flug}
+                // checked={checked.indexOf(index) !== -1}
+                tabIndex={-1}
+                disableRipple
+                inputProps={{ 'aria-labelledby': labelId }}
+              />
+            </ListItemIcon>
+            <ListItemText id={labelId} primary={`Line item ${index + 1} ${value.detail1} & ${value.detail2} & ${value.flug}`} />
+            <ListItemSecondaryAction>
+              <IconButton edge="end" aria-label="comments">
+                <CommentIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+        );
+      })} */}
     </List>
     // <List className={classes.roots}>
     //   {[0, 1, 2, 3].map((value) => {

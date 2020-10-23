@@ -63,7 +63,7 @@ const useFirebaseLogin = () => {
                 // console.log(data);
                 // dispatch(init(data));
                 console.log('FAC userTaskInfo.calendar[0].PatternId');
-                console.log(userTaskInfo.calendar[0].PatternId);
+                // console.log(userTaskInfo.calendar[0].PatternId);
                 // これをreduxで管理する
                 // dispatch(login(userIdCheck));
             }
