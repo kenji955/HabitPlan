@@ -21,11 +21,13 @@ const initialState: userTask = {
                             PatternId: 1,
                             tasks: [
                                 {
+                                    order:1,
                                     detail1: "testDetail1 22 1",
                                     detail2: "testDetail2 22 1",
                                     flug: false,
                                 },
                                 {
+                                    order:2,
                                     detail1: "testDetail1 22 2",
                                     detail2: "testDetail2 22 2",
                                     flug: false,
@@ -36,11 +38,13 @@ const initialState: userTask = {
                             PatternId: 1,
                             tasks: [
                                 {
+                                    order:1,
                                     detail1: "testDetail1 23 1",
                                     detail2: "testDetail2 23 1",
                                     flug: false,
                                 },
                                 {
+                                    order:2,
                                     detail1: "testDetail1 23 2",
                                     detail2: "testDetail2 23 2",
                                     flug: false,
@@ -126,8 +130,8 @@ const initialState: userTask = {
                 ],
             },
             {
-                detail1: "testDetail1A",
-                detail2: "testDetail2A",
+                detail1: "testDetail1B",
+                detail2: "testDetail2B",
                 patternInfo: [
                     {
                         patternID: 1,
@@ -192,7 +196,9 @@ const tasksModule = createSlice({
         },
         // DayPlanにてタスクをクリックした際に完了フラグをtrueに変更する処理。引数にて年、月、日、タスクのインデックス番号を受け取っている。
         taskCheckComplete(state: userTask, action: PayloadAction<number[]>) {
-            state.userTaskInfo.calendar[action.payload[0]][action.payload[1]][action.payload[2]].tasks[action.payload[3]].flug = !state.userTaskInfo.calendar[action.payload[0]][action.payload[1]][action.payload[2]].tasks[action.payload[3]].flug;
+            const index = state.userTaskInfo.calendar[action.payload[0]][action.payload[1]][action.payload[2]].tasks.findIndex((tasks) => tasks.order == action.payload[3]);
+            console.log(index);
+            state.userTaskInfo.calendar[action.payload[0]][action.payload[1]][action.payload[2]].tasks[index].flug = !state.userTaskInfo.calendar[action.payload[0]][action.payload[1]][action.payload[2]].tasks[index].flug;
         },
     },
 });

@@ -133,10 +133,12 @@ const initialState = {
           [new Date("Thu, 22 May 2020 02:00:00").getDate()]: {
             PatternId: 1,
             tasks: [{
+              order: 1,
               detail1: "testDetail1 22 1",
               detail2: "testDetail2 22 1",
               flug: false
             }, {
+              order: 2,
               detail1: "testDetail1 22 2",
               detail2: "testDetail2 22 2",
               flug: false
@@ -145,10 +147,12 @@ const initialState = {
           [new Date("Thu, 23 May 2020 02:00:00").getDate()]: {
             PatternId: 1,
             tasks: [{
+              order: 1,
               detail1: "testDetail1 23 1",
               detail2: "testDetail2 23 1",
               flug: false
             }, {
+              order: 2,
               detail1: "testDetail1 23 2",
               detail2: "testDetail2 23 2",
               flug: false
@@ -220,8 +224,8 @@ const initialState = {
         order: 1
       }]
     }, {
-      detail1: "testDetail1A",
-      detail2: "testDetail2A",
+      detail1: "testDetail1B",
+      detail2: "testDetail2B",
       patternInfo: [{
         patternID: 1,
         order: 2
@@ -275,7 +279,9 @@ const tasksModule = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["create
 
     // DayPlanにてタスクをクリックした際に完了フラグをtrueに変更する処理。引数にて年、月、日、タスクのインデックス番号を受け取っている。
     taskCheckComplete(state, action) {
-      state.userTaskInfo.calendar[action.payload[0]][action.payload[1]][action.payload[2]].tasks[action.payload[3]].flug = !state.userTaskInfo.calendar[action.payload[0]][action.payload[1]][action.payload[2]].tasks[action.payload[3]].flug;
+      const index = state.userTaskInfo.calendar[action.payload[0]][action.payload[1]][action.payload[2]].tasks.findIndex(tasks => tasks.order == action.payload[3]);
+      console.log(index);
+      state.userTaskInfo.calendar[action.payload[0]][action.payload[1]][action.payload[2]].tasks[index].flug = !state.userTaskInfo.calendar[action.payload[0]][action.payload[1]][action.payload[2]].tasks[index].flug;
     }
 
   }

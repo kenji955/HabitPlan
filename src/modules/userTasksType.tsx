@@ -16,6 +16,7 @@ export type calendar = {
             [date: number]:{
                 PatternId: number;
                 tasks: {
+                    order:number,
                     detail1: string;
                     detail2: string;
                     flug: boolean;

@@ -65,6 +65,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export default function ScrollableTabsButtonAuto() {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
+    const [choice, setChoice] = React.useState(Number);
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
@@ -91,11 +92,11 @@ export default function ScrollableTabsButtonAuto() {
                 </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
-                <SimpleSelect />
-                <PatternList />
+                <SimpleSelect choice={choice} setChoice={setChoice} />
+                <PatternList choice={choice} />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <SimpleSelect />
+                <SimpleSelect choice={choice} setChoice={setChoice}/>
                 <Calendar3 />
             </TabPanel>
         </div>
