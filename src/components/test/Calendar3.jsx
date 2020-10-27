@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { calendarPatternRegster } from "../../modules/tasksModule";
 import format from "date-fns/format";
 import getDate from "date-fns/getDate";
 import getDay from "date-fns/getDay";
@@ -79,31 +81,37 @@ const getCalendarArray = (date) => {
     );
 };
 
-const calendarCellClick = (date) =>()=> {
-    console.log("date" + date);
+const calendarCellClick = (dateData,dispatch,choice) =>()=> {
+    console.log("date:" + dateData);
+    console.log("year:" + dateData.getFullYear());
+    const year = dateData.getFullYear();
+    console.log("month:" + (dateData.getMonth() + 1));
+    const month = dateData.getMonth() + 1;
+    console.log("dateData:" + dateData.getDate());
+    const date = dateData.getDate();
+    dispatch(calendarPatternRegster([year, month, date, choice]));
 };
 
 function CalendarTableCell(props) {
-    const { key, wday, isTargetMonth, isToday, children,date, ...other } = props;
+    const { key, wday, isTargetMonth, isToday, children,dateData,dispatch,choice, ...other } = props;
     const classes = useCalendarCellStyles(props);
-    console.log('date');
-    console.log(date);
     return (
         <TableCell
             className={classes.calendarCell}
             {...other}
-            onClick={calendarCellClick(date)}
+            onClick={calendarCellClick(dateData,dispatch,choice)}
         >
             {children}
         </TableCell>
     );
 }
 
-function App() {
+function App(props) {
     const [targetDate, setTargetDate] = useState(new Date());
     const classes = useStyles();
     const calendar = getCalendarArray(targetDate);
     const today = new Date();
+    const dispatch = useDispatch();
 
     return (
         <div>
@@ -206,7 +214,9 @@ function App() {
                                             targetDate
                                         )}
                                         isToday={isSameDay(date, today)}
-                                        date={getDate(date)}
+                                        dateData={date}
+                                        dispatch={dispatch}
+                                        choice={props.choice}
                                         align="center"
                                     >
                                         {getDate(date)}

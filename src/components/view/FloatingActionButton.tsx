@@ -97,7 +97,7 @@ export default function ScrollableTabsButtonAuto() {
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <SimpleSelect choice={choice} setChoice={setChoice}/>
-                <Calendar3 />
+                <Calendar3 choice={choice} />
             </TabPanel>
         </div>
     );
