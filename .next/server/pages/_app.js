@@ -307,12 +307,12 @@ const tasksModule = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["create
       }); // stateのMonthの連想配列に新しい日付の連想配列を追加する。
       // 追加情報は引数の日とこれまでの処理で作成したカレンダー登録用情報
 
-      state.userTaskInfo.calendar[action.payload[0]][action.payload[1]] = {
+      state.userTaskInfo.calendar[action.payload[0]][action.payload[1]] = _objectSpread(_objectSpread({}, state.userTaskInfo.calendar[action.payload[0]][action.payload[1]]), {}, {
         [action.payload[2]]: {
           PatternId: action.payload[3],
           tasks: TodayTasks
         }
-      }; // action.payload[3];
+      }); // action.payload[3];
 
       console.log(state.userTaskInfo.calendar[action.payload[0]][action.payload[1]][action.payload[2]]);
     }
@@ -327,6 +327,25 @@ const {
   calendarPatternRegster
 } = tasksModule.actions;
 /* harmony default export */ __webpack_exports__["c"] = (tasksModule);
+
+/***/ }),
+
+/***/ "b4T5":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("+wlD");
+/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _tasksModule__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("Byyh");
+/* harmony import */ var _userModule__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("v9FH");
+
+
+
+const rootReducer = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])({
+  tasks: _tasksModule__WEBPACK_IMPORTED_MODULE_1__[/* default */ "c"].reducer,
+  user: _userModule__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"].reducer
+});
+/* harmony default export */ __webpack_exports__["a"] = (rootReducer);
 
 /***/ }),
 
@@ -361,26 +380,14 @@ var external_react_redux_ = __webpack_require__("h74D");
 // EXTERNAL MODULE: external "@reduxjs/toolkit"
 var toolkit_ = __webpack_require__("+wlD");
 
-// EXTERNAL MODULE: ./src/modules/tasksModule.tsx
-var tasksModule = __webpack_require__("Byyh");
+// EXTERNAL MODULE: ./src/modules/rootReducer.ts
+var rootReducer = __webpack_require__("b4T5");
 
-// EXTERNAL MODULE: ./src/modules/userModule.tsx
-var userModule = __webpack_require__("v9FH");
-
-// CONCATENATED MODULE: ./src/modules/rootReducer.ts
-
-
-
-const rootReducer = Object(toolkit_["combineReducers"])({
-  tasks: tasksModule["c" /* default */].reducer,
-  user: userModule["a" /* default */].reducer
-});
-/* harmony default export */ var modules_rootReducer = (rootReducer);
 // CONCATENATED MODULE: ./src/modules/store.ts
 
 
 const store = Object(toolkit_["configureStore"])({
-  reducer: modules_rootReducer
+  reducer: rootReducer["a" /* default */]
 });
 /* harmony default export */ var modules_store = (store);
 // CONCATENATED MODULE: ./src/pages/_app.tsx

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { calendarPatternRegster } from "../../modules/tasksModule";
+import { RootState } from "../../modules/rootReducer";
+
 import format from "date-fns/format";
 import getDate from "date-fns/getDate";
 import getDay from "date-fns/getDay";
@@ -81,25 +83,54 @@ const getCalendarArray = (date) => {
     );
 };
 
-const calendarCellClick = (dateData,dispatch,choice) =>()=> {
-    console.log("date:" + dateData);
-    console.log("year:" + dateData.getFullYear());
+const calendarCellClick = (dateData, dispatch, choice) => () => {
     const year = dateData.getFullYear();
-    console.log("month:" + (dateData.getMonth() + 1));
     const month = dateData.getMonth() + 1;
-    console.log("dateData:" + dateData.getDate());
     const date = dateData.getDate();
     dispatch(calendarPatternRegster([year, month, date, choice]));
 };
 
+// カレンダー欄に設定されているパターンIDを表示させるための関数
+// メモ。2020/10/27時点の課題。dateどころかyear、monthがない可能性もある。
+function PatternRegistrationStatus(dateData, userTaskInfo) {
+    const year = dateData.getFullYear();
+    const month = dateData.getMonth() + 1;
+    const date = dateData.getDate();
+
+    // console.log("チェック：" + date + ":" + month + ":" + year);
+
+    // console.log("チェック2");
+    // console.log(userTaskInfo.calendar[year]);
+    if ([year] in userTaskInfo.calendar) {
+        if ([month] in userTaskInfo.calendar[year]) {
+            if ([date] in userTaskInfo.calendar[year][month]) {
+                console.log("PatternId：" + userTaskInfo.calendar[year][month][date].PatternId);
+                return userTaskInfo.calendar[year][month][date].PatternId;
+            }
+        }
+    }
+    // console.log("なし：" + date);
+    return "×";
+}
+
 function CalendarTableCell(props) {
-    const { key, wday, isTargetMonth, isToday, children,dateData,dispatch,choice, ...other } = props;
+    const {
+        key,
+        wday,
+        isTargetMonth,
+        isToday,
+        children,
+        dateData,
+        dispatch,
+        choice,
+        ...other
+    } = props;
     const classes = useCalendarCellStyles(props);
     return (
         <TableCell
             className={classes.calendarCell}
             {...other}
-            onClick={calendarCellClick(dateData,dispatch,choice)}
+            onClick={calendarCellClick(dateData, dispatch, choice)}
         >
             {children}
         </TableCell>
@@ -112,6 +143,7 @@ function App(props) {
     const calendar = getCalendarArray(targetDate);
     const today = new Date();
     const dispatch = useDispatch();
+    const { userTaskInfo } = useSelector((state) => state.tasks);
 
     return (
         <div>
@@ -220,6 +252,11 @@ function App(props) {
                                         align="center"
                                     >
                                         {getDate(date)}
+                                        <br></br>
+                                        {PatternRegistrationStatus(
+                                            date,
+                                            userTaskInfo
+                                        )}
                                     </CalendarTableCell>
                                 ))}
                             </TableRow>

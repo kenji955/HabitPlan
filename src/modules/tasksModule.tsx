@@ -243,6 +243,7 @@ const tasksModule = createSlice({
             state.userTaskInfo.calendar[action.payload[0]][
                 action.payload[1]
             ] = {
+                ...state.userTaskInfo.calendar[action.payload[0]][action.payload[1]],
                 [action.payload[2]]: {
                     PatternId: action.payload[3],
                     tasks: TodayTasks,
