@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         AchievementList:{
           display:'inline-block',
+          width: "100%",
         }
     })
 );
@@ -114,8 +115,8 @@ export default function CheckboxList() {
                         <ListItemText
                             id={labelId}
                             primary={`Line item ${index + 1} ${
-                                value.detail1
-                            } & ${value.detail2} & ${value.flug}`}
+                                value.detail["testDetail1"]
+                            } & ${value.detail["testDetail2"]} & ${value.flug}`}
                         />
                         <ListItemSecondaryAction>
                             <IconButton edge="end" aria-label="comments">
@@ -162,8 +163,8 @@ export default function CheckboxList() {
                                 <ListItemText
                                     id={labelId}
                                     primary={`Line item ${index + 1} ${
-                                        value.detail1
-                                    } & ${value.detail2} & ${value.flug}`}
+                                        value.detail["testDetail1"]
+                                    } & ${value.detail["testDetail2"]} & ${value.flug}`}
                                 />
                                 <ListItemSecondaryAction>
                                     <IconButton

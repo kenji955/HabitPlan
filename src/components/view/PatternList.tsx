@@ -50,20 +50,25 @@ export default function PatternList(props: { choice: number }) {
 
     return (
         <List className={classes.roots}>
-            {/* {[0, 1, 2, 3].map((value) => { */}
             {choicePatternTasks.map((task) => {
-              const taskPattern = task.patternInfo.filter(function (patternInfo) {
-                return patternInfo.patternID == props.choice;
-            });
-                const labelId = `checkbox-list-label-${taskPattern[0].patternID+taskPattern[0].order}`;
+                const taskPattern = task.patternInfo.filter(function (
+                    patternInfo
+                ) {
+                    return patternInfo.patternID == props.choice;
+                });
+                const labelId = `checkbox-list-label-${
+                    taskPattern[0].patternID + taskPattern[0].order
+                }`;
 
                 return (
                     <ListItem
-                        key={taskPattern[0].patternID+taskPattern[0].order}
+                        key={taskPattern[0].patternID + taskPattern[0].order}
                         role={undefined}
                         dense
                         button
-                        onClick={handleToggle(taskPattern[0].patternID+taskPattern[0].order)}
+                        onClick={handleToggle(
+                            taskPattern[0].patternID + taskPattern[0].order
+                        )}
                     >
                         <ListItemIcon>
                             <IconButton edge="end" aria-label="comments">
@@ -72,7 +77,11 @@ export default function PatternList(props: { choice: number }) {
                         </ListItemIcon>
                         <ListItemText
                             id={labelId}
-                            primary={`Line item ${taskPattern[0].patternID+taskPattern[0].order} ${task.detail1} ${task.detail2}`}
+                            primary={`Line item ${
+                                taskPattern[0].patternID + taskPattern[0].order
+                            } ${task.detail["testDetail1"]} ${
+                                task.detail["testDetail2"]
+                            }`}
                         />
                         <ListItemSecondaryAction>
                             <IconButton edge="end" aria-label="comments">

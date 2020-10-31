@@ -12,12 +12,14 @@ const useStyles = makeStyles((theme: Theme) =>
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            // width: "80%",
+            // height: "80%",
         },
         paper: {
             backgroundColor: theme.palette.background.paper,
-            maxWidth: "80%",
-            maxHeight: "80%",
-            overflowY:'scroll',
+            width: "50%",
+            height: "80%",
+            overflowY: "scroll",
             border: "2px solid #000",
             boxShadow: theme.shadows[5],
             padding: theme.spacing(2, 4, 3),
@@ -30,8 +32,8 @@ export default function TaskModal(props: any) {
     // const [open, setOpen] = React.useState(false);
 
     const handleOpen = () => {
-        props.setOpen(props.value);
-        console.log("props.value" + props.value);
+        props.setOpen(props.index);
+        console.log("props.index" + props.index);
         console.log("props.open" + props.open);
     };
 
@@ -39,6 +41,8 @@ export default function TaskModal(props: any) {
         props.setOpen(9999);
     };
 
+    // console.log("props.index" + props.index);
+    // console.log("props.open" + props.open);
     return (
         <div>
             {/* <button type="button" onClick={handleOpen}>
@@ -48,7 +52,7 @@ export default function TaskModal(props: any) {
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
                 className={classes.modal}
-                open={props.value == props.open}
+                open={props.index == props.open}
                 onClose={handleClose}
                 closeAfterTransition
                 BackdropComponent={Backdrop}
@@ -56,36 +60,35 @@ export default function TaskModal(props: any) {
                     timeout: 500,
                 }}
             >
-                <Fade in={props.value == props.open}>
+                <Fade in={props.index == props.open}>
                     <div className={classes.paper}>
                         <h2 id="transition-modal-title">
-                            タスク詳細画面{props.value}
+                            タスク詳細画面{props.index + 1}
                         </h2>
                         <p id="transition-modal-description">
-                            react-transition-group animates
-                            me.react-transition-group animates
-                            me.react-transition-group animates
-                            me.react-transition-group animates
-                            me.react-transition-group animates
-                            me.react-transition-group animates
-                            me.react-transition-group animates me.
+                            react-transition-group animates me.
                         </p>
-                        <InputN label="if-thenプランニング" /><br></br>
-                        <InputN label="習慣の積み上げ" /><br></br>
-                        <InputR label="パターン" /><br></br>
-                        <InputN label="気が進まないとき" /><br></br>
-                        <InputN label="長期的に見返りのある習慣の即時的な楽しみ" /><br></br>
-                        <InputN label="目標" /><br></br>
-                        <InputN label="守れなかった時の罰則" /><br></br>
-                        <InputN label="レベル" /><br></br>
+                        <InputN label="if-thenプランニング" required={false} index={props.index} />
+                        <br></br>
+                        <InputN label="習慣の積み上げ" required={false} index={props.index} />
+                        <br></br>
+                        <InputN label="パターン" required={true} index={props.index} />
+                        <br></br>
+                        <InputN label="気が進まないとき" required={false} index={props.index} />
+                        <br></br>
+                        <InputN label="長期的に見返りのある習慣の即時的な楽しみ" required={false} index={props.index} />
+                        <br></br>
+                        <InputN label="目標" required={false} index={props.index} />
+                        <br></br>
+                        <InputN label="守れなかった時の罰則" required={false} index={props.index} />
+                        <br></br>
+                        <InputN label="レベル" required={false} index={props.index} />
+                        <br></br>
                         <p>悪い習慣への備え</p>
-                        <InputN label="避けることで得られるメリット" /><br></br>
-                        <InputN label="見返りのない習慣に対する即時的な痛み" /><br></br>
-                        <InputR label="testR" /><br></br>
-                        <InputR label="testR" /><br></br>
-                        <InputR label="testR" /><br></br>
-                        <InputR label="testR" /><br></br>
-                        <InputR label="testR" /><br></br>
+                        <InputN label="避けることで得られるメリット" required={false} index={props.index} />
+                        <br></br>
+                        <InputN label="見返りのない習慣に対する即時的な痛み" required={false} index={props.index} />
+                        <br></br>
                     </div>
                 </Fade>
             </Modal>

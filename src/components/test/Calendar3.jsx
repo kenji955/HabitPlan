@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { calendarPatternRegster } from "../../modules/tasksModule";
+import { calendarPatternRegister } from "../../modules/tasksModule";
 import { RootState } from "../../modules/rootReducer";
 
 import format from "date-fns/format";
@@ -87,7 +87,7 @@ const calendarCellClick = (dateData, dispatch, choice) => () => {
     const year = dateData.getFullYear();
     const month = dateData.getMonth() + 1;
     const date = dateData.getDate();
-    dispatch(calendarPatternRegster([year, month, date, choice]));
+    dispatch(calendarPatternRegister([year, month, date, choice]));
 };
 
 // カレンダー欄に設定されているパターンIDを表示させるための関数

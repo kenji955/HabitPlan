@@ -13,16 +13,16 @@
 export type calendar = {
     [year: number]: {
         [month: number]: {
-            [date: number]:{
+            [date: number]: {
                 PatternId: number;
                 tasks: {
-                    order:number,
-                    detail1: string;
-                    detail2: string;
+                    order: number;
+                    detail: { [content: string]: string };
+                    // detail2: string;
                     flug: boolean;
                 }[];
-            }
-        }
+            };
+        };
     };
     // {
     //     [month: number]: {
@@ -44,8 +44,9 @@ export type pattern = {
 };
 
 export type tasks = {
-    detail1: string;
-    detail2: string;
+    detail: { [content: string]: string };
+    // detail1: string;
+    // detail2: string;
     patternInfo: {
         patternID: number;
         order: number;

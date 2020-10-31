@@ -21,14 +21,18 @@ const initialState: userTask = {
                         tasks: [
                             {
                                 order: 1,
-                                detail1: "testDetail1 22 1",
-                                detail2: "testDetail2 22 1",
+                                detail: {
+                                    ["testDetail1"]: "testDetail1 22 1",
+                                    ["testDetail2"]: "testDetail1 22 1",
+                                },
                                 flug: false,
                             },
                             {
                                 order: 2,
-                                detail1: "testDetail1 22 2",
-                                detail2: "testDetail2 22 2",
+                                detail: {
+                                    ["testDetail1"]: "testDetail1 22 2",
+                                    ["testDetail2"]: "testDetail1 22 2",
+                                },
                                 flug: false,
                             },
                         ],
@@ -38,14 +42,18 @@ const initialState: userTask = {
                         tasks: [
                             {
                                 order: 1,
-                                detail1: "testDetail1 23 1",
-                                detail2: "testDetail2 23 1",
+                                detail: {
+                                    ["testDetail1"]: "testDetail1 23 1",
+                                    ["testDetail2"]: "testDetail1 23 1",
+                                },
                                 flug: false,
                             },
                             {
                                 order: 2,
-                                detail1: "testDetail1 23 2",
-                                detail2: "testDetail2 23 2",
+                                detail: {
+                                    ["testDetail1"]: "testDetail1 23 2",
+                                    ["testDetail2"]: "testDetail1 23 2",
+                                },
                                 flug: false,
                             },
                         ],
@@ -118,8 +126,13 @@ const initialState: userTask = {
         ],
         tasks: [
             {
-                detail1: "testDetail1A",
-                detail2: "testDetail2A",
+                detail: {
+                    ["defalut"]: "defalut",
+                    ["testDetail1"]: "testDetail1 22 1",
+                    ["testDetail2"]: "testDetail1 22 1",
+                },
+                // detail1: "testDetail1A",
+                // detail2: "testDetail2A",
                 patternInfo: [
                     {
                         patternID: 1,
@@ -128,8 +141,11 @@ const initialState: userTask = {
                 ],
             },
             {
-                detail1: "testDetail1B",
-                detail2: "testDetail2B",
+                detail: {
+                    ["defalut"]: "defalut",
+                    ["testDetail1"]: "testDetail1 22 2",
+                    ["testDetail2"]: "testDetail1 22 2",
+                },
                 patternInfo: [
                     {
                         patternID: 1,
@@ -138,8 +154,11 @@ const initialState: userTask = {
                 ],
             },
             {
-                detail1: "testDetail1C",
-                detail2: "testDetail2C",
+                detail: {
+                    ["defalut"]: "defalut",
+                    ["testDetail1"]: "testDetail1 23 1",
+                    ["testDetail2"]: "testDetail1 23 1",
+                },
                 patternInfo: [
                     {
                         patternID: 2,
@@ -152,8 +171,11 @@ const initialState: userTask = {
                 ],
             },
             {
-                detail1: "testDetail1D",
-                detail2: "testDetail2D",
+                detail: {
+                    ["defalut"]: "defalut",
+                    ["testDetail2"]: "testDetail1 23 2",
+                    ["testDetail1"]: "testDetail1 23 2",
+                },
                 patternInfo: [
                     {
                         patternID: 2,
@@ -207,7 +229,7 @@ const tasksModule = createSlice({
             ][action.payload[1]][action.payload[2]].tasks[index].flug;
         },
         // 引数はstateと年、月、日、選択されているパターンIDの4つの数値が格納された配列
-        calendarPatternRegster(
+        calendarPatternRegister(
             state: userTask,
             action: PayloadAction<number[]>
         ) {
@@ -232,8 +254,8 @@ const tasksModule = createSlice({
                 // 配列のタスクと抽出したパターン情報を整形して返す。
                 return {
                     order: taskPattern[0].order,
-                    detail1: task.detail1,
-                    detail2: task.detail2,
+                    detail: task.detail,
+                    // detail2: task.detail2,
                     flug: false,
                 };
             });
@@ -243,7 +265,9 @@ const tasksModule = createSlice({
             state.userTaskInfo.calendar[action.payload[0]][
                 action.payload[1]
             ] = {
-                ...state.userTaskInfo.calendar[action.payload[0]][action.payload[1]],
+                ...state.userTaskInfo.calendar[action.payload[0]][
+                    action.payload[1]
+                ],
                 [action.payload[2]]: {
                     PatternId: action.payload[3],
                     tasks: TodayTasks,
@@ -257,6 +281,13 @@ const tasksModule = createSlice({
                 ][action.payload[2]]
             );
         },
+        // タスクの詳細を設定する処理。引数のテキスト配列には[入力内容、連想配列のキー、タスクの配列を指定する数字]が格納されている。
+        taskDetailRegister(state: userTask, action: PayloadAction<string[]>) {
+            state.userTaskInfo.tasks[parseInt(action.payload[2])].detail={
+                ...state.userTaskInfo.tasks[parseInt(action.payload[2])].detail,
+                [action.payload[1]]:action.payload[0]
+            }
+        },
     },
 });
 
@@ -265,7 +296,8 @@ export const {
     Register,
     allDelete,
     taskCheckComplete,
-    calendarPatternRegster,
+    calendarPatternRegister,
+    taskDetailRegister,
 } = tasksModule.actions;
 
 export default tasksModule;
