@@ -11,6 +11,8 @@ import DenseAppBar from '../components/view/DenseAppBar';
 import CheckboxList from '../components/view/CheckBoxList';
 import ResponsiveDrawer from '../components/view/ResponsiveDrawer';
 
+import withAuth from '../components/shared/withAuth'
+
 const useStyles = makeStyles(
     (theme: Theme) =>
         createStyles(
@@ -51,4 +53,4 @@ const DayPlanPC = () => {
     );
 };
 
-export default DayPlanPC;
+export default withAuth(DayPlanPC);

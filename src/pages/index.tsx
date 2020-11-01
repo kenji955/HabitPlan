@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import ReactDOM from 'react-dom';
+import React, { useMemo, useState } from "react";
+import ReactDOM from "react-dom";
+import router from "next/router";
 // import { Route, Switch, withRouter, Redirect,BrowserRouter } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -11,6 +12,10 @@ import FloatingActionButtonZoom from "../components/view/FloatingActionButton";
 import BottomNavigation from "../components/view/BottomNavigation";
 import DayPlanPC from "./DayPlan";
 import Tasks from "./tasks";
+import FirebaseAuthComponent from "../components/test/firebaseTest/FirebaseAuthComponent";
+import { useSelector } from "react-redux";
+import { RootState } from "../modules/rootReducer";
+import { auth } from "../components/test/firebaseTest/firebaseTest";
 
 const useStyles = makeStyles({
     button: {
@@ -19,54 +24,50 @@ const useStyles = makeStyles({
 });
 
 const App = () => {
-    const [todos, setTodos] = useState([]);
-    const [tmpTodo, setTmpTodo] = useState("");
+    const { userId } = useSelector((state: RootState) => state.user);
 
-    const classes = useStyles();
+    let RenderComponent: JSX.Element = <FirebaseAuthComponent />;
 
-    const addTodo = () => {
-        // formの内容が空白の場合はalertを出す
-        if (tmpTodo === "") {
-            alert("文字を入力してください");
-            return;
+    auth.onAuthStateChanged((authUser) => {
+        if (authUser) {
+            // this.setState({
+            //   status: "SIGNED_IN"
+            // });
+            RenderComponent = <DayPlanPC />;
+            console.log('check 1');
+            router.push("/DayPlan");
+            return RenderComponent;
+        } else {
+            RenderComponent = <FirebaseAuthComponent />;
+            console.log('check 2');
+            return RenderComponent;
         }
-        setTodos([...todos, tmpTodo]);
-        setTmpTodo("");
-    };
+    });
 
-    // todoを削除する処理
-    // const deleteTodo = (index) => {
-    //     const newTodos = todos.filter((todo, todoIndex) => {
-    //         return index !== todoIndex;
-    //     });
-    //     setTodos(newTodos);
-    // };
+    // useMemo(() => {
+    //     if (userId == "") {
+    //         RenderComponent = <FirebaseAuthComponent />;
+    //     } else {
+    //         RenderComponent = <DayPlanPC />;
+    //     }
+    // }, [userId]);
 
-    // let routes = (
-    //     <Switch>
-    //         <Route path="/tasks" component={Tasks} />
-    //         <Route path="/" exact component={DayPlanPC} />
-    //         <Redirect to="/" />
-    //     </Switch>
-    // );
-
-    return (
-        <DayPlanPC />
-        // <Tasks />
-        // <BrowserRouter>{routes}</BrowserRouter>
-        // <Container fixed>
-        //     <h1>Todo App</h1>
-        //     <Box component="span" m={1} className={classes.button}>
-        //         {/* <Button variant="contained" color="primary">
-        //                 Test
-        //             </Button> */}
-        //         <FloatingActionButtonZoom />
-        //         <BottomNavigation />
-        //     </Box>
-        //     {/* <Box>
-        //     </Box> */}
-        // </Container>
-    );
+    return RenderComponent;
+    // <DayPlanPC />
+    // <Tasks />
+    // <BrowserRouter>{routes}</BrowserRouter>
+    // <Container fixed>
+    //     <h1>Todo App</h1>
+    //     <Box component="span" m={1} className={classes.button}>
+    //         {/* <Button variant="contained" color="primary">
+    //                 Test
+    //             </Button> */}
+    //         <FloatingActionButtonZoom />
+    //         <BottomNavigation />
+    //     </Box>
+    //     {/* <Box>
+    //     </Box> */}
+    // </Container>
 };
 
 export default App;

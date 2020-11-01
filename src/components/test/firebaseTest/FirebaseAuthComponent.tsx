@@ -28,6 +28,8 @@ export default function FirebaseAuthComponent() {
 const signInWithPopup = () => {
     // Googleプロバイダオブジェクトのインスタンスを作成
     const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
+
+    // dispatch(login(userIdCheck));
     // 別タブでログイン画面に飛ばしたいため、signInWithPopupを使う
     // リダイレクトでログイン画面に飛ばしたい場合はsignInWithRedirectを使う
     return firebase.auth().signInWithPopup(googleAuthProvider);
