@@ -112,12 +112,12 @@ module.exports = __webpack_require__("hUgY");
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* unused harmony export init */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return init; });
 /* unused harmony export Register */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return allDelete; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return taskCheckComplete; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return taskCheckComplete; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return calendarPatternRegister; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return taskDetailRegister; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return taskDetailRegister; });
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("+wlD");
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__);
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -171,54 +171,6 @@ const initialState = {
         }
       }
     },
-    //             [date: number]: {
-    //                 PatternId: number;
-    //                 tasks: {
-    //                     detail1: string;
-    //                     detail2: string;
-    //                     flug: boolean;
-    //                 }[];
-    //             }[];
-    //         }[];
-    //     }[];
-    // ]
-    // year: new Date("Thu, 22 May 2020 02:00:00").getFullYear(),[{
-    //     month: new Date("Thu, 22 May 2020 02:00:00").getMonth() + 1,[{
-    //         date: new Date("Thu, 22 May 2020 02:00:00").getDate(),[{
-    //             PatternId: 1,
-    //             tasks: [
-    //                 {
-    //                     detail1: "testDetail1 22 1",
-    //                     detail2: "testDetail2 22 1",
-    //                     flug: false,
-    //                 },
-    //                 {
-    //                     detail1: "testDetail1 22 2",
-    //                     detail2: "testDetail2 22 2",
-    //                     flug: false,
-    //                 },
-    //             ],
-    //         }]
-    //     }]
-    // }]
-    // {
-    //     year: new Date("Thu, 23 May 2020 02:00:00").getFullYear(),
-    //     month: new Date("Thu, 23 May 2020 02:00:00").getMonth() + 1,
-    //     date: new Date("Thu, 23 May 2020 02:00:00").getDate(),
-    //     PatternId: 2,
-    //     tasks: [
-    //         {
-    //             detail1: "testDetail1 23 1",
-    //             detail2: "testDetail2 23 1",
-    //             flug: false,
-    //         },
-    //         {
-    //             detail1: "testDetail1 23 2",
-    //             detail2: "testDetail2 23 2",
-    //             flug: false,
-    //         },
-    //     ],
-    // },
     pattern: [{
       patternId: 1,
       patternName: "testPattern1"
@@ -232,8 +184,6 @@ const initialState = {
         ["testDetail1"]: "testDetail1 22 1",
         ["testDetail2"]: "testDetail1 22 1"
       },
-      // detail1: "testDetail1A",
-      // detail2: "testDetail2A",
       patternInfo: [{
         patternID: 1,
         order: 1
@@ -282,12 +232,11 @@ const tasksModule = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["create
       const data = action.payload;
       console.log("init data");
       console.log(data); // state = {...data};
+      // console.log("init state.userTaskInfo 前");
+      // console.log(state.userTaskInfo);
 
-      console.log("init state.userTaskInfo.calendar 前"); // console.log(state.userTaskInfo.calendar[0].PatternId);
-
-      state.userTaskInfo = data;
-      console.log("init state.userTaskInfo.calendar 後");
-      console.log(state); // console.log(state.userTaskInfo.calendar[0]);
+      state.userTaskInfo = data; // console.log("init state.userTaskInfo 後");
+      // console.log(state.userTaskInfo);
     },
 
     Register(state, action) {

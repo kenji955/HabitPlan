@@ -61,58 +61,6 @@ const initialState: userTask = {
                 },
             },
         },
-        //             [date: number]: {
-        //                 PatternId: number;
-        //                 tasks: {
-        //                     detail1: string;
-        //                     detail2: string;
-        //                     flug: boolean;
-        //                 }[];
-        //             }[];
-        //         }[];
-        //     }[];
-
-        // ]
-        // year: new Date("Thu, 22 May 2020 02:00:00").getFullYear(),[{
-        //     month: new Date("Thu, 22 May 2020 02:00:00").getMonth() + 1,[{
-        //         date: new Date("Thu, 22 May 2020 02:00:00").getDate(),[{
-        //             PatternId: 1,
-        //             tasks: [
-        //                 {
-        //                     detail1: "testDetail1 22 1",
-        //                     detail2: "testDetail2 22 1",
-        //                     flug: false,
-        //                 },
-        //                 {
-        //                     detail1: "testDetail1 22 2",
-        //                     detail2: "testDetail2 22 2",
-        //                     flug: false,
-        //                 },
-        //             ],
-
-        //         }]
-
-        //     }]
-
-        // }]
-        // {
-        //     year: new Date("Thu, 23 May 2020 02:00:00").getFullYear(),
-        //     month: new Date("Thu, 23 May 2020 02:00:00").getMonth() + 1,
-        //     date: new Date("Thu, 23 May 2020 02:00:00").getDate(),
-        //     PatternId: 2,
-        //     tasks: [
-        //         {
-        //             detail1: "testDetail1 23 1",
-        //             detail2: "testDetail2 23 1",
-        //             flug: false,
-        //         },
-        //         {
-        //             detail1: "testDetail1 23 2",
-        //             detail2: "testDetail2 23 2",
-        //             flug: false,
-        //         },
-        //     ],
-        // },
 
         pattern: [
             {
@@ -131,8 +79,6 @@ const initialState: userTask = {
                     ["testDetail1"]: "testDetail1 22 1",
                     ["testDetail2"]: "testDetail1 22 1",
                 },
-                // detail1: "testDetail1A",
-                // detail2: "testDetail2A",
                 patternInfo: [
                     {
                         patternID: 1,
@@ -196,12 +142,11 @@ const tasksModule = createSlice({
             console.log("init data");
             console.log(data);
             // state = {...data};
-            console.log("init state.userTaskInfo.calendar 前");
-            // console.log(state.userTaskInfo.calendar[0].PatternId);
+            // console.log("init state.userTaskInfo 前");
+            // console.log(state.userTaskInfo);
             state.userTaskInfo = data;
-            console.log("init state.userTaskInfo.calendar 後");
-            console.log(state);
-            // console.log(state.userTaskInfo.calendar[0]);
+            // console.log("init state.userTaskInfo 後");
+            // console.log(state.userTaskInfo);
         },
         Register(state: userTask, action: PayloadAction<userTask>) {
             const data = action.payload;

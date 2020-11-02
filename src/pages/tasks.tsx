@@ -3,14 +3,10 @@ import Container from "@material-ui/core/Container";
 
 import TaskList from "../components/view/TaskList";
 import ResponsiveDrawer from "../components/view/ResponsiveDrawer";
-// import Tooltip from '../components/view/toolTips';
 
 import ListComponent from "../components/test/firebaseTest/getData";
 import FormComponent from "../components/test/firebaseTest/FormComponent";
 import FirebaseAuthComponent from "../components/test/firebaseTest/FirebaseAuthComponent";
-
-// import { firebaseApp } from 'firebase/app';
-// const firebaseDb = firebaseApp.database();
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -27,17 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
     })
 );
-// const ref = firebaseDb.ref("/mail");
-// const data = {
-//     user: {
-//         one: "Alice",
-//         two: "Bob"
-//     },
-//     message: {
-//         title: "Hello"
-//     }
-// };
-// ref.push(data);
+
 
 const Tasks = () => {
     const classes = useStyles();
@@ -58,7 +44,7 @@ const Tasks = () => {
             {/* </Box> */}
             <Container className={classes.taskList}>
                 <FirebaseAuthComponent />
-                {/* <ListComponent /> */}
+                <ListComponent />
                 <FormComponent />
             </Container>
         </Container>

@@ -29,33 +29,45 @@ const useReduxFetch = () => {
 
 // カスタムフックにしておく
 const useDatabase = () => {
+    // const useDatabase = () => {
     const { userId } = useSelector((state: RootState) => state.user);
-    const dispatch = useDispatch();
-    const [check, setCheck] = useState("");
-    // 同じパスでは毎回同じ結果が得られるのでmemo化しておく
-    // return useMemo(() => firebase.database().ref("/sample"), []);
-    const uid = firebase.auth().currentUser;
-    if (!!uid) {
-        if (userId == "") {
-            dispatch(login(uid.uid));
-            setCheck("check");
-            console.log("check");
-        }
+    // const dispatch = useDispatch();
+    // const [check, setCheck] = useState(false);
+    // const [userIdCheck, setuserIdCheck] = useState('');
+    // if (userId != '' && userId != userIdCheck){
+    //     console.log('userId');
+    //     console.log(userId);
+    //     console.log('check');
+    //     console.log(check);
+    //     console.log('userIdCheck');
+    //     console.log(userIdCheck);
+    //     setuserIdCheck(userId);
+    //     setCheck(!check);
+    // }
+        // 同じパスでは毎回同じ結果が得られるのでmemo化しておく
+        // return useMemo(() => firebase.database().ref("/sample"), []);
+        // const authUser = firebase.auth().currentUser;
+        // if (!!uid) {
+        //     if (userId == "") {
+        //         dispatch(login(uid.uid));
+        //         setCheck("check");
+        //         // console.log("check");
+        //     }
 
-        console.log("DBF 1 userId");
-        console.log(userId);
-        return useMemo(() => firebase.database().ref("/users/" + userId), [
-            userId,
-        ]);
-    } else {
+        //     // console.log("DBF 1 userId");
+        //     // console.log(userId);
+        //     return useMemo(() => firebase.database().ref("/users/" + userId), [
+        //         userId,
+        //     ]);
+        // } else {
         // ここが原因。ここでuserId取得後にrefを更新できればいい
         console.log("DBF 2 userId");
-        console.log(userId);
-        return useMemo(() => firebase.database().ref("/users/" + userId), [
-            userId,
-        ]);
-        // return useMemo(() => firebase.database().ref("/users/" + uid.uid), []);
-    }
+    console.log(userId);
+    return useMemo(() => firebase.database().ref("/users/" + userId), [
+        userId,
+    ]);
+    // return useMemo(() => firebase.database().ref("/users/" + authUser.uid), []);
+    // }
 };
 
 //   データを取得する
@@ -73,6 +85,8 @@ const useFetchData = (ref: firebase.database.Reference) => {
                 console.log(data);
             }
         });
+        console.log("DBFetch data==========");
+        console.log(data);
         return () => {
             ref.off();
         };
@@ -80,15 +94,17 @@ const useFetchData = (ref: firebase.database.Reference) => {
         //   指定したパスのデータに対する更新をすべて検知するにはvalueを指定すれば良い。
     }, [ref]);
     // データを返却する
-    // console.log("data");
-    // console.log(data);
     return { data };
 };
 
 // 実際に呼び出す際はこちらを使う
 const useFetchAllData = () => {
+    const uid = firebase.auth().currentUser;
+    const { userTaskInfo } = useSelector((state: RootState) => state.tasks);
     // refを取得して
     const ref = useDatabase();
+    console.log('ref');
+    console.log(ref);
     // ref渡してデータを取得する
     return useFetchData(ref);
 };
@@ -121,12 +137,12 @@ const useRegisterData = () => {
     const registerData = useCallback(
         (registerData: { [key: string]: string }) => {
             // () => {
-            console.log(userTaskInfo);
+            // console.log(userTaskInfo);
             // ここでReduxに保管しているstateを更新する？
             // dispatch(Register({ ...registerData }));
             // 既存のデータと登録するkey-valueを合わせて登録関数に渡す
-            setDocument({ ...registeredData, ...registerData });
-            // setDocument(userTaskInfo);
+            // setDocument({ ...registeredData, ...registerData });
+            setDocument(userTaskInfo);
         },
         [setDocument, registeredData]
     );

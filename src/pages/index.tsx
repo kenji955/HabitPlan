@@ -13,20 +13,22 @@ import BottomNavigation from "../components/view/BottomNavigation";
 import DayPlanPC from "./DayPlan";
 import Tasks from "./tasks";
 import FirebaseAuthComponent from "../components/test/firebaseTest/FirebaseAuthComponent";
-import { useSelector } from "react-redux";
+import SignIn from '../components/view/SignIn'
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../modules/rootReducer";
+import { login } from "../modules/userModule";
 import { auth } from "../components/test/firebaseTest/firebaseTest";
+import { useFetchAllData } from "../components/test/firebaseTest/DBFetch";
+import { init } from "../modules/tasksModule";
 
-const useStyles = makeStyles({
-    button: {
-        backgroundColor: "green",
-    },
-});
+// ここでReduxのログイン処理を行う
 
 const App = () => {
     const { userId } = useSelector((state: RootState) => state.user);
+    const dispatch = useDispatch();
+    const { data } = useFetchAllData();
 
-    let RenderComponent: JSX.Element = <FirebaseAuthComponent />;
+    let RenderComponent: JSX.Element = <SignIn />;
 
     auth.onAuthStateChanged((authUser) => {
         if (authUser) {
@@ -35,10 +37,20 @@ const App = () => {
             // });
             RenderComponent = <DayPlanPC />;
             console.log('check 1');
+            console.log(authUser.uid);
+            dispatch(login(authUser.uid));
+            console.log(userId);
+            console.log("index data");
+            console.log(data);
+            // setUT(useSelector((state: RootState) => state.tasks));
+            if (!!data) {
+                dispatch(init(data));
+            }
             router.push("/DayPlan");
             return RenderComponent;
         } else {
-            RenderComponent = <FirebaseAuthComponent />;
+            // RenderComponent = <FirebaseAuthComponent />;
+            RenderComponent = <SignIn />;
             console.log('check 2');
             return RenderComponent;
         }

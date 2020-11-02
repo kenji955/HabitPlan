@@ -17,18 +17,18 @@ export default function ListComponent() {
     );
     const { userId } = useSelector((state: RootState) => state.user);
     const dispatch = useDispatch();
-    const { data } = useFetchAllData();
+    // const { data } = useFetchAllData();
     const { userTaskInfo } = useSelector((state: RootState) => state.tasks);
-    useEffect(() => {
-      // dataを取ってくる
-      if (userId != '' && !!data) {
-        console.log(userId);
-        console.log("getData.tsx data");
-        console.log(data);
-        dispatch(init(data));
-        // setUT(useSelector((state: RootState) => state.tasks));
-      }
-    },[userId]);
+    // useEffect(() => {
+      // // dataを取ってくる
+      // if (userId != '' && !!data) {
+      //   console.log(userId);
+      //   console.log("getData.tsx data");
+      //   console.log(data);
+      //   // setUT(useSelector((state: RootState) => state.tasks));
+      //   // dispatch(init(data));
+      // }
+    // },[userId]);
     
     // ここでstateを使うならログイン時にDBから取得したデータをReduxに保管する必要がある。
     // useCallback(() => {
