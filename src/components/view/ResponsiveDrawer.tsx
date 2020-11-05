@@ -1,52 +1,57 @@
-import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
-import IconButton from '@material-ui/core/IconButton';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import React from "react";
+import AppBar from "@material-ui/core/AppBar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Divider from "@material-ui/core/Divider";
+import Drawer from "@material-ui/core/Drawer";
+import Hidden from "@material-ui/core/Hidden";
+import IconButton from "@material-ui/core/IconButton";
+import InboxIcon from "@material-ui/icons/MoveToInbox";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
 // import Link from '@material-ui/core/Link';
-import Link from 'next/link';
+import Link from "next/link";
 
-import MailIcon from '@material-ui/icons/Mail';
-import MenuIcon from '@material-ui/icons/Menu';
-import DateRangeIcon from '@material-ui/icons/DateRange';
-import ListIcon from '@material-ui/icons/List';
-import TuneIcon from '@material-ui/icons/Tune';
-import DirectionsRunIcon from '@material-ui/icons/DirectionsRun';
+import MailIcon from "@material-ui/icons/Mail";
+import MenuIcon from "@material-ui/icons/Menu";
+import DateRangeIcon from "@material-ui/icons/DateRange";
+import ListIcon from "@material-ui/icons/List";
+import TuneIcon from "@material-ui/icons/Tune";
+import DirectionsRunIcon from "@material-ui/icons/DirectionsRun";
 
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import {
+    makeStyles,
+    useTheme,
+    Theme,
+    createStyles,
+} from "@material-ui/core/styles";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         rootd: {
-            display: 'inline-block',
+            display: "inline-block",
         },
         drawer: {
-            [theme.breakpoints.up('sm')]: {
+            [theme.breakpoints.up("sm")]: {
                 width: drawerWidth,
                 flexShrink: 0,
             },
         },
         appBar: {
-            [theme.breakpoints.up('sm')]: {
+            [theme.breakpoints.up("sm")]: {
                 width: `calc(100% - ${drawerWidth}px)`,
                 marginLeft: drawerWidth,
             },
         },
         menuButton: {
             marginRight: theme.spacing(2),
-            [theme.breakpoints.up('sm')]: {
-                display: 'none',
+            [theme.breakpoints.up("sm")]: {
+                display: "none",
             },
         },
         // necessary for content to be below app bar
@@ -58,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) =>
             flexGrow: 1,
             padding: theme.spacing(3),
         },
-    }),
+    })
 );
 
 interface Props {
@@ -85,41 +90,42 @@ export default function ResponsiveDrawer(props: Props) {
             <Divider />
             <List>
                 <Link href="/DayPlan">
-                    <ListItem button key='Day Plan'>
+                    <ListItem button key="Day Plan">
                         <ListItemIcon>
                             <DirectionsRunIcon />
                         </ListItemIcon>
-                        <ListItemText primary='Day Plan' />
+                        <ListItemText primary="Day Plan" />
                     </ListItem>
                 </Link>
                 <Link href="/tasks">
-                    <ListItem button key='Tasks'>
+                    <ListItem button key="Tasks">
                         <ListItemIcon>
                             <ListIcon />
                         </ListItemIcon>
-                        <ListItemText primary='Tasks' />
+                        <ListItemText primary="Tasks" />
                     </ListItem>
                 </Link>
                 <Link href="/Pattern">
-                    <ListItem button key='Pattern'>
+                    <ListItem button key="Pattern">
                         <ListItemIcon>
                             <TuneIcon />
                         </ListItemIcon>
-                        <ListItemText primary='Pattern' />
+                        <ListItemText primary="Pattern" />
                     </ListItem>
                 </Link>
-                <ListItem button key='Calendar'>
+                <ListItem button key="Calendar">
                     <ListItemIcon>
                         <DateRangeIcon />
                     </ListItemIcon>
-                    <ListItemText primary='Calendar' />
+                    <ListItemText primary="Calendar" />
                 </ListItem>
             </List>
             <Divider />
         </div>
     );
 
-    const container = window !== undefined ? () => window().document.body : undefined;
+    const container =
+        window !== undefined ? () => window().document.body : undefined;
 
     return (
         <div className={classes.rootd}>
@@ -137,7 +143,7 @@ export default function ResponsiveDrawer(props: Props) {
                     </IconButton>
                     <Typography variant="h6" noWrap>
                         Responsive drawer
-          </Typography>
+                    </Typography>
                 </Toolbar>
             </AppBar>
             <nav className={classes.drawer} aria-label="mailbox folders">
@@ -146,7 +152,7 @@ export default function ResponsiveDrawer(props: Props) {
                     <Drawer
                         container={container}
                         variant="temporary"
-                        anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+                        anchor={theme.direction === "rtl" ? "right" : "left"}
                         open={mobileOpen}
                         onClose={handleDrawerToggle}
                         classes={{

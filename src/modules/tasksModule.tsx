@@ -14,9 +14,9 @@ type State = {
 const initialState: userTask = {
     userTaskInfo: {
         calendar: {
-            [new Date("Thu, 22 May 2020 02:00:00").getFullYear()]: {
-                [new Date("Thu, 22 May 2020 02:00:00").getMonth() + 1]: {
-                    [new Date("Thu, 22 May 2020 02:00:00").getDate()]: {
+            [new Date("Thu, 22 Oct 2020 02:00:00").getFullYear()]: {
+                [new Date("Thu, 22 Oct 2020 02:00:00").getMonth() + 1]: {
+                    [new Date("Thu, 22 Oct 2020 02:00:00").getDate()]: {
                         PatternId: 1,
                         tasks: [
                             {
@@ -37,7 +37,7 @@ const initialState: userTask = {
                             },
                         ],
                     },
-                    [new Date("Thu, 23 May 2020 02:00:00").getDate()]: {
+                    [new Date("Thu, 23 Oct 2020 02:00:00").getDate()]: {
                         PatternId: 1,
                         tasks: [
                             {
@@ -233,6 +233,11 @@ const tasksModule = createSlice({
                 [action.payload[1]]:action.payload[0]
             }
         },
+        // タスクを追加する処理。引数のテキスト配列には[入力内容、連想配列のキー、タスクの配列を指定する数字]が格納されている。
+        taskRegister(state: userTask, action: PayloadAction<tasks>) {
+            console.log(action.payload);
+            state.userTaskInfo.tasks.push(action.payload);
+        },
     },
 });
 
@@ -243,6 +248,7 @@ export const {
     taskCheckComplete,
     calendarPatternRegister,
     taskDetailRegister,
+    taskRegister,
 } = tasksModule.actions;
 
 export default tasksModule;

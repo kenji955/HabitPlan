@@ -35,14 +35,17 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export default function CheckboxList() {
+export default function CheckboxList(props:{choiceDate:number[]}) {
     const classes = useStyles();
     const [checked, setChecked] = useState([]);
     const { userTaskInfo } = useSelector((state: RootState) => state.tasks);
     const dispatch = useDispatch();
-    const year = new Date("Thu, 22 May 2020 02:00:00").getFullYear();
-    const month = new Date("Thu, 22 May 2020 02:00:00").getMonth() + 1;
-    const date = new Date("Thu, 22 May 2020 02:00:00").getDate();
+    // const year = new Date("Thu, 22 May 2020 02:00:00").getFullYear();
+    // const month = new Date("Thu, 22 May 2020 02:00:00").getMonth() + 1;
+    // const date = new Date("Thu, 22 May 2020 02:00:00").getDate();
+    const year = props.choiceDate[0];
+    const month = props.choiceDate[1];
+    const date = props.choiceDate[2];
 
     const handleToggle = (order: number) => () => {
         const currentIndex = checked.indexOf(order);
@@ -74,163 +77,138 @@ export default function CheckboxList() {
     // const test = userTaskInfo.calendar[year][month][date]
     const test = userTaskInfo.calendar;
 
-    console.log(test[year][month][22]);
+    // console.log(test[year][month][22]);
 
-    // let Achievement:[JSX.Element],NotAchieved:[JSX.Element];
-    const Achievement = test[year][month][22].tasks.filter(function (value) {
-        return value.flug == true;
-    });
-    console.log("Achievement");
-    console.log(Achievement);
-
-    const NotAchieved = test[year][month][22].tasks.filter(function (value) {
-        return value.flug == false;
-    });
-    console.log("NotAchieved");
-    console.log(NotAchieved);
-
-    return (
-        <List className={classes.roots}>
-            {NotAchieved.map((value, index) => {
-                const labelId = `checkbox-list-label-${value}`;
-
+    if (year in userTaskInfo.calendar) {
+        if (month in userTaskInfo.calendar[year]) {
+            if (date in userTaskInfo.calendar[year][month]) {
+                // console.log("PatternId：" + userTaskInfo.calendar[year][month][date].PatternId);
+                // return userTaskInfo.calendar[year][month][date].PatternId;
+                // let Achievement:[JSX.Element],NotAchieved:[JSX.Element];
+                // 達成済みリスト
+                const Achievement = test[year][month][22].tasks.filter(function (value) {
+                    return value.flug == true;
+                });
+                console.log("Achievement");
+                console.log(Achievement);
+            
+                // 未達成リスト
+                const NotAchieved = test[year][month][22].tasks.filter(function (value) {
+                    return value.flug == false;
+                });
+                console.log("NotAchieved");
+                console.log(NotAchieved);
+            
                 return (
-                    <ListItem
-                        key={year & month & date & value.order}
-                        role={undefined}
-                        dense
-                        button
-                        onClick={handleToggle(value.order)}
-                    >
-                        <ListItemIcon>
-                            <Checkbox
-                                edge="start"
-                                checked={value.flug}
-                                // checked={checked.indexOf(index) !== -1}
-                                tabIndex={-1}
-                                disableRipple
-                                inputProps={{ "aria-labelledby": labelId }}
-                            />
-                        </ListItemIcon>
-                        <ListItemText
-                            id={labelId}
-                            primary={`Line item ${index + 1} ${
-                                value.detail["testDetail1"]
-                            } & ${value.detail["testDetail2"]} & ${value.flug}`}
-                        />
-                        <ListItemSecondaryAction>
-                            <IconButton edge="end" aria-label="comments">
-                                <CommentIcon />
-                            </IconButton>
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                );
-            })}
-            <Accordion>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                >
-                    {/* <Typography className={classes.heading}>Accordion 1</Typography> */}
-                    <Typography>達成済み</Typography>
-                </AccordionSummary>
-                <AccordionDetails className={classes.AchievementList}>
-                    {/* <Typography> */}
-                    {Achievement.map((value, index) => {
-                        const labelId = `checkbox-list-label-${value}`;
-
-                        return (
-                            <ListItem
-                                key={year & month & date & value.order}
-                                role={undefined}
-                                dense
-                                button
-                                onClick={handleToggle(value.order)}
-                            >
-                                <ListItemIcon>
-                                    <Checkbox
-                                        edge="start"
-                                        checked={value.flug}
-                                        // checked={checked.indexOf(index) !== -1}
-                                        tabIndex={-1}
-                                        disableRipple
-                                        inputProps={{
-                                            "aria-labelledby": labelId,
-                                        }}
+                    <List className={classes.roots}>
+                        {NotAchieved.map((value, index) => {
+                            const labelId = `checkbox-list-label-${value}`;
+            
+                            return (
+                                <ListItem
+                                    key={year & month & date & value.order}
+                                    role={undefined}
+                                    dense
+                                    button
+                                    onClick={handleToggle(value.order)}
+                                >
+                                    <ListItemIcon>
+                                        <Checkbox
+                                            edge="start"
+                                            checked={value.flug}
+                                            tabIndex={-1}
+                                            disableRipple
+                                            inputProps={{ "aria-labelledby": labelId }}
+                                        />
+                                    </ListItemIcon>
+                                    <ListItemText
+                                        id={labelId}
+                                        primary={`Line item ${index + 1} ${
+                                            value.detail["testDetail1"]
+                                        } & ${value.detail["testDetail2"]} & ${value.flug}`}
                                     />
-                                </ListItemIcon>
-                                <ListItemText
-                                    id={labelId}
-                                    primary={`Line item ${index + 1} ${
-                                        value.detail["testDetail1"]
-                                    } & ${value.detail["testDetail2"]} & ${value.flug}`}
-                                />
-                                <ListItemSecondaryAction>
-                                    <IconButton
-                                        edge="end"
-                                        aria-label="comments"
-                                    >
-                                        <CommentIcon />
-                                    </IconButton>
-                                </ListItemSecondaryAction>
-                            </ListItem>
-                        );
-                    })}
-                    {/* </Typography> */}
-                </AccordionDetails>
-            </Accordion>
+                                    <ListItemSecondaryAction>
+                                        <IconButton edge="end" aria-label="comments">
+                                            <CommentIcon />
+                                        </IconButton>
+                                    </ListItemSecondaryAction>
+                                </ListItem>
+                            );
+                        })}
+                        <Accordion>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1a-content"
+                                id="panel1a-header"
+                            >
+                                <Typography>達成済み</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails className={classes.AchievementList}>
+                                {Achievement.map((value, index) => {
+                                    const labelId = `checkbox-list-label-${value}`;
+            
+                                    return (
+                                        <ListItem
+                                            key={year & month & date & value.order}
+                                            role={undefined}
+                                            dense
+                                            button
+                                            onClick={handleToggle(value.order)}
+                                        >
+                                            <ListItemIcon>
+                                                <Checkbox
+                                                    edge="start"
+                                                    checked={value.flug}
+                                                    tabIndex={-1}
+                                                    disableRipple
+                                                    inputProps={{
+                                                        "aria-labelledby": labelId,
+                                                    }}
+                                                />
+                                            </ListItemIcon>
+                                            <ListItemText
+                                                id={labelId}
+                                                primary={`Line item ${index + 1} ${
+                                                    value.detail["testDetail1"]
+                                                } & ${value.detail["testDetail2"]} & ${value.flug}`}
+                                            />
+                                            <ListItemSecondaryAction>
+                                                <IconButton
+                                                    edge="end"
+                                                    aria-label="comments"
+                                                >
+                                                    <CommentIcon />
+                                                </IconButton>
+                                            </ListItemSecondaryAction>
+                                        </ListItem>
+                                    );
+                                })}
+                            </AccordionDetails>
+                        </Accordion>
+            
 
-            {/* {test[year][month][22].tasks.map((value,index) => {
-        const labelId = `checkbox-list-label-${value}`;
-
+                    </List>
+                );
+            }
+            }
+        }
+        // console.log("なし：" + date);
         return (
-          <ListItem key={year&month&date&index} role={undefined} dense button onClick={handleToggle(index)}>
-            <ListItemIcon>
-              <Checkbox
-                edge="start"
-                checked={value.flug}
-                // checked={checked.indexOf(index) !== -1}
-                tabIndex={-1}
-                disableRipple
-                inputProps={{ 'aria-labelledby': labelId }}
-              />
-            </ListItemIcon>
-            <ListItemText id={labelId} primary={`Line item ${index + 1} ${value.detail1} & ${value.detail2} & ${value.flug}`} />
-            <ListItemSecondaryAction>
-              <IconButton edge="end" aria-label="comments">
-                <CommentIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
+            <List className={classes.roots}>
+                        <ListItem
+                            key={year & month & date}
+                            role={undefined}
+                            dense
+                            button
+                        >
+                            <ListItemIcon>
+                            </ListItemIcon>
+                            <ListItemText
+                                id={'0'}
+                                primary={`タスクが登録されておりません。${year} / ${month} / ${date}`}
+                            />
+                        </ListItem>
+            </List>
         );
-      })} */}
-        </List>
-        // <List className={classes.roots}>
-        //   {[0, 1, 2, 3].map((value) => {
-        //     const labelId = `checkbox-list-label-${value}`;
+    }
 
-        //     return (
-        //       <ListItem key={value} role={undefined} dense button onClick={handleToggle(value)}>
-        //         <ListItemIcon>
-        //           <Checkbox
-        //             edge="start"
-        //             checked={checked.indexOf(value) !== -1}
-        //             tabIndex={-1}
-        //             disableRipple
-        //             inputProps={{ 'aria-labelledby': labelId }}
-        //           />
-        //         </ListItemIcon>
-        //         <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
-        //         <ListItemSecondaryAction>
-        //           <IconButton edge="end" aria-label="comments">
-        //           {/* <IconButton aria-label="comments"> */}
-        //             <CommentIcon />
-        //           </IconButton>
-        //         </ListItemSecondaryAction>
-        //       </ListItem>
-        //     );
-        //   })}
-        // </List>
-    );
-}

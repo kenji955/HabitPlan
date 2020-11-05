@@ -91,7 +91,6 @@ const calendarCellClick = (dateData, dispatch, choice) => () => {
 };
 
 // カレンダー欄に設定されているパターンIDを表示させるための関数
-// メモ。2020/10/27時点の課題。dateどころかyear、monthがない可能性もある。
 function PatternRegistrationStatus(dateData, userTaskInfo) {
     const year = dateData.getFullYear();
     const month = dateData.getMonth() + 1;
