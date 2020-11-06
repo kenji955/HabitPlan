@@ -26,6 +26,11 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function ButtonAppBar(props:any) {
   const classes = useStyles();
 
+  let button;
+  if(props.checkNew){
+    button = <Button color="inherit" onClick={props.handleRegister}>登録</Button>
+  }
+  
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -36,7 +41,7 @@ export default function ButtonAppBar(props:any) {
           <Typography variant="h6" className={classes.title}>
             News
           </Typography>
-          <Button color="inherit" onClick={props.handleRegister}>登録</Button>
+          {props.checkNew ?<Button color="inherit" onClick={props.handleRegister}>登録</Button> : null}
         </Toolbar>
       </AppBar>
     </div>

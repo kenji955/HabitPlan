@@ -45,14 +45,14 @@ export default function FormPropsTextFields(props: props) {
     const dispatch = useDispatch();
     const { userTaskInfo } = useSelector((state: RootState) => state.tasks);
     const onChangeHandler = (event: any) => {
-        console.log(event.target.value);
+        // console.log(event.target.value);
         // ここでevent.target.valueとラベル(連想配列のキー)を送って処理する。処理も未作成
         dispatch(
             taskDetailRegister([event.target.value, props.label, props.index])
         );
     };
     const newTaskOnChangeHandler = (event: any) => {
-        console.log(event.target.value);
+        // console.log(event.target.value);
         // ここでevent.target.valueとラベル(連想配列のキー)を送って処理する。処理も未作成
         
         const contentsCopy = props.contents.slice();
@@ -65,19 +65,10 @@ export default function FormPropsTextFields(props: props) {
     // const check = userTaskInfo.tasks[parseInt(props.index)].detail[props.label]
     // 新規登録か更新かをチェックする。新規であればTrue
     const checkNew = userTaskInfo.tasks.length < parseInt(props.index);
-    console.log("inputNormal check " + props.label);
-    console.log(checkNew);
+    // console.log("inputNormal check " + props.label);
+    // console.log(checkNew);
 
     if (checkNew) {
-        // console.log("newTasks");
-        // if (props.newTasks) {
-        //     console.log("y");
-        //     props.setNewTasks({ ...props.newTasks, [props.label]: "" });
-        // } else {
-        //     console.log("n");
-        //     props.setNewTasks({ [props.label]: "" });
-        // }
-        // console.log(props.newTasks);
         return (
             // <form className={classes.root} noValidate autoComplete="off">
             <TextField

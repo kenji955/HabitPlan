@@ -22,6 +22,7 @@ const initialState: userTask = {
                             {
                                 order: 1,
                                 detail: {
+                                    ["title"]: "title 22 1",
                                     ["testDetail1"]: "testDetail1 22 1",
                                     ["testDetail2"]: "testDetail1 22 1",
                                 },
@@ -30,6 +31,7 @@ const initialState: userTask = {
                             {
                                 order: 2,
                                 detail: {
+                                    ["title"]: "title 22 2",
                                     ["testDetail1"]: "testDetail1 22 2",
                                     ["testDetail2"]: "testDetail1 22 2",
                                 },
@@ -43,6 +45,7 @@ const initialState: userTask = {
                             {
                                 order: 1,
                                 detail: {
+                                    ["title"]: "title 23 1",
                                     ["testDetail1"]: "testDetail1 23 1",
                                     ["testDetail2"]: "testDetail1 23 1",
                                 },
@@ -51,6 +54,7 @@ const initialState: userTask = {
                             {
                                 order: 2,
                                 detail: {
+                                    ["title"]: "title 23 2",
                                     ["testDetail1"]: "testDetail1 23 2",
                                     ["testDetail2"]: "testDetail1 23 2",
                                 },
@@ -75,6 +79,7 @@ const initialState: userTask = {
         tasks: [
             {
                 detail: {
+                    ["title"]: "title 22 1",
                     ["defalut"]: "defalut",
                     ["testDetail1"]: "testDetail1 22 1",
                     ["testDetail2"]: "testDetail1 22 1",
@@ -88,6 +93,7 @@ const initialState: userTask = {
             },
             {
                 detail: {
+                    ["title"]: "title 22 2",
                     ["defalut"]: "defalut",
                     ["testDetail1"]: "testDetail1 22 2",
                     ["testDetail2"]: "testDetail1 22 2",
@@ -101,6 +107,7 @@ const initialState: userTask = {
             },
             {
                 detail: {
+                    ["title"]: "title 23 1",
                     ["defalut"]: "defalut",
                     ["testDetail1"]: "testDetail1 23 1",
                     ["testDetail2"]: "testDetail1 23 1",
@@ -118,6 +125,7 @@ const initialState: userTask = {
             },
             {
                 detail: {
+                    ["title"]: "title 23 2",
                     ["defalut"]: "defalut",
                     ["testDetail2"]: "testDetail1 23 2",
                     ["testDetail1"]: "testDetail1 23 2",
@@ -228,15 +236,96 @@ const tasksModule = createSlice({
         },
         // タスクの詳細を設定する処理。引数のテキスト配列には[入力内容、連想配列のキー、タスクの配列を指定する数字]が格納されている。
         taskDetailRegister(state: userTask, action: PayloadAction<string[]>) {
-            state.userTaskInfo.tasks[parseInt(action.payload[2])].detail={
+            state.userTaskInfo.tasks[parseInt(action.payload[2])].detail = {
                 ...state.userTaskInfo.tasks[parseInt(action.payload[2])].detail,
-                [action.payload[1]]:action.payload[0]
-            }
+                [action.payload[1]]: action.payload[0],
+            };
         },
         // タスクを追加する処理。引数のテキスト配列には[入力内容、連想配列のキー、タスクの配列を指定する数字]が格納されている。
         taskRegister(state: userTask, action: PayloadAction<tasks>) {
-            console.log(action.payload);
-            state.userTaskInfo.tasks.push(action.payload);
+            const registerTask = action.payload;
+            registerTask.patternInfo.map((content) => {
+                const choicePatternTasks = state.userTaskInfo.tasks.filter(
+                    function (task) {
+                        return task.patternInfo.some(
+                            (task) => task.patternID == content.patternID
+                        );
+                    }
+                );
+                content.order = choicePatternTasks.length + 1;
+            });
+            console.log(registerTask);
+            state.userTaskInfo.tasks.push(registerTask);
+        },
+        taskPatternUpdate(
+            state: userTask,
+            action: PayloadAction<{
+                newChecked: number[];
+                index: number;
+            }>
+        ) {
+            // ここでやることは？
+            // まず引数にタスクの配列インデックス番号が必要
+            // パターンIDの配列を受け取る。
+            // 配列とstateを比較して、なければ登録。Orderは最大値+1。逆に削除されているものは除外。
+
+            const statePatternIdList = state.userTaskInfo.tasks[action.payload.index].patternInfo.map(
+                (content) => {
+                    return content.patternID;
+                }
+            );
+            console.log('statePatternIdList');
+            console.log(statePatternIdList);
+            const diff = (olds: number[], nexts: number[]) => ({
+                adds: nexts.filter((e) => !olds.includes(e)),
+                subs: olds.filter((e) => !nexts.includes(e)),
+            });
+            const result = diff(statePatternIdList, action.payload.newChecked);
+            console.log('adds');
+            console.log(result.adds);
+            console.log('subs');
+            console.log(result.subs);
+            console.log('action.payload.index');
+            console.log(action.payload.index);
+            console.log('state');
+            console.log(state);
+            let updateArray: {
+                patternID: number;
+                order: number;
+            }[];
+            
+            console.log(result.subs[0] == state.userTaskInfo.tasks[action.payload.index].patternInfo[0].patternID);
+            updateArray = state.userTaskInfo.tasks[action.payload.index].patternInfo.filter(
+                function (content) {
+                    return result.subs.some(
+                        (sub) =>  sub != content.patternID
+                    );
+                }
+            );
+
+            result.adds.map((add) =>{
+                let Max:number = 0;
+                const choicePatternTasks = state.userTaskInfo.tasks.filter(function (task) {
+                    return task.patternInfo.some((task) => task.patternID == add);
+                });
+                choicePatternTasks.map((task)=>{
+                    let content = task.patternInfo.find(info => info.patternID = add);
+                    Max < content.patternID ? Max = content.patternID : '';
+                })
+
+                const pushContent={patternID: add,
+                    order: Max}
+                updateArray.push(pushContent);
+            })
+            
+            
+            
+            // filter(content=>{
+            //     console.log();
+            //     result.subs.some((subs)=>{subs == content.patternID}))};
+            console.log('updateArray');
+            console.log(updateArray);
+            state.userTaskInfo.tasks[action.payload.index].patternInfo = updateArray;
         },
     },
 });
@@ -249,6 +338,7 @@ export const {
     calendarPatternRegister,
     taskDetailRegister,
     taskRegister,
+    taskPatternUpdate,
 } = tasksModule.actions;
 
 export default tasksModule;

@@ -18,19 +18,8 @@ export default function TaskPlusIcon(props: { num: number }) {
     const classes = useStyles();
     const [newOpen, setNewOpen] = React.useState(9999);
     const taskAddHandler = () => {
-        // const currentIndex = checked.indexOf(value);
-        // const newChecked = [...checked];
-
-        // if (currentIndex === -1) {
-        //     newChecked.push(value);
-        // } else {
-        //     newChecked.splice(currentIndex, 1);
-        // }
-
-        // setOpen(value);
         setNewOpen(props.num);
         console.log("tasktest");
-        // setChecked(newChecked);
     };
 
     return (

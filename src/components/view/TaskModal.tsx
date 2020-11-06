@@ -4,19 +4,12 @@ import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import InputN from "./InputNormal";
-import InputR from "./inputRequired";
 import AppVar from "./AppVar";
-import { AppBar, Toolbar, IconButton, Typography } from "@material-ui/core";
-import {
-    calendar,
-    pattern,
-    tasks,
-    userTask,
-    userTaskInfo,
-} from "../../modules/userTasksType";
-import SimpleSelect from "./Select";
-import { useDispatch } from "react-redux";
+import { tasks } from "../../modules/userTasksType";
+import PatternSwitchList from "./PatternSwitch";
+import { useDispatch, useSelector } from "react-redux";
 import { taskRegister } from "../../modules/tasksModule";
+import { RootState } from "../../modules/rootReducer";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -39,9 +32,6 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-type newTasksType = {
-    [content: string]: string;
-};
 const contentsList = [
     {
         label: "if-thenプランニング",
@@ -87,22 +77,23 @@ const contentsList = [
 
 export default function TaskModal(props: any) {
     const classes = useStyles();
-    // const [open, setOpen] = React.useState(false);
-    const [choice, setChoice] = React.useState(Number);
+    const { userTaskInfo } = useSelector((state: RootState) => state.tasks);
+    const checkNew = userTaskInfo.tasks.length < parseInt(props.index);
+    let stateChecked: number[] = [];
+    if (!checkNew) {
+        stateChecked = props.task.patternInfo.map(
+            (content: { patternID: number; order: number }) => {
+                return content.patternID;
+            }
+        );
+    }
+    const [checked, setChecked] = React.useState<number[]>(stateChecked);
     const dispatch = useDispatch();
     // 配列を作って項目一覧を作るなら、その配列を使って以下の変数の初期設定もやりたいところ
     // 最終的には項目一覧もReduxで管理したい。それをタスク一覧の右上に表示した設定ボタンから開くモーダルでONOFFを設定することで、タスク詳細画面で使う項目を選べる。新規登録時もONになっている項目が表示される
     // タスク詳細画面でプラスボタンを押したら項目を増やせる。それも項目一覧に保管される。
     // const defaultTask: newTasksType = { ["追加"]: "追加" };
     const [contents, setContents] = React.useState(contentsList);
-
-    // let newTasks:{[content: string]: string};
-
-    const handleOpen = () => {
-        props.setOpen(props.index);
-        console.log("props.index" + props.index);
-        console.log("props.open" + props.open);
-    };
 
     const handleClose = () => {
         props.setOpen(9999);
@@ -118,17 +109,24 @@ export default function TaskModal(props: any) {
                 [content.label]: content.value,
             };
         });
+
+        let patternInfo: {
+            patternID: number;
+            order: number;
+        }[];
+
+        patternInfo = checked.map((content) => {
+            return {
+                patternID: content,
+                order: 1,
+            };
+        });
+
         let newTasks: tasks = {
             detail: details,
-            patternInfo: [
-                {
-                    patternID: choice,
-                    order: 1,
-                },
-            ],
+            patternInfo: patternInfo,
         };
 
-        // ここで編集
         dispatch(taskRegister(newTasks));
 
         props.setOpen(9999);
@@ -156,17 +154,26 @@ export default function TaskModal(props: any) {
             >
                 <Fade in={props.index == props.open}>
                     <div className={classes.paper}>
-                        <AppVar handleRegister={handleRegister} />
+                        <AppVar
+                            handleRegister={handleRegister}
+                            checkNew={checkNew}
+                        />
                         <h2 id="transition-modal-title">
                             タスク詳細画面{props.index + 1}
                         </h2>
                         <p id="transition-modal-description">
                             react-transition-group animates me.
                         </p>
-                        <SimpleSelect choice={choice} setChoice={setChoice} />
+                        {/* ここを要修正。パターンは選択式ではいけない。複数登録する可能性があるため。登録済み以外のリストをfliterで作成して表示、とかかな。 */}
+                        {/* <SimpleSelect choice={choice} setChoice={setChoice} /> */}
+                        <PatternSwitchList
+                            checked={checked}
+                            setChecked={setChecked}
+                            index={props.index}
+                        />
                         {contents.map((content, index) => {
                             return (
-                                <div>
+                                <div key={content.label + "_" + index}>
                                     <InputN
                                         // label="if-thenプランニング"
                                         label={content.label}
@@ -180,87 +187,6 @@ export default function TaskModal(props: any) {
                                 </div>
                             );
                         })}
-                        {/* <InputN
-                            label="if-thenプランニング"
-                            required={false}
-                            index={props.index}
-                            newTasks={newTasks}
-                            setNewTasks={setNewTasks}
-                        />
-                        <br></br>
-                        <InputN
-                            label="習慣の積み上げ"
-                            required={false}
-                            index={props.index}
-                            newTasks={newTasks}
-                            setNewTasks={setNewTasks}
-                        />
-                        <br></br>
-                        <InputN
-                            label="パターン"
-                            required={true}
-                            index={props.index}
-                            newTasks={newTasks}
-                            setNewTasks={setNewTasks}
-                        />
-                        <br></br>
-                        <InputN
-                            label="気が進まないとき"
-                            required={false}
-                            index={props.index}
-                            newTasks={newTasks}
-                            setNewTasks={setNewTasks}
-                        />
-                        <br></br>
-                        <InputN
-                            label="長期的に見返りのある習慣の即時的な楽しみ"
-                            required={false}
-                            index={props.index}
-                            newTasks={newTasks}
-                            setNewTasks={setNewTasks}
-                        />
-                        <br></br>
-                        <InputN
-                            label="目標"
-                            required={false}
-                            index={props.index}
-                            newTasks={newTasks}
-                            setNewTasks={setNewTasks}
-                        />
-                        <br></br>
-                        <InputN
-                            label="守れなかった時の罰則"
-                            required={false}
-                            index={props.index}
-                            newTasks={newTasks}
-                            setNewTasks={setNewTasks}
-                        />
-                        <br></br>
-                        <InputN
-                            label="レベル"
-                            required={false}
-                            index={props.index}
-                            newTasks={newTasks}
-                            setNewTasks={setNewTasks}
-                        />
-                        <br></br>
-                        <p>悪い習慣への備え</p>
-                        <InputN
-                            label="避けることで得られるメリット"
-                            required={false}
-                            index={props.index}
-                            newTasks={newTasks}
-                            setNewTasks={setNewTasks}
-                        />
-                        <br></br>
-                        <InputN
-                            label="見返りのない習慣に対する即時的な痛み"
-                            required={false}
-                            index={props.index}
-                            newTasks={newTasks}
-                            setNewTasks={setNewTasks}
-                        />
-                        <br></br> */}
                     </div>
                 </Fade>
             </Modal>

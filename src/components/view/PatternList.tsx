@@ -78,7 +78,7 @@ export default function PatternList(props: { choice: number }) {
                         <ListItemText
                             id={labelId}
                             primary={`Line item ${
-                                taskPattern[0].patternID + taskPattern[0].order
+                                taskPattern[0].patternID + '_' + taskPattern[0].order
                             } ${task.detail["testDetail1"]} ${
                                 task.detail["testDetail2"]
                             }`}

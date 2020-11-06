@@ -37,6 +37,7 @@ export default function CheckboxList() {
     const [open, setOpen] = React.useState(9999);
     const { userTaskInfo } = useSelector((state: RootState) => state.tasks);
 
+    console.log('check tasklist');
     const handleToggle = (value: number) => () => {
         setOpen(value);
         console.log("open:" + open);
@@ -47,12 +48,12 @@ export default function CheckboxList() {
                 const labelId = `checkbox-list-label-${task.detail["testDetail1"]}`;
 
                 return (
-                    <div>
+                    <div key={labelId+'_'+index}>
                         <ListItem
                             key={
-                                task.patternInfo[0].order +
+                                task.detail['title'] +
                                 ":" +
-                                task.patternInfo[0].patternID
+                                index
                             }
                             role={undefined}
                             dense

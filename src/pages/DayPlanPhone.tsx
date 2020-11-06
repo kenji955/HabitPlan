@@ -28,7 +28,7 @@ const DayPlanPC = () => {
             <ResponsiveDrawer />
             {/* <DenseAppBar /> */}
             <Container>
-                <CheckboxList />
+                {/* <CheckboxList /> */}
             </Container>
             {/* <BottomNavigation /> */}
             {/* </Box> */}
