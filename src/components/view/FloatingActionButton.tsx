@@ -8,6 +8,7 @@ import Box from "@material-ui/core/Box";
 
 import PatternList from "./PatternList";
 import SimpleSelect from "./Select";
+import TaskList from "./TaskList";
 import Calendar from "./Calendar";
 import Calendar2 from "../test/calendar";
 import Calendar3 from "../test/Calendar3";
@@ -87,17 +88,18 @@ export default function ScrollableTabsButtonAuto() {
                     scrollButtons="auto"
                     aria-label="scrollable auto tabs example"
                 >
-                    <Tab label="Pattern" {...a11yProps(0)} />
-                    <Tab label="Calendar" {...a11yProps(1)} />
+                    <Tab label="Tasks" {...a11yProps(0)} />
+                    <Tab label="Pattern" {...a11yProps(1)} />
                 </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
-                <SimpleSelect choice={choice} setChoice={setChoice} />
-                <PatternList choice={choice} />
+                <TaskList />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <SimpleSelect choice={choice} setChoice={setChoice}/>
-                <Calendar3 choice={choice} />
+                <SimpleSelect choice={choice} setChoice={setChoice} />
+                <PatternList choice={choice} />
+                {/* <SimpleSelect choice={choice} setChoice={setChoice}/>
+                <Calendar3 choice={choice} /> */}
             </TabPanel>
         </div>
     );

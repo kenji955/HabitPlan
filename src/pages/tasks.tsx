@@ -3,6 +3,7 @@ import Container from "@material-ui/core/Container";
 
 import TaskList from "../components/view/TaskList";
 import ResponsiveDrawer from "../components/view/ResponsiveDrawer";
+import FloatingActionButton from "../components/view//FloatingActionButton";
 
 import ListComponent from "../components/test/firebaseTest/getData";
 import FormComponent from "../components/test/firebaseTest/FormComponent";
@@ -35,7 +36,8 @@ const Tasks = () => {
             <ResponsiveDrawer />
             {/* <DenseAppBar /> */}
             <Container className={classes.taskList}>
-                <TaskList />
+                <FloatingActionButton />
+                {/* <TaskList /> */}
             </Container>
             {/* <Tooltip /> */}
             {/* <Tooltips onClick={}/> */}

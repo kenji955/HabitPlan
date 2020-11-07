@@ -274,21 +274,11 @@ const tasksModule = createSlice({
                     return content.patternID;
                 }
             );
-            console.log('statePatternIdList');
-            console.log(statePatternIdList);
             const diff = (olds: number[], nexts: number[]) => ({
                 adds: nexts.filter((e) => !olds.includes(e)),
                 subs: olds.filter((e) => !nexts.includes(e)),
             });
             const result = diff(statePatternIdList, action.payload.newChecked);
-            console.log('adds');
-            console.log(result.adds);
-            console.log('subs');
-            console.log(result.subs);
-            console.log('action.payload.index');
-            console.log(action.payload.index);
-            console.log('state');
-            console.log(state);
             let updateArray: {
                 patternID: number;
                 order: number;
@@ -317,15 +307,13 @@ const tasksModule = createSlice({
                     order: Max}
                 updateArray.push(pushContent);
             })
-            
-            
-            
-            // filter(content=>{
-            //     console.log();
-            //     result.subs.some((subs)=>{subs == content.patternID}))};
-            console.log('updateArray');
-            console.log(updateArray);
+                        
             state.userTaskInfo.tasks[action.payload.index].patternInfo = updateArray;
+        },
+        // タスクを追加する処理。引数のテキスト配列には[入力内容、連想配列のキー、タスクの配列を指定する数字]が格納されている。
+        taskDelete(state: userTask, action: PayloadAction<number>) {
+            const deleteTask = state.userTaskInfo.tasks.splice(action.payload,1);
+            console.log(deleteTask);
         },
     },
 });
@@ -339,6 +327,7 @@ export const {
     taskDetailRegister,
     taskRegister,
     taskPatternUpdate,
+    taskDelete,
 } = tasksModule.actions;
 
 export default tasksModule;

@@ -105,20 +105,22 @@ export default function ResponsiveDrawer(props: Props) {
                         <ListItemText primary="Tasks" />
                     </ListItem>
                 </Link>
-                <Link href="/Pattern">
+                {/* <Link href="/Pattern">
                     <ListItem button key="Pattern">
+                    <ListItemIcon>
+                    <TuneIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Pattern" />
+                    </ListItem>
+                </Link> */}
+                <Link href="/calendar">
+                    <ListItem button key="Calendar">
                         <ListItemIcon>
-                            <TuneIcon />
+                            <DateRangeIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Pattern" />
+                        <ListItemText primary="Calendar" />
                     </ListItem>
                 </Link>
-                <ListItem button key="Calendar">
-                    <ListItemIcon>
-                        <DateRangeIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Calendar" />
-                </ListItem>
             </List>
             <Divider />
         </div>
