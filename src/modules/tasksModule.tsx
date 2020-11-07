@@ -315,6 +315,23 @@ const tasksModule = createSlice({
             const deleteTask = state.userTaskInfo.tasks.splice(action.payload,1);
             console.log(deleteTask);
         },
+        // タスクを追加する処理。引数のテキスト配列には[入力内容、連想配列のキー、タスクの配列を指定する数字]が格納されている。
+        taskRemovePattern(state: userTask, action: PayloadAction<{ patternId: number; detailTitle: string; }>) {
+            console.log('patternId');
+            console.log(action.payload.patternId);
+            console.log('detailTitle');
+            console.log(action.payload.detailTitle);
+            const index = state.userTaskInfo.tasks.findIndex((content)=>{
+                return content.detail['title'] == action.payload.detailTitle;
+            });
+            console.log('index');
+            console.log(index);
+            const deletedTask = state.userTaskInfo.tasks[index].patternInfo.filter(function (content) {
+                return content.patternID != action.payload.patternId;
+              });
+              state.userTaskInfo.tasks[index].patternInfo = deletedTask;
+            console.log(deletedTask);
+        },
     },
 });
 
@@ -328,6 +345,7 @@ export const {
     taskRegister,
     taskPatternUpdate,
     taskDelete,
+    taskRemovePattern,
 } = tasksModule.actions;
 
 export default tasksModule;
