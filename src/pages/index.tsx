@@ -24,12 +24,13 @@ import { init } from "../modules/tasksModule";
 // ここでReduxのログイン処理を行う
 
 const App = () => {
-    const { userId } = useSelector((state: RootState) => state.user);
     const dispatch = useDispatch();
+    const { userId } = useSelector((state: RootState) => state.user);
+    // const { data } = useMemo(() => useFetchAllData(), [userId]);
     const { data } = useFetchAllData();
-
+    
     let RenderComponent: JSX.Element = <SignIn />;
-
+    
     auth.onAuthStateChanged((authUser) => {
         if (authUser) {
             // this.setState({
@@ -38,16 +39,18 @@ const App = () => {
             RenderComponent = <DayPlanPC />;
             console.log('check 1');
             console.log(authUser.uid);
-            dispatch(login(authUser.uid));
-            console.log(userId);
-            console.log("index data");
-            console.log(data);
-            // setUT(useSelector((state: RootState) => state.tasks));
-            if (!!data) {
-                dispatch(init(data));
+            if(!!authUser.uid){
+                dispatch(login(authUser.uid));
+                console.log(userId);
+                console.log("index data");
+                console.log(data);
+                // setUT(useSelector((state: RootState) => state.tasks));
+                if (!!data) {
+                    dispatch(init(data));
+                }
+                router.push("/DayPlan");
+                return RenderComponent;
             }
-            router.push("/DayPlan");
-            return RenderComponent;
         } else {
             // RenderComponent = <FirebaseAuthComponent />;
             RenderComponent = <SignIn />;

@@ -9,6 +9,8 @@ import ListComponent from "../components/test/firebaseTest/getData";
 import FormComponent from "../components/test/firebaseTest/FormComponent";
 import FirebaseAuthComponent from "../components/test/firebaseTest/FirebaseAuthComponent";
 
+import withAuth from '../components/shared/withAuth'
+
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         button: {
@@ -53,4 +55,4 @@ const Tasks = () => {
     );
 };
 
-export default Tasks;
+export default withAuth(Tasks);

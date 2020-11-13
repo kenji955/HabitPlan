@@ -11,7 +11,7 @@ import Fade from "@material-ui/core/Fade";
 import CommentIcon from "@material-ui/icons/Comment";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import Divider from "@material-ui/core/Divider";
-import Popper from "@material-ui/core/Popper";
+import Box from "@material-ui/core/Box";
 import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 
 import TaskModal from "./TaskModal";
@@ -45,14 +45,18 @@ export default function CheckboxList() {
     const classes = useStyles();
     const dispatch = useDispatch();
     const [open, setOpen] = React.useState(9999);
+    const [openMenu, setOpenMune] = React.useState(9999);
     const { userTaskInfo } = useSelector((state: RootState) => state.tasks);
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleClick = (value: number) => (event: {
+        currentTarget: React.SetStateAction<HTMLElement>;
+    }) => {
         setAnchorEl(event.currentTarget);
-        console.log(event.currentTarget);
-      };
+        setOpenMune(value);
+        console.log("openMenu:" + openMenu);
+    };
 
     const handleToggle = (value: number) => () => {
         setOpen(value);
@@ -60,7 +64,7 @@ export default function CheckboxList() {
     };
 
     const deleteTaskHandler = (index: number) => () => {
-        console.log('check deleteTaskHandler');
+        console.log("check deleteTaskHandler");
         // dispatch(taskDelete(index));
     };
 
@@ -70,19 +74,20 @@ export default function CheckboxList() {
                 const labelId = `checkbox-list-label-${task.detail["testDetail1"]}`;
 
                 return (
-                    <div key={labelId + "_" + index}>
+                    // <Box key={labelId + "_" + index}>
                         <ListItem
                             key={task.detail["title"] + ":" + index}
                             role={undefined}
                             dense
                             button
                             onClick={handleToggle(index)}
+                            divider={true}
                         >
                             <ListItemText
                                 id={labelId}
-                                primary={`Line item ${index + 1} ${
-                                    task.detail["testDetail1"]
-                                } ${task.detail["testDetail2"]}`}
+                                primary={<span>{task.detail["タスク名"]}</span>}
+                                // disableTypography={false}
+                                primaryTypographyProps={{component:'span'}}
                             />
                             <ListItemSecondaryAction>
                                 <TaskModal
@@ -97,16 +102,21 @@ export default function CheckboxList() {
                                 <IconButton
                                     edge="end"
                                     aria-label="comments"
-                                    onClick={handleClick}
-                                    // onClick={deleteTaskHandler(index)}
+                                    onClick={handleClick(index)}
                                 >
                                     <RemoveCircleIcon color="secondary" />
                                 </IconButton>
-                                <Menu anchorEl={anchorEl} setAnchorEl={setAnchorEl}　deleteTaskHandler={deleteTaskHandler} index={index}/>
+                                <Menu
+                                    openMenu={openMenu}
+                                    setOpenMune={setOpenMune}
+                                    anchorEl={anchorEl}
+                                    deleteTaskHandler={deleteTaskHandler}
+                                    index={index}
+                                />
                             </ListItemSecondaryAction>
                         </ListItem>
-                        <Divider />
-                    </div>
+                        // <Divider />
+                    // </Box>
                 );
             })}
             <TaskPlus num={userTaskInfo.tasks.length + 1} />

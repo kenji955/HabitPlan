@@ -19,12 +19,11 @@ export default function TaskPlusIcon(props: { num: number }) {
     const [newOpen, setNewOpen] = React.useState(9999);
     const taskAddHandler = () => {
         setNewOpen(props.num);
-        console.log("tasktest");
     };
 
     return (
         <div>
-            <AddCircleIcon className={classes.icon} onClick={taskAddHandler} />
+            <AddCircleIcon color="primary" className={classes.icon} onClick={taskAddHandler} />
             <TaskModal open={newOpen} setOpen={setNewOpen} index={props.num} />
         </div>
     );

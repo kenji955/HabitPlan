@@ -53,7 +53,7 @@ export default function PatternSwitchList(props: {checked: number[],setChecked: 
         >
             {userTaskInfo.pattern.map((content) => {
                 return (
-                    <ListItem>
+                    <ListItem key={content.patternName+'_'+props.checked}>
                         {/* <ListItemIcon>
                             <WifiIcon />
                         </ListItemIcon> */}

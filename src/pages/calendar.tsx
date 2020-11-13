@@ -7,6 +7,10 @@ import SimpleSelect from "../components/view/Select";
 import Calendar3 from "../components/test/Calendar3";
 import React from "react";
 
+import withAuth from '../components/shared/withAuth'
+import { useSelector } from "react-redux";
+import { RootState } from "../modules/rootReducer";
+
 const useStyles = makeStyles(
     (theme: Theme) =>
         createStyles(
@@ -29,7 +33,8 @@ const useStyles = makeStyles(
 
 const Calendar = () => {
     const classes = useStyles();
-    const [choice, setChoice] = React.useState(Number);
+    const { userTaskInfo } = useSelector((state: RootState) => state.tasks);
+    const [choice, setChoice] = React.useState(userTaskInfo.pattern[0].patternId);
 
     return (
         <Container>
@@ -50,4 +55,4 @@ const Calendar = () => {
     );
 };
 
-export default Calendar;
+export default withAuth(Calendar);

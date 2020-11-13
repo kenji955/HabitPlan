@@ -73,13 +73,7 @@ export default function PatternList(props: { choice: number }) {
                             </ListItemIcon>
                             <ListItemText
                                 id={labelId}
-                                primary={`Line item ${
-                                    taskPattern[0].patternID +
-                                    "_" +
-                                    taskPattern[0].order
-                                } ${task.detail["testDetail1"]} ${
-                                    task.detail["testDetail2"]
-                                }`}
+                                primary={`${task.detail["タスク名"]}`}
                             />
                             <ListItemSecondaryAction>
                                 <IconButton edge="end" aria-label="comments">

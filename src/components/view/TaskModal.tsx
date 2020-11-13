@@ -132,6 +132,8 @@ export default function TaskModal(props: any) {
         props.setOpen(9999);
     };
 
+
+
     // ここは配列で管理してmapで表示したいところ
     // task型の変数を用意して、それに値を格納する
     // 新規だったら登録、すでにある項目であれば更新する。
@@ -157,6 +159,9 @@ export default function TaskModal(props: any) {
                         <AppVar
                             handleRegister={handleRegister}
                             checkNew={checkNew}
+                            index={props.index}
+                            contents={contents}
+                            setContents={setContents}
                         />
                         <h2 id="transition-modal-title">
                             タスク詳細画面{props.index + 1}

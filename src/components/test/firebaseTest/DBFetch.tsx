@@ -74,24 +74,27 @@ const useDatabase = () => {
 // hooksを使いたいのでカスタムhooksにしておく
 const useFetchData = (ref: firebase.database.Reference) => {
     const [data, setData] = useState<userTaskInfo>();
+    const { userId } = useSelector((state: RootState) => state.user);
     useEffect(() => {
-        // イベントリスナーを追加するにはonを使う
-        ref.on("value", (snapshot: any) => {
-            // パスに対する全データを含むsnapshotが渡される
-            // ない場合はnullが返るので存在をチェックしておく
-            if (snapshot?.val()) {
-                setData(snapshot.val());
-                console.log("DBF data");
-                console.log(data);
-            }
-        });
-        console.log("DBFetch data==========");
-        console.log(data);
-        return () => {
-            ref.off();
-        };
-        // refの変更に応じて再取得する
-        //   指定したパスのデータに対する更新をすべて検知するにはvalueを指定すれば良い。
+        if(!!userId){
+            // イベントリスナーを追加するにはonを使う
+            ref.on("value", (snapshot: any) => {
+                // パスに対する全データを含むsnapshotが渡される
+                // ない場合はnullが返るので存在をチェックしておく
+                if (snapshot?.val()) {
+                    setData(snapshot.val());
+                    console.log("DBF data");
+                    console.log(data);
+                }
+            });
+            console.log("DBFetch data==========");
+            console.log(data);
+            return () => {
+                ref.off();
+            };
+            // refの変更に応じて再取得する
+            //   指定したパスのデータに対する更新をすべて検知するにはvalueを指定すれば良い。
+        }
     }, [ref]);
     // データを返却する
     return { data };

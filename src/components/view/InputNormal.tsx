@@ -61,12 +61,14 @@ export default function FormPropsTextFields(props: props) {
         props.setContents(contentsCopy);
     };
 
-    // const check = userTaskInfo.tasks[parseInt(props.index)].detail;
-    // const check = userTaskInfo.tasks[parseInt(props.index)].detail[props.label]
     // 新規登録か更新かをチェックする。新規であればTrue
     const checkNew = userTaskInfo.tasks.length < parseInt(props.index);
-    // console.log("inputNormal check " + props.label);
-    // console.log(checkNew);
+    let valueContent;
+    if(userTaskInfo.tasks[parseInt(props.index)].detail[props.label]){
+        valueContent = userTaskInfo.tasks[parseInt(props.index)].detail[props.label];
+    }else {
+        valueContent = '';
+    }
 
     if (checkNew) {
         return (
@@ -104,8 +106,11 @@ export default function FormPropsTextFields(props: props) {
             label={props.label}
             onChange={onChangeHandler}
             value={
-                userTaskInfo.tasks[parseInt(props.index)].detail[props.label]
+                valueContent
             }
+            // value={
+            //     userTaskInfo.tasks[parseInt(props.index)].detail[props.label]
+            // }
         />
         // </form>
     );

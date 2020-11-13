@@ -87,6 +87,12 @@ const calendarCellClick = (dateData, dispatch, choice) => () => {
     const year = dateData.getFullYear();
     const month = dateData.getMonth() + 1;
     const date = dateData.getDate();
+    console.log('year');
+    console.log(year);
+    console.log('month');
+    console.log(month);
+    console.log('date');
+    console.log(date);
     dispatch(calendarPatternRegister([year, month, date, choice]));
 };
 
@@ -103,6 +109,8 @@ function PatternRegistrationStatus(dateData, userTaskInfo) {
     if ([year] in userTaskInfo.calendar) {
         if ([month] in userTaskInfo.calendar[year]) {
             if ([date] in userTaskInfo.calendar[year][month]) {
+                console.log('day');
+                console.log(year + "/" + month + "/" + date);
                 console.log("PatternId：" + userTaskInfo.calendar[year][month][date].PatternId);
                 return userTaskInfo.calendar[year][month][date].PatternId;
             }
@@ -114,7 +122,7 @@ function PatternRegistrationStatus(dateData, userTaskInfo) {
 
 function CalendarTableCell(props) {
     const {
-        key,
+        keyProps,
         wday,
         isTargetMonth,
         isToday,
@@ -127,6 +135,7 @@ function CalendarTableCell(props) {
     const classes = useCalendarCellStyles(props);
     return (
         <TableCell
+            key={keyProps}
             className={classes.calendarCell}
             {...other}
             onClick={calendarCellClick(dateData, dispatch, choice)}
@@ -235,10 +244,11 @@ function App(props) {
                     </TableHead>
                     <TableBody>
                         {calendar.map((weekRow, rowNum) => (
-                            <TableRow key={rowNum}>
-                                {weekRow.map((date) => (
+                            <TableRow key={'tableRow_' + rowNum}>
+                                {weekRow.map((date, index) => (
                                     <CalendarTableCell
-                                        key={getDay(date)}
+                                        key={'CalendarTableCell_' + rowNum + "_" + index}
+                                        keyProps={getDay(date) + '_' + rowNum + "_" + index}
                                         wday={getDay(date)}
                                         isTargetMonth={isSameMonth(
                                             date,

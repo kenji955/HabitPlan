@@ -5,20 +5,26 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { useDispatch } from 'react-redux';
 import { taskDelete } from '../../modules/tasksModule';
 
-export default function SimpleMenu(props:{anchorEl: HTMLElement,setAnchorEl: React.Dispatch<React.SetStateAction<HTMLElement>>,deleteTaskHandler: (index: number) => () => void,index: number}) {
+type Props = { openMenu: number, setOpenMune: React.Dispatch<React.SetStateAction<number>>, anchorEl: HTMLElement, deleteTaskHandler: (index: number) => () => void, index: number };
+
+export default function SimpleMenu(props: Props) {
   const dispatch = useDispatch();
   // const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    props.setAnchorEl(event.currentTarget);
+  const handleClick = () => {
+    dispatch(taskDelete(props.index));
+    handleClose();
+    console.log('delete check click');
   };
 
   const handleClose = () => {
     // props.deleteTaskHandler(props.index);
-    dispatch(taskDelete(props.index));
-    props.setAnchorEl(null);
-    console.log('delete check');
+    props.setOpenMune(9999);
+    console.log('delete check close');
+    console.log(props.index);
   };
+  console.log('delete check render');
+  console.log(props.index);
 
   return (
     <div>
@@ -29,10 +35,11 @@ export default function SimpleMenu(props:{anchorEl: HTMLElement,setAnchorEl: Rea
         id="simple-menu"
         anchorEl={props.anchorEl}
         keepMounted
-        open={Boolean(props.anchorEl)}
+        // open={Boolean(props.anchorEl)}
+        open={props.index == props.openMenu}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>タスクを削除する</MenuItem>
+        <MenuItem onClick={handleClick}>タスクを削除する</MenuItem>
         {/* <MenuItem onClick={handleClose}>My account</MenuItem>
         <MenuItem onClick={handleClose}>Logout</MenuItem> */}
       </Menu>

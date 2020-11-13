@@ -28,14 +28,14 @@ const useStyles = makeStyles((theme: Theme) =>
             margin: "auto",
             backgroundColor: theme.palette.background.paper,
         },
-        AchievementList:{
-          display:'inline-block',
-          width: "100%",
-        }
+        AchievementList: {
+            display: "inline-block",
+            width: "100%",
+        },
     })
 );
 
-export default function CheckboxList(props:{choiceDate:number[]}) {
+export default function CheckboxList(props: { choiceDate: number[] }) {
     const classes = useStyles();
     const [checked, setChecked] = useState([]);
     const { userTaskInfo } = useSelector((state: RootState) => state.tasks);
@@ -59,7 +59,7 @@ export default function CheckboxList(props:{choiceDate:number[]}) {
 
         setChecked(newChecked);
 
-        console.log('list' + order);
+        console.log("list" + order);
 
         dispatch(taskCheckComplete([year, month, date, order]));
     };
@@ -86,27 +86,31 @@ export default function CheckboxList(props:{choiceDate:number[]}) {
                 // return userTaskInfo.calendar[year][month][date].PatternId;
                 // let Achievement:[JSX.Element],NotAchieved:[JSX.Element];
                 // 達成済みリスト
-                const Achievement = test[year][month][22].tasks.filter(function (value) {
-                    return value.flug == true;
-                });
+                const Achievement = test[year][month][date].tasks.filter(
+                    function (value) {
+                        return value.flug == true;
+                    }
+                );
                 console.log("Achievement");
                 console.log(Achievement);
-            
+
                 // 未達成リスト
-                const NotAchieved = test[year][month][22].tasks.filter(function (value) {
-                    return value.flug == false;
-                });
+                const NotAchieved = test[year][month][date].tasks.filter(
+                    function (value) {
+                        return value.flug == false;
+                    }
+                );
                 console.log("NotAchieved");
                 console.log(NotAchieved);
-            
+
                 return (
-                    <List className={classes.roots}>
+                    <List className={classes.roots} key={'checkBoxList'}>
                         {NotAchieved.map((value, index) => {
                             const labelId = `checkbox-list-label-${value}`;
-            
+
                             return (
                                 <ListItem
-                                    key={year & month & date & value.order}
+                                    key={index + '_' + year + '/' + month + '/' + date + '_' + value.order}
                                     role={undefined}
                                     dense
                                     button
@@ -118,17 +122,20 @@ export default function CheckboxList(props:{choiceDate:number[]}) {
                                             checked={value.flug}
                                             tabIndex={-1}
                                             disableRipple
-                                            inputProps={{ "aria-labelledby": labelId }}
+                                            inputProps={{
+                                                "aria-labelledby": labelId,
+                                            }}
                                         />
                                     </ListItemIcon>
                                     <ListItemText
                                         id={labelId}
-                                        primary={`Line item ${index + 1} ${
-                                            value.detail["testDetail1"]
-                                        } & ${value.detail["testDetail2"]} & ${value.flug}`}
+                                        primary={`${value.detail["タスク名"]}`}
                                     />
                                     <ListItemSecondaryAction>
-                                        <IconButton edge="end" aria-label="comments">
+                                        <IconButton
+                                            edge="end"
+                                            aria-label="comments"
+                                        >
                                             <CommentIcon />
                                         </IconButton>
                                     </ListItemSecondaryAction>
@@ -143,13 +150,15 @@ export default function CheckboxList(props:{choiceDate:number[]}) {
                             >
                                 <Typography>達成済み</Typography>
                             </AccordionSummary>
-                            <AccordionDetails className={classes.AchievementList}>
+                            <AccordionDetails
+                                className={classes.AchievementList}
+                            >
                                 {Achievement.map((value, index) => {
                                     const labelId = `checkbox-list-label-${value}`;
-            
+
                                     return (
                                         <ListItem
-                                            key={year & month & date & value.order}
+                                            key={index + '_' + year + '/' + month + '/' + date + '_' + value.order}
                                             role={undefined}
                                             dense
                                             button
@@ -168,9 +177,10 @@ export default function CheckboxList(props:{choiceDate:number[]}) {
                                             </ListItemIcon>
                                             <ListItemText
                                                 id={labelId}
-                                                primary={`Line item ${index + 1} ${
-                                                    value.detail["testDetail1"]
-                                                } & ${value.detail["testDetail2"]} & ${value.flug}`}
+                                                primary={`Line item ${index + 1
+                                                    } ${value.detail["testDetail1"]
+                                                    } & ${value.detail["testDetail2"]
+                                                    } & ${value.flug}`}
                                             />
                                             <ListItemSecondaryAction>
                                                 <IconButton
@@ -185,30 +195,21 @@ export default function CheckboxList(props:{choiceDate:number[]}) {
                                 })}
                             </AccordionDetails>
                         </Accordion>
-            
-
                     </List>
                 );
             }
-            }
         }
-        // console.log("なし：" + date);
-        return (
-            <List className={classes.roots}>
-                        <ListItem
-                            key={year & month & date}
-                            role={undefined}
-                            dense
-                            button
-                        >
-                            <ListItemIcon>
-                            </ListItemIcon>
-                            <ListItemText
-                                id={'0'}
-                                primary={`タスクが登録されておりません。${year} / ${month} / ${date}`}
-                            />
-                        </ListItem>
-            </List>
-        );
     }
-
+    // console.log("なし：" + date);
+    return (
+        <List className={classes.roots}>
+            <ListItem key={year + '/' + month + '/' + date} role={undefined} dense button>
+                <ListItemIcon></ListItemIcon>
+                <ListItemText
+                    id={"0"}
+                    primary={`タスクが登録されておりません。${year} / ${month} / ${date}`}
+                />
+            </ListItem>
+        </List >
+    );
+}

@@ -15,8 +15,9 @@ const userModule = createSlice({
     reducers: {
         login(state: State, action: PayloadAction<string>) {
             console.log('login');
-            // console.log(action.payload);
             console.log(state.userId);
+            
+            console.log(action.payload);
             state.userId = action.payload;
             console.log(state.userId);
         },

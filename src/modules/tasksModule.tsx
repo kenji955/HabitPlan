@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { subSeconds } from "date-fns";
 import {
     calendar,
     pattern,
@@ -22,7 +23,7 @@ const initialState: userTask = {
                             {
                                 order: 1,
                                 detail: {
-                                    ["title"]: "title 22 1",
+                                    ["タスク名"]: "タスク名 22 1",
                                     ["testDetail1"]: "testDetail1 22 1",
                                     ["testDetail2"]: "testDetail1 22 1",
                                 },
@@ -31,7 +32,7 @@ const initialState: userTask = {
                             {
                                 order: 2,
                                 detail: {
-                                    ["title"]: "title 22 2",
+                                    ["タスク名"]: "タスク名 22 2",
                                     ["testDetail1"]: "testDetail1 22 2",
                                     ["testDetail2"]: "testDetail1 22 2",
                                 },
@@ -45,7 +46,7 @@ const initialState: userTask = {
                             {
                                 order: 1,
                                 detail: {
-                                    ["title"]: "title 23 1",
+                                    ["タスク名"]: "タスク名 23 1",
                                     ["testDetail1"]: "testDetail1 23 1",
                                     ["testDetail2"]: "testDetail1 23 1",
                                 },
@@ -54,7 +55,7 @@ const initialState: userTask = {
                             {
                                 order: 2,
                                 detail: {
-                                    ["title"]: "title 23 2",
+                                    ["タスク名"]: "タスク名 23 2",
                                     ["testDetail1"]: "testDetail1 23 2",
                                     ["testDetail2"]: "testDetail1 23 2",
                                 },
@@ -79,7 +80,7 @@ const initialState: userTask = {
         tasks: [
             {
                 detail: {
-                    ["title"]: "title 22 1",
+                    ["タスク名"]: "タスク名 22 1",
                     ["defalut"]: "defalut",
                     ["testDetail1"]: "testDetail1 22 1",
                     ["testDetail2"]: "testDetail1 22 1",
@@ -93,7 +94,7 @@ const initialState: userTask = {
             },
             {
                 detail: {
-                    ["title"]: "title 22 2",
+                    ["タスク名"]: "タスク名 22 2",
                     ["defalut"]: "defalut",
                     ["testDetail1"]: "testDetail1 22 2",
                     ["testDetail2"]: "testDetail1 22 2",
@@ -107,7 +108,7 @@ const initialState: userTask = {
             },
             {
                 detail: {
-                    ["title"]: "title 23 1",
+                    ["タスク名"]: "タスク名 23 1",
                     ["defalut"]: "defalut",
                     ["testDetail1"]: "testDetail1 23 1",
                     ["testDetail2"]: "testDetail1 23 1",
@@ -125,7 +126,7 @@ const initialState: userTask = {
             },
             {
                 detail: {
-                    ["title"]: "title 23 2",
+                    ["タスク名"]: "タスク名 23 2",
                     ["defalut"]: "defalut",
                     ["testDetail2"]: "testDetail1 23 2",
                     ["testDetail1"]: "testDetail1 23 2",
@@ -139,6 +140,163 @@ const initialState: userTask = {
             },
         ],
     },
+};
+
+// const diff = (olds: any[], nexts: any[]) => ({
+//     adds: nexts.filter((e) => !olds.includes(e)),
+//     subs: olds.filter((e) => !nexts.includes(e)),
+// });
+
+// パターン更新時に未来に設定されているパターンの内容を更新する。
+// 更新対象はstate.calendar.tasks
+// 年月日が未来であり、かつ、パターンIDが同じものを対象に新しいパターンを登録する。
+const futurePatternUpdate = (state: userTask, updatePatternId: number) => {
+    console.log("====futurePatternUpdateここから====");
+
+    console.log(Object.keys(state.userTaskInfo.calendar));
+    const today = new Date();
+    const nowYear = today.getFullYear();
+    const nowMonth = today.getMonth() + 1;
+    const nowDate = today.getDate();
+
+    const choicePatternTasks = state.userTaskInfo.tasks.filter(function (task) {
+        return task.patternInfo.some(
+            (task) => task.patternID == updatePatternId
+        );
+    });
+
+    // パターンIDに紐付くタスク一覧からカレンダーへの登録情報を抽出する。
+    const updateTasks = choicePatternTasks.map((task) => {
+        // パターンが複数登録されているタスクへの対応として、選択されているパターンIDに該当する要素だけを抽出する。
+        const taskPattern = task.patternInfo.filter(function (patternInfo) {
+            return patternInfo.patternID == updatePatternId;
+        });
+
+        // 配列のタスクと抽出したパターン情報を整形して返す。
+        return {
+            order: taskPattern[0].order,
+            detail: task.detail,
+            // detail2: task.detail2,
+            flug: false,
+        };
+    });
+
+    const keyMonthList = (keyYear: string) => {
+        return Object.keys(state.userTaskInfo.calendar[parseInt(keyYear)]);
+    };
+    const keyDateList = (keyYear: string, keyMonth: string) => {
+        return Object.keys(
+            state.userTaskInfo.calendar[parseInt(keyYear)][parseInt(keyMonth)]
+        );
+    };
+
+    const dateTaskUpdate = (
+        keyYear: string,
+        keyMonth: string,
+        keyDate: string
+    ) => {
+        if (
+            state.userTaskInfo.calendar[parseInt(keyYear)][parseInt(keyMonth)][
+                parseInt(keyDate)
+            ].PatternId == updatePatternId
+        ) {
+            state.userTaskInfo.calendar[parseInt(keyYear)][parseInt(keyMonth)][
+                parseInt(keyDate)
+            ].tasks = updateTasks;
+            console.log("===dateTaskUpdate===");
+            console.log(keyYear);
+            console.log(keyMonth);
+            console.log(keyDate);
+            console.log(updateTasks);
+        }
+    };
+
+    type calendarPattern = {
+        order: number;
+        detail: {
+            [content: string]: string;
+        };
+        flug: boolean;
+    };
+
+    const diff = (olds: calendarPattern[], nexts: calendarPattern[]) => ({
+        adds: nexts.filter((e) => !olds.includes(e)),
+        subs: olds.filter((e) => !nexts.includes(e)),
+    });
+
+    // 登録されている年の連想配列のキーを全て取得
+    const keyYears = Object.keys(state.userTaskInfo.calendar);
+    keyYears.map((keyYear) => {
+        if (parseInt(keyYear) == nowYear) {
+            // もし今年だったら、の処理
+            // 登録されている月の連想配列のキーを全て取得
+            const keyMonths = keyMonthList(keyYear);
+
+            keyMonths.map((keyMonth) => {
+                if (parseInt(keyMonth) == nowMonth) {
+                    // もし今月だったら
+                    // 登録されている日の連想配列のキーを全て取得
+                    const keyDates = keyDateList(keyYear, keyMonth);
+                    keyDates.map((keyDate) => {
+                        if (parseInt(keyDate) > nowDate) {
+                            // もし明日以降だったら登録内容を更新する
+                            dateTaskUpdate(keyYear, keyMonth, keyDate);
+                        } else if (parseInt(keyDate) == nowDate) {
+                            // もし今日だったら、変更分だけ反映する。
+                            // 処理未作成
+                            if (
+                                state.userTaskInfo.calendar[parseInt(keyYear)][
+                                    parseInt(keyMonth)
+                                ][parseInt(keyDate)].PatternId ==
+                                updatePatternId
+                            ) {
+                                const result = diff(
+                                    state.userTaskInfo.calendar[
+                                        parseInt(keyYear)
+                                    ][parseInt(keyMonth)][parseInt(keyDate)]
+                                        .tasks,
+                                    updateTasks
+                                );
+                                const updateArray = state.userTaskInfo.calendar[
+                                    parseInt(keyYear)
+                                ][parseInt(keyMonth)][
+                                    parseInt(keyDate)
+                                ].tasks.filter(function (task) {
+                                    return result.subs.some(
+                                        (sub) => sub != task
+                                    );
+                                });
+
+                                result.adds.map((add) => {
+                                    updateArray.push(add);
+                                });
+                                state.userTaskInfo.calendar[parseInt(keyYear)][
+                                    parseInt(keyMonth)
+                                ][parseInt(keyDate)].tasks = updateArray;
+                            }
+                        }
+                    });
+                } else if (parseInt(keyMonth) > nowMonth) {
+                    // もし来月以降だったら、すべて更新する。
+                    const keyDates = keyDateList(keyYear, keyMonth);
+                    keyDates.map((keyDate) => {
+                        dateTaskUpdate(keyYear, keyMonth, keyDate);
+                    });
+                }
+            });
+        } else if (parseInt(keyYear) > nowYear) {
+            // もし来年以降だったら、の処理。全て更新する。
+            const keyMonths = keyMonthList(keyYear);
+            keyMonths.map((keyMonth) => {
+                const keyDates = keyDateList(keyYear, keyMonth);
+                keyDates.map((keyDate) => {
+                    dateTaskUpdate(keyYear, keyMonth, keyDate);
+                });
+            });
+        }
+    });
+
+    console.log("====futurePatternUpdateここまで====");
 };
 
 const tasksModule = createSlice({
@@ -213,19 +371,34 @@ const tasksModule = createSlice({
                 };
             });
 
-            // stateのMonthの連想配列に新しい日付の連想配列を追加する。
-            // 追加情報は引数の日とこれまでの処理で作成したカレンダー登録用情報
-            state.userTaskInfo.calendar[action.payload[0]][
-                action.payload[1]
-            ] = {
-                ...state.userTaskInfo.calendar[action.payload[0]][
+            // ここに年がなかった時の処理を加える
+            if (action.payload[0] in state.userTaskInfo.calendar) {
+                // stateのMonthの連想配列に新しい日付の連想配列を追加する。
+                // 追加情報は引数の日とこれまでの処理で作成したカレンダー登録用情報
+                state.userTaskInfo.calendar[action.payload[0]][
                     action.payload[1]
-                ],
-                [action.payload[2]]: {
-                    PatternId: action.payload[3],
-                    tasks: TodayTasks,
-                },
-            };
+                ] = {
+                    ...state.userTaskInfo.calendar[action.payload[0]][
+                        action.payload[1]
+                    ],
+                    [action.payload[2]]: {
+                        PatternId: action.payload[3],
+                        tasks: TodayTasks,
+                    },
+                };
+            } else {
+                // stateのMonthの連想配列に新しい日付の連想配列を追加する。
+                // 追加情報は引数の日とこれまでの処理で作成したカレンダー登録用情報
+                state.userTaskInfo.calendar[action.payload[0]] = {
+                    ...state.userTaskInfo.calendar[action.payload[0]],
+                    [action.payload[1]]: {
+                        [action.payload[2]]: {
+                            PatternId: action.payload[3],
+                            tasks: TodayTasks,
+                        },
+                    },
+                };
+            }
 
             // action.payload[3];
             console.log(
@@ -257,6 +430,7 @@ const tasksModule = createSlice({
             console.log(registerTask);
             state.userTaskInfo.tasks.push(registerTask);
         },
+        // タスクのパターン登録状況を更新する。
         taskPatternUpdate(
             state: userTask,
             action: PayloadAction<{
@@ -269,11 +443,13 @@ const tasksModule = createSlice({
             // パターンIDの配列を受け取る。
             // 配列とstateを比較して、なければ登録。Orderは最大値+1。逆に削除されているものは除外。
 
-            const statePatternIdList = state.userTaskInfo.tasks[action.payload.index].patternInfo.map(
-                (content) => {
-                    return content.patternID;
-                }
-            );
+            const statePatternIdList = state.userTaskInfo.tasks[
+                action.payload.index
+            ].patternInfo.map((content) => {
+                return content.patternID;
+            });
+            console.log("statePatternIdList");
+            console.log(statePatternIdList);
             const diff = (olds: number[], nexts: number[]) => ({
                 adds: nexts.filter((e) => !olds.includes(e)),
                 subs: olds.filter((e) => !nexts.includes(e)),
@@ -283,54 +459,220 @@ const tasksModule = createSlice({
                 patternID: number;
                 order: number;
             }[];
-            
-            console.log(result.subs[0] == state.userTaskInfo.tasks[action.payload.index].patternInfo[0].patternID);
-            updateArray = state.userTaskInfo.tasks[action.payload.index].patternInfo.filter(
-                function (content) {
-                    return result.subs.some(
-                        (sub) =>  sub != content.patternID
+            console.log(result);
+
+            // stateから削除対象を除外した配列を抽出する。
+            if (result.subs.length > 0) {
+                updateArray = state.userTaskInfo.tasks[
+                    action.payload.index
+                ].patternInfo.filter(function (content) {
+                    // futurePatternUpdate(state,);
+                    return result.subs.some((sub) => sub != content.patternID);
+                });
+            } else {
+                updateArray =
+                    state.userTaskInfo.tasks[action.payload.index].patternInfo;
+            }
+
+            console.log("1:updateArray");
+            console.log(updateArray);
+
+            //
+            result.adds.map((add) => {
+                let Max: number = 0;
+                // 追加されたIDが設定されているタスクを抽出する。
+                const choicePatternTasks = state.userTaskInfo.tasks.filter(
+                    function (task) {
+                        return task.patternInfo.some(
+                            (taskPatternInfo) =>
+                                taskPatternInfo.patternID == add
+                        );
+                    }
+                );
+                //
+                choicePatternTasks.map((task) => {
+                    // 抽出された各タスクのパターンIDを比較し、最大値を取得する。
+                    let content = task.patternInfo.find(
+                        (info) => info.patternID == add
                     );
+                    Max < content.patternID ? (Max = content.patternID) : "";
+                });
+
+                const pushContent = { patternID: add, order: Max + 1 };
+                updateArray.push(pushContent);
+                futurePatternUpdate(state, add);
+            });
+            console.log("2:updateArray");
+            console.log(updateArray);
+
+            state.userTaskInfo.tasks[
+                action.payload.index
+            ].patternInfo = updateArray;
+        },
+        // タスクを削除する処理。引数には削除対象タスクのインデックス番号が格納されている。
+        taskDelete(state: userTask, action: PayloadAction<number>) {
+            // const deleteTask = state.userTaskInfo.tasks.splice(
+            //     action.payload,
+            //     1
+            // );
+            const deleteTask = state.userTaskInfo.tasks.filter(function (
+                content,
+                index
+            ) {
+                return index != action.payload;
+            });
+            console.log(deleteTask);
+            state.userTaskInfo.tasks = deleteTask;
+        },
+        // タスクをパターンから除外する処理。引数のオブジェクトにはパターンIDと削除対象タスクの名称が格納されている。
+        taskRemovePattern(
+            state: userTask,
+            action: PayloadAction<{ patternId: number; detailTitle: string }>
+        ) {
+            const index = state.userTaskInfo.tasks.findIndex((content) => {
+                return content.detail["タスク名"] == action.payload.detailTitle;
+            });
+            const deletedTask = state.userTaskInfo.tasks[
+                index
+            ].patternInfo.filter(function (content) {
+                return content.patternID != action.payload.patternId;
+            });
+            state.userTaskInfo.tasks[index].patternInfo = deletedTask;
+            console.log(deletedTask);
+            // futurePatternUpdate(state);
+        },
+        // パターンを追加する処理。引数にはパターン名称が格納されている。
+        patternRegister(state: userTask, action: PayloadAction<string>) {
+            let MaxId: number = 0;
+            state.userTaskInfo.pattern.map((patternContent) => {
+                patternContent.patternId > MaxId
+                    ? (MaxId = patternContent.patternId)
+                    : "";
+            });
+            const addPattern = {
+                patternId: MaxId + 1,
+                patternName: action.payload,
+            };
+            state.userTaskInfo.pattern.push(addPattern);
+        },
+        // パターンを削除する処理。引数にはパターンIDが格納されている。
+        patternDelete(state: userTask, action: PayloadAction<number>) {
+            const updatePatternList = state.userTaskInfo.pattern.filter(
+                (patternContent) => {
+                    // console.log(patternContent.patternId);
+                    // console.log(action.payload);
+                    return patternContent.patternId != action.payload;
                 }
             );
 
-            result.adds.map((add) =>{
-                let Max:number = 0;
-                const choicePatternTasks = state.userTaskInfo.tasks.filter(function (task) {
-                    return task.patternInfo.some((task) => task.patternID == add);
-                });
-                choicePatternTasks.map((task)=>{
-                    let content = task.patternInfo.find(info => info.patternID = add);
-                    Max < content.patternID ? Max = content.patternID : '';
-                })
+            console.log(updatePatternList);
+            state.userTaskInfo.pattern = updatePatternList;
 
-                const pushContent={patternID: add,
-                    order: Max}
-                updateArray.push(pushContent);
-            })
-                        
-            state.userTaskInfo.tasks[action.payload.index].patternInfo = updateArray;
-        },
-        // タスクを追加する処理。引数のテキスト配列には[入力内容、連想配列のキー、タスクの配列を指定する数字]が格納されている。
-        taskDelete(state: userTask, action: PayloadAction<number>) {
-            const deleteTask = state.userTaskInfo.tasks.splice(action.payload,1);
-            console.log(deleteTask);
-        },
-        // タスクを追加する処理。引数のテキスト配列には[入力内容、連想配列のキー、タスクの配列を指定する数字]が格納されている。
-        taskRemovePattern(state: userTask, action: PayloadAction<{ patternId: number; detailTitle: string; }>) {
-            console.log('patternId');
-            console.log(action.payload.patternId);
-            console.log('detailTitle');
-            console.log(action.payload.detailTitle);
-            const index = state.userTaskInfo.tasks.findIndex((content)=>{
-                return content.detail['title'] == action.payload.detailTitle;
+            // タスクとカレンダーに保管されているパターンを全て削除する必要がある
+            // カレンダーは未来分だけ
+
+            // state.userTaskInfo.tasksに保管されているパターン情報を削除する。
+            let updateTaskList = state.userTaskInfo.tasks.map((task) => {
+                const updatePatternInfo = task.patternInfo.filter(
+                    (taskPatternInfo) => {
+                        return taskPatternInfo.patternID != action.payload;
+                    }
+                );
+                const updateTask: {
+                    detail: {
+                        [content: string]: string;
+                    };
+                    patternInfo: {
+                        patternID: number;
+                        order: number;
+                    }[];
+                } = { detail: task.detail, patternInfo: updatePatternInfo };
+                return updateTask;
             });
-            console.log('index');
-            console.log(index);
-            const deletedTask = state.userTaskInfo.tasks[index].patternInfo.filter(function (content) {
-                return content.patternID != action.payload.patternId;
-              });
-              state.userTaskInfo.tasks[index].patternInfo = deletedTask;
-            console.log(deletedTask);
+            console.log("after:updateTaskList");
+            console.log(updateTaskList);
+            state.userTaskInfo.tasks = updateTaskList;
+
+            // state.userTaskInfo.calendarの未来分に保管されているパターン情報を削除する。
+            const today = new Date();
+            const nowYear = today.getFullYear();
+            const nowMonth = today.getMonth() + 1;
+            const nowDate = today.getDate();
+            const keyYears = Object.keys(state.userTaskInfo.calendar);
+            const deleteCalendarDate = (
+                year: string,
+                month: string,
+                date: string
+            ) => {
+                if (
+                    state.userTaskInfo.calendar[parseInt(year)][
+                        parseInt(month)
+                    ][parseInt(date)].PatternId == action.payload
+                ) {
+                    delete state.userTaskInfo.calendar[parseInt(year)][
+                        parseInt(month)
+                    ][parseInt(date)];
+                }
+            };
+            keyYears.map((year) => {
+                const keyMonth = Object.keys(
+                    state.userTaskInfo.calendar[parseInt(year)]
+                );
+                if (parseInt(year) > nowYear) {
+                    // 対象が来年以降である場合、削除する。deleteのほうがいい
+                    keyMonth.map((month) => {
+                        const keyDate = Object.keys(
+                            state.userTaskInfo.calendar[parseInt(year)][
+                                parseInt(month)
+                            ]
+                        );
+                        keyDate.map((date) => {
+                            deleteCalendarDate(year, month, date);
+                        });
+                    });
+                } else if (parseInt(year) == nowYear) {
+                    // 対象が今年である場合
+                    keyMonth.map((month) => {
+                        const keyDate = Object.keys(
+                            state.userTaskInfo.calendar[parseInt(year)][
+                                parseInt(month)
+                            ]
+                        );
+                        if (parseInt(month) > nowMonth) {
+                            // 来月以降の場合、削除する。deleteのほうがいい
+                            console.log(keyDate);
+                            keyDate.map((date) => {
+                                deleteCalendarDate(year, month, date);
+                            });
+                        } else if (parseInt(month) == nowMonth) {
+                            // 今月の場合
+                            keyDate.map((date) => {
+                                if (parseInt(date) > nowDate) {
+                                    // 明日以降の場合、削除する
+                                    deleteCalendarDate(year, month, date);
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        },
+        // パターン名称を編集する処理。引数にはパターンIDとパターン名称が格納されている。
+        patternNameEdit(
+            state: userTask,
+            action: PayloadAction<{
+                editPatternId: number;
+                patternName: string;
+            }>
+        ) {
+            // IDに合致する要素のインデックス番号を取得
+            const editPatternIndex = state.userTaskInfo.pattern.findIndex(
+                (patternContent) =>
+                    patternContent.patternId == action.payload.editPatternId
+            );
+            // 取得したインデックス番号を目印に、引数の新しい名称で更新する。
+            state.userTaskInfo.pattern[editPatternIndex].patternName =
+                action.payload.patternName;
         },
     },
 });
@@ -346,6 +688,9 @@ export const {
     taskPatternUpdate,
     taskDelete,
     taskRemovePattern,
+    patternRegister,
+    patternDelete,
+    patternNameEdit,
 } = tasksModule.actions;
 
 export default tasksModule;
