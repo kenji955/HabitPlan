@@ -14,7 +14,7 @@ interface props {
     label: string;
     required: boolean;
     index: string;
-    contentIndex:number;
+    contentIndex: number;
     contents: {
         label: string;
         value: string;
@@ -44,31 +44,40 @@ export default function FormPropsTextFields(props: props) {
     const classes = useStyles();
     const dispatch = useDispatch();
     const { userTaskInfo } = useSelector((state: RootState) => state.tasks);
-    const onChangeHandler = (event: any) => {
-        // console.log(event.target.value);
-        // ここでevent.target.valueとラベル(連想配列のキー)を送って処理する。処理も未作成
-        dispatch(
-            taskDetailRegister([event.target.value, props.label, props.index])
-        );
+    // const onChangeHandler = (event: any) => {
+    //     // console.log(event.target.value);
+    //     // ここでevent.target.valueとラベル(連想配列のキー)を送って処理する。処理も未作成
+    //     dispatch(
+    //         taskDetailRegister([event.target.value, props.label, props.index])
+    //     );
+    // };
+    // 新規登録か更新かをチェックする。新規であればTrue
+    const checkNew = userTaskInfo.tasks.length < parseInt(props.index);
+    const onBlurHandler = (event: any) => {
+        console.log(props.label + '離れたぞ！！！')
+        if (checkNew) {
+            console.log(event.target.value);
+            const contentsCopy = props.contents.slice();
+            contentsCopy[props.contentIndex].value = event.target.value;
+            props.setContents(contentsCopy);
+        } else {
+            console.log(event.target.value);
+            dispatch(
+                taskDetailRegister([event.target.value, props.label, props.index])
+            );
+        }
     };
     const newTaskOnChangeHandler = (event: any) => {
         // console.log(event.target.value);
         // ここでevent.target.valueとラベル(連想配列のキー)を送って処理する。処理も未作成
-        
+
         const contentsCopy = props.contents.slice();
-        contentsCopy[props.contentIndex].value=event.target.value;
+        contentsCopy[props.contentIndex].value = event.target.value;
 
         props.setContents(contentsCopy);
     };
 
-    // 新規登録か更新かをチェックする。新規であればTrue
-    const checkNew = userTaskInfo.tasks.length < parseInt(props.index);
     let valueContent;
-    if(userTaskInfo.tasks[parseInt(props.index)].detail[props.label]){
-        valueContent = userTaskInfo.tasks[parseInt(props.index)].detail[props.label];
-    }else {
-        valueContent = '';
-    }
 
     if (checkNew) {
         return (
@@ -77,8 +86,9 @@ export default function FormPropsTextFields(props: props) {
                 required
                 id="standard-basic"
                 label={props.label}
-                onChange={newTaskOnChangeHandler}
-                value={props.contents[props.contentIndex].value}
+                // onChange={newTaskOnChangeHandler}
+                onBlur={onBlurHandler}
+                defaultValue={props.contents[props.contentIndex].value}
             />
             // </form>
         );
@@ -89,28 +99,33 @@ export default function FormPropsTextFields(props: props) {
                 required
                 id="standard-basic"
                 label={props.label}
-                onChange={onChangeHandler}
-                value={
-                    userTaskInfo.tasks[parseInt(props.index)].detail[
-                        props.label
-                    ]
+                // onChange={onChangeHandler}
+                onBlur={onBlurHandler}
+                defaultValue={
+                    userTaskInfo.tasks[parseInt(props.index)].detail[props.label]
                 }
             />
             // </form>
         );
+    }
+    if (userTaskInfo.tasks[parseInt(props.index)].detail[props.label]) {
+        valueContent = userTaskInfo.tasks[parseInt(props.index)].detail[props.label];
+    } else {
+        valueContent = '';
     }
     return (
         // <form className={classes.root} noValidate autoComplete="off">
         <TextField
             id="standard-basic"
             label={props.label}
-            onChange={onChangeHandler}
-            value={
+            // onChange={onChangeHandler}
+            onBlur={onBlurHandler}
+            defaultValue={
                 valueContent
             }
-            // value={
-            //     userTaskInfo.tasks[parseInt(props.index)].detail[props.label]
-            // }
+        // value={
+        //     userTaskInfo.tasks[parseInt(props.index)].detail[props.label]
+        // }
         />
         // </form>
     );

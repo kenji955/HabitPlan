@@ -53,7 +53,8 @@ export type tasks = {
     }[];
 };
 
-export type userTask = {
+export type userInfo = {
+    userId: string;
     userTaskInfo: {
         calendar: calendar;
         pattern: pattern[];
@@ -66,3 +67,22 @@ export type userTaskInfo = {
     pattern: pattern[];
     tasks: tasks[];
 };
+
+
+interface IAddTodoAction {
+    type: "ADD_TODO";
+    // payload: {  };
+}
+interface IToggleTodoAction {
+    type: "TOGGLE_TODO";
+    payload: { id: number };
+}
+export type Actions =
+    | IAddTodoAction
+    | IToggleTodoAction
+
+
+export interface StoreProvider {
+    state: userInfo;
+    dispatch: React.Dispatch<Actions>;
+}

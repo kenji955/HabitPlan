@@ -2,6 +2,8 @@ import React from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import { green } from "@material-ui/core/colors";
+import ScrollableTabsButtonAuto from "./ScrollableTabsButtonAuto";
+import { getDate } from "date-fns";
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -60,6 +62,10 @@ export default function DateList(props: {
                 <br></br>
                 {date.getDate()}
             </Avatar>
+            // ここにタブ表示用の情報をまとめたオブジェクトを作成する。
+            // {
+            //     handleClick: handleClick(date.getFullYear(),date.getMonth() + 1,date.getDate()), date: date.getDate(), day: dateT[date.getDay()]
+            // }
         );
         date.setDate(props.today.getDate() + 1);
     }

@@ -77,18 +77,19 @@ export default function CheckboxList(props: { choiceDate: number[] }) {
     // const test = userTaskInfo.calendar[year][month][date]
     const test = userTaskInfo.calendar;
 
-    // console.log(test[year][month][22]);
 
     if (year in userTaskInfo.calendar) {
         if (month in userTaskInfo.calendar[year]) {
             if (date in userTaskInfo.calendar[year][month]) {
+                // console.log('============date=============');
+                // console.log(test[year][month][date]);
                 // console.log("PatternId：" + userTaskInfo.calendar[year][month][date].PatternId);
                 // return userTaskInfo.calendar[year][month][date].PatternId;
                 // let Achievement:[JSX.Element],NotAchieved:[JSX.Element];
                 // 達成済みリスト
                 const Achievement = test[year][month][date].tasks.filter(
-                    function (value) {
-                        return value.flug == true;
+                    function (task) {
+                        return task.flug == true;
                     }
                 );
                 console.log("Achievement");
@@ -96,8 +97,8 @@ export default function CheckboxList(props: { choiceDate: number[] }) {
 
                 // 未達成リスト
                 const NotAchieved = test[year][month][date].tasks.filter(
-                    function (value) {
-                        return value.flug == false;
+                    function (task) {
+                        return task.flug == false;
                     }
                 );
                 console.log("NotAchieved");
@@ -177,10 +178,7 @@ export default function CheckboxList(props: { choiceDate: number[] }) {
                                             </ListItemIcon>
                                             <ListItemText
                                                 id={labelId}
-                                                primary={`Line item ${index + 1
-                                                    } ${value.detail["testDetail1"]
-                                                    } & ${value.detail["testDetail2"]
-                                                    } & ${value.flug}`}
+                                                primary={`${value.detail["タスク名"]}`}
                                             />
                                             <ListItemSecondaryAction>
                                                 <IconButton

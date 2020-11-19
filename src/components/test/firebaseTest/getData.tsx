@@ -1,22 +1,16 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { useFetchAllData } from "./DBFetch";
-import firebase from "firebase/app";
+import React, { useState } from "react";
 // 認証周りやDB周りで必要なためimportしておく
 import "firebase/auth";
 import "firebase/database";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../modules/rootReducer";
-import { userTask } from "../../../modules/userTasksType";
-import { init } from "../../../modules/tasksModule";
 
 
 
 export default function ListComponent() {
-    const [UT, setUT] = useState(
+    const [] = useState(
         useSelector((state: RootState) => state.tasks)
     );
-    const { userId } = useSelector((state: RootState) => state.user);
-    const dispatch = useDispatch();
     // const { data } = useFetchAllData();
     const { userTaskInfo } = useSelector((state: RootState) => state.tasks);
     // useEffect(() => {

@@ -35,6 +35,12 @@ const useStyles = makeStyles((theme) => ({
     paper: {
         margin: theme.spacing(5, 10),
         padding: theme.spacing(5, 5),
+        [theme.breakpoints.down('sm')]: {
+            width:'100%',
+            // paddingLeft: '240px',
+            margin:'auto',
+            padding:0,
+        }
     },
     yearmonth: {
         margin: theme.spacing(2, 0, 1, 0),

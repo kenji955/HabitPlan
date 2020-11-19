@@ -12,6 +12,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 // import Link from '@material-ui/core/Link';
 import Link from "next/link";
+import SettingMenu from './settingMenu';
 
 import MailIcon from "@material-ui/icons/Mail";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -19,6 +20,7 @@ import DateRangeIcon from "@material-ui/icons/DateRange";
 import ListIcon from "@material-ui/icons/List";
 import TuneIcon from "@material-ui/icons/Tune";
 import DirectionsRunIcon from "@material-ui/icons/DirectionsRun";
+import SettingsIcon from '@material-ui/icons/Settings';
 
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -54,6 +56,9 @@ const useStyles = makeStyles((theme: Theme) =>
                 display: "none",
             },
         },
+        settingButton: {
+            margin: ' 0 0 0 auto',
+        },
         // necessary for content to be below app bar
         toolbar: theme.mixins.toolbar,
         drawerPaper: {
@@ -79,9 +84,14 @@ export default function ResponsiveDrawer(props: Props) {
     const classes = useStyles();
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = React.useState(false);
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
+    };
+
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
     };
 
     const drawer = (
@@ -144,8 +154,18 @@ export default function ResponsiveDrawer(props: Props) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap>
-                        Responsive drawer
+                        Habit Plan
                     </Typography>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        edge="end"
+                        onClick={handleClick}
+                        className={classes.settingButton}
+                    >
+                        <SettingsIcon />
+                    </IconButton>
+                    <SettingMenu anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
                 </Toolbar>
             </AppBar>
             <nav className={classes.drawer} aria-label="mailbox folders">

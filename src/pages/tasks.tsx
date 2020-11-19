@@ -10,6 +10,10 @@ import FormComponent from "../components/test/firebaseTest/FormComponent";
 import FirebaseAuthComponent from "../components/test/firebaseTest/FirebaseAuthComponent";
 
 import withAuth from '../components/shared/withAuth'
+import React, { useMemo } from "react";
+import { Stores } from "../modules/store";
+import { StoreProvider } from "../modules/userTasksType";
+import { auth } from "../components/test/firebaseTest/firebaseTest";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -30,6 +34,18 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Tasks = () => {
     const classes = useStyles();
+    const { state, dispatch }: StoreProvider = React.useContext(Stores);
+    console.log(state);
+    useMemo(() =>
+    dispatch({
+        type: "ADD_TODO",
+    }), []
+    )
+    console.log(state);
+
+    console.log('auth.currentUser.uid');
+    console.log(auth.currentUser.uid);
+
 
     return (
         <Container>

@@ -20,9 +20,10 @@ const useStyles = makeStyles(
                 },
                 patternList: {
                     // display: 'flex',
-                    paddingTop: '90px',
-                    paddingLeft: '0px',
+                    paddingTop: '50px',
+                    // paddingLeft: '0px',
                     [theme.breakpoints.up('sm')]: {
+                        paddingTop: '80px',
                         paddingLeft: '240px',
                     }
                 },

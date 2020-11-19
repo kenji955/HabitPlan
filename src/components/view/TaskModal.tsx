@@ -10,6 +10,7 @@ import PatternSwitchList from "./PatternSwitch";
 import { useDispatch, useSelector } from "react-redux";
 import { taskRegister } from "../../modules/tasksModule";
 import { RootState } from "../../modules/rootReducer";
+import { useRegisterData, useUpdateData } from "../test/firebaseTest/DBFetch";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -73,19 +74,33 @@ const contentsList = [
         label: "見返りのない習慣に対する即時的な痛み",
         value: "",
     },
+    {
+        label: "タスク名",
+        value: "",
+    },
 ];
 
 export default function TaskModal(props: any) {
     const classes = useStyles();
     const { userTaskInfo } = useSelector((state: RootState) => state.tasks);
+    const updateData = useUpdateData();
+    const registerData = useRegisterData();
+
     const checkNew = userTaskInfo.tasks.length < parseInt(props.index);
     let stateChecked: number[] = [];
+    const renderContentsList = contentsList.filter((content) => {
+        return content.label != 'タスク名'
+    })
+    let setContentsList = contentsList;
     if (!checkNew) {
         stateChecked = props.task.patternInfo.map(
             (content: { patternID: number; order: number }) => {
                 return content.patternID;
             }
         );
+        setContentsList = contentsList.filter((content) => {
+            return content.label != 'タスク名'
+        })
     }
     const [checked, setChecked] = React.useState<number[]>(stateChecked);
     const dispatch = useDispatch();
@@ -93,13 +108,13 @@ export default function TaskModal(props: any) {
     // 最終的には項目一覧もReduxで管理したい。それをタスク一覧の右上に表示した設定ボタンから開くモーダルでONOFFを設定することで、タスク詳細画面で使う項目を選べる。新規登録時もONになっている項目が表示される
     // タスク詳細画面でプラスボタンを押したら項目を増やせる。それも項目一覧に保管される。
     // const defaultTask: newTasksType = { ["追加"]: "追加" };
-    const [contents, setContents] = React.useState(contentsList);
+    const [contents, setContents] = React.useState(setContentsList);
 
     const handleClose = () => {
         props.setOpen(9999);
     };
 
-    const handleRegister = () => {
+    async function HandleRegister() {
         let details: {
             [content: string]: string;
         };
@@ -127,7 +142,15 @@ export default function TaskModal(props: any) {
             patternInfo: patternInfo,
         };
 
-        dispatch(taskRegister(newTasks));
+        await dispatch(taskRegister(newTasks));
+        console.log('==============check register==============');
+        // console.log(userTaskInfo);
+        // const _sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+        // await _sleep(5000);
+        // console.log(userTaskInfo);
+        // console.log(componentWillReceiveProps(nextProps));
+        
+        // registerData(newTasks);
 
         props.setOpen(9999);
     };
@@ -157,7 +180,7 @@ export default function TaskModal(props: any) {
                 <Fade in={props.index == props.open}>
                     <div className={classes.paper}>
                         <AppVar
-                            handleRegister={handleRegister}
+                            handleRegister={HandleRegister}
                             checkNew={checkNew}
                             index={props.index}
                             contents={contents}
@@ -175,8 +198,9 @@ export default function TaskModal(props: any) {
                             checked={checked}
                             setChecked={setChecked}
                             index={props.index}
+                            checkNew={checkNew}
                         />
-                        {contents.map((content, index) => {
+                        {renderContentsList.map((content, index) => {
                             return (
                                 <div key={content.label + "_" + index}>
                                     <InputN

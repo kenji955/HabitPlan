@@ -36,7 +36,7 @@ export default function ButtonAppBar(props: any) {
     // console.log(event.target.value);
     // ここでevent.target.valueとラベル(連想配列のキー)を送って処理する。処理も未作成
     dispatch(
-      taskDetailRegister([event.target.value, 'title', props.index])
+      taskDetailRegister([event.target.value, 'タスク名', props.index])
     );
   };
 
@@ -65,11 +65,10 @@ export default function ButtonAppBar(props: any) {
             }
         /> */}
             <InputN
-              // label="if-thenプランニング"
               label={'タスク名'}
               required={false}
               index={props.index}
-              contentIndex={0}
+              contentIndex={props.contents.length-1}
               contents={props.contents}
               setContents={props.setContents}
             />

@@ -6,26 +6,20 @@ import "firebase/auth";
 import "firebase/database";
 import { useMemo, useState, useEffect, useCallback } from "react";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../../modules/rootReducer";
-import { Register } from "../../../modules/tasksModule";
 
 import { firebase } from "./firebaseTest";
 
 import {
-    calendar,
-    pattern,
     tasks,
-    userTask,
     userTaskInfo,
 } from "../../../modules/userTasksType";
-import { useTabContext } from "@material-ui/lab";
-import { login } from "../../../modules/userModule";
 
-const useReduxFetch = () => {
-    const dispatch = useDispatch();
-    return dispatch;
-};
+// const useReduxFetch = () => {
+//     const dispatch = useDispatch();
+//     return dispatch;
+// };
 
 // カスタムフックにしておく
 const useDatabase = () => {
@@ -102,8 +96,6 @@ const useFetchData = (ref: firebase.database.Reference) => {
 
 // 実際に呼び出す際はこちらを使う
 const useFetchAllData = () => {
-    const uid = firebase.auth().currentUser;
-    const { userTaskInfo } = useSelector((state: RootState) => state.tasks);
     // refを取得して
     const ref = useDatabase();
     console.log('ref');
@@ -129,23 +121,23 @@ const useSetDocument = (ref: firebase.database.Reference) => {
 
 const useRegisterData = () => {
     // 前回作ったuseDatabase()を使いref取得
-    const ref = useDatabase();
+    const { userId } = useSelector((state: RootState) => state.user);
+    const ref = firebase.database().ref("/users/" + userId + "/tasks");
     const setDocument = useSetDocument(ref);
     // 登録済みのデータを全部取得する
     const { data: registeredData } = useFetchAllData();
-    const { userTaskInfo } = useSelector((state: RootState) => state.tasks);
     // データを登録する関数を返却する
 
     // 可能であればここの処理はそのままにして、引数でsteteを更新する処理を先に行いたい
     const registerData = useCallback(
-        (registerData: { [key: string]: string }) => {
+        (registerData: tasks) => {
             // () => {
             // console.log(userTaskInfo);
             // ここでReduxに保管しているstateを更新する？
             // dispatch(Register({ ...registerData }));
             // 既存のデータと登録するkey-valueを合わせて登録関数に渡す
-            // setDocument({ ...registeredData, ...registerData });
-            setDocument(userTaskInfo);
+            setDocument([ ...registeredData.tasks, registerData ]);
+            // setDocument(userTaskInfo.tasks);
         },
         [setDocument, registeredData]
     );
@@ -199,4 +191,4 @@ const useDelteData = () => {
     return deleteData;
 };
 
-export { useFetchAllData, useRegisterData, useUpdateData, useDelteData };
+export { useDatabase,useFetchAllData, useRegisterData, useUpdateData, useDelteData };

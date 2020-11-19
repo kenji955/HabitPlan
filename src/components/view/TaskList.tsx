@@ -2,23 +2,16 @@ import React from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
-import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
-import Fade from "@material-ui/core/Fade";
 import CommentIcon from "@material-ui/icons/Comment";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
-import Divider from "@material-ui/core/Divider";
-import Box from "@material-ui/core/Box";
 import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 
 import TaskModal from "./TaskModal";
 import TaskPlus from "./taskPlus";
 import Menu from "./Menu";
-import { useDispatch, useSelector } from "react-redux";
-import { taskDelete } from "../../modules/tasksModule";
+import { useSelector } from "react-redux";
 import { RootState } from "../../modules/rootReducer";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -43,7 +36,6 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function CheckboxList() {
     const classes = useStyles();
-    const dispatch = useDispatch();
     const [open, setOpen] = React.useState(9999);
     const [openMenu, setOpenMune] = React.useState(9999);
     const { userTaskInfo } = useSelector((state: RootState) => state.tasks);
@@ -63,7 +55,7 @@ export default function CheckboxList() {
         console.log("open:" + open);
     };
 
-    const deleteTaskHandler = (index: number) => () => {
+    const deleteTaskHandler = () => () => {
         console.log("check deleteTaskHandler");
         // dispatch(taskDelete(index));
     };
@@ -74,7 +66,6 @@ export default function CheckboxList() {
                 const labelId = `checkbox-list-label-${task.detail["testDetail1"]}`;
 
                 return (
-                    // <Box key={labelId + "_" + index}>
                         <ListItem
                             key={task.detail["title"] + ":" + index}
                             role={undefined}
@@ -101,7 +92,7 @@ export default function CheckboxList() {
                                 </IconButton>
                                 <IconButton
                                     edge="end"
-                                    aria-label="comments"
+                                    aria-label="RemoveCircle"
                                     onClick={handleClick(index)}
                                 >
                                     <RemoveCircleIcon color="secondary" />
@@ -115,8 +106,6 @@ export default function CheckboxList() {
                                 />
                             </ListItemSecondaryAction>
                         </ListItem>
-                        // <Divider />
-                    // </Box>
                 );
             })}
             <TaskPlus num={userTaskInfo.tasks.length + 1} />

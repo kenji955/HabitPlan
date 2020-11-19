@@ -1,0 +1,1 @@
+{"ast":null,"code":"export const reducer = (state, action) => {\n  switch (action.type) {\n    case \"ADD_TODO\":\n      console.log('reducer ADD_TODO');\n      return state + 1;\n\n    case \"TOGGLE_TODO\":\n      console.log('reducer ADD_TODO');\n\n    default:\n      return state;\n  }\n};","map":null,"metadata":{},"sourceType":"module"}

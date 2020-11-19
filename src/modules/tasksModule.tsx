@@ -1,10 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { subSeconds } from "date-fns";
+import firebase from "firebase";
+import { auth } from "../components/test/firebaseTest/firebaseTest";
 import {
     calendar,
     pattern,
     tasks,
-    userTask,
+    userInfo,
     userTaskInfo,
 } from "./userTasksType";
 
@@ -12,7 +14,8 @@ type State = {
     [key: string]: string;
 };
 
-const initialState: userTask = {
+const initialState: userInfo = {
+    userId: '',
     userTaskInfo: {
         calendar: {
             [new Date("Thu, 22 Oct 2020 02:00:00").getFullYear()]: {
@@ -150,7 +153,7 @@ const initialState: userTask = {
 // パターン更新時に未来に設定されているパターンの内容を更新する。
 // 更新対象はstate.calendar.tasks
 // 年月日が未来であり、かつ、パターンIDが同じものを対象に新しいパターンを登録する。
-const futurePatternUpdate = (state: userTask, updatePatternId: number) => {
+const futurePatternUpdate = (state: userInfo, updatePatternId: number) => {
     console.log("====futurePatternUpdateここから====");
 
     console.log(Object.keys(state.userTaskInfo.calendar));
@@ -299,11 +302,32 @@ const futurePatternUpdate = (state: userTask, updatePatternId: number) => {
     console.log("====futurePatternUpdateここまで====");
 };
 
+const DBCRUD = (pass: string, crud: string, updateDocument: any) => {
+    const userId = auth.currentUser.uid;
+    let refPass = '/' + pass;
+    if (pass == '') {
+        refPass = ''
+    }
+    const ref = firebase.database().ref("/users/" + userId + refPass);
+
+    switch (crud) {
+        case 'register':
+            ref.set(updateDocument)
+            break;
+        case 'update':
+            ref.update(updateDocument)
+            break;
+        case 'delete':
+            ref.remove()
+            break;
+    }
+}
+
 const tasksModule = createSlice({
     name: "tasks",
     initialState,
     reducers: {
-        init(state: userTask, action: PayloadAction<userTaskInfo>) {
+        init(state: userInfo, action: PayloadAction<userTaskInfo>) {
             const data = action.payload;
             console.log("init data");
             console.log(data);
@@ -314,19 +338,19 @@ const tasksModule = createSlice({
             // console.log("init state.userTaskInfo 後");
             // console.log(state.userTaskInfo);
         },
-        Register(state: userTask, action: PayloadAction<userTask>) {
+        Register(state: userInfo, action: PayloadAction<userInfo>) {
             const data = action.payload;
 
             state = { ...state, ...data };
             // console.log('state');
             // console.log(state);
         },
-        allDelete(state: userTask) {
+        allDelete(state: userInfo) {
             state = initialState;
             console.log("check allDelete");
         },
         // DayPlanにてタスクをクリックした際に完了フラグをtrueに変更する処理。引数にて年、月、日、タスクのインデックス番号を受け取っている。
-        taskCheckComplete(state: userTask, action: PayloadAction<number[]>) {
+        taskCheckComplete(state: userInfo, action: PayloadAction<number[]>) {
             const index = state.userTaskInfo.calendar[action.payload[0]][
                 action.payload[1]
             ][action.payload[2]].tasks.findIndex(
@@ -338,10 +362,16 @@ const tasksModule = createSlice({
             ].tasks[index].flug = !state.userTaskInfo.calendar[
                 action.payload[0]
             ][action.payload[1]][action.payload[2]].tasks[index].flug;
+
+            DBCRUD(`calendar/${action.payload[0]}/${action.payload[1]}/${action.payload[2]}/tasks/${index}`,
+                'update',
+                state.userTaskInfo.calendar[action.payload[0]][action.payload[1]][action.payload[2]].tasks[index]
+            )
+
         },
         // 引数はstateと年、月、日、選択されているパターンIDの4つの数値が格納された配列
         calendarPatternRegister(
-            state: userTask,
+            state: userInfo,
             action: PayloadAction<number[]>
         ) {
             // stateから選択されているパターンIDが設定されているタスクを抽出する。
@@ -379,7 +409,7 @@ const tasksModule = createSlice({
                     action.payload[1]
                 ] = {
                     ...state.userTaskInfo.calendar[action.payload[0]][
-                        action.payload[1]
+                    action.payload[1]
                     ],
                     [action.payload[2]]: {
                         PatternId: action.payload[3],
@@ -399,23 +429,24 @@ const tasksModule = createSlice({
                     },
                 };
             }
+            DBCRUD(`calendar/${action.payload[0]}/${action.payload[1]}/${action.payload[2]}`, 'update', state.userTaskInfo.calendar[action.payload[0]][action.payload[1]][action.payload[2]]);
 
-            // action.payload[3];
             console.log(
                 state.userTaskInfo.calendar[action.payload[0]][
-                    action.payload[1]
+                action.payload[1]
                 ][action.payload[2]]
             );
         },
         // タスクの詳細を設定する処理。引数のテキスト配列には[入力内容、連想配列のキー、タスクの配列を指定する数字]が格納されている。
-        taskDetailRegister(state: userTask, action: PayloadAction<string[]>) {
+        taskDetailRegister(state: userInfo, action: PayloadAction<string[]>) {
             state.userTaskInfo.tasks[parseInt(action.payload[2])].detail = {
                 ...state.userTaskInfo.tasks[parseInt(action.payload[2])].detail,
                 [action.payload[1]]: action.payload[0],
             };
+            DBCRUD(`tasks/${[parseInt(action.payload[2])]}/detail`, 'update', state.userTaskInfo.tasks[parseInt(action.payload[2])].detail);
         },
         // タスクを追加する処理。引数のテキスト配列には[入力内容、連想配列のキー、タスクの配列を指定する数字]が格納されている。
-        taskRegister(state: userTask, action: PayloadAction<tasks>) {
+        taskRegister(state: userInfo, action: PayloadAction<tasks>) {
             const registerTask = action.payload;
             registerTask.patternInfo.map((content) => {
                 const choicePatternTasks = state.userTaskInfo.tasks.filter(
@@ -428,11 +459,12 @@ const tasksModule = createSlice({
                 content.order = choicePatternTasks.length + 1;
             });
             console.log(registerTask);
-            state.userTaskInfo.tasks.push(registerTask);
+            state.userTaskInfo.tasks = [...state.userTaskInfo.tasks, registerTask];
+            DBCRUD('tasks', 'register', state.userTaskInfo.tasks);
         },
         // タスクのパターン登録状況を更新する。
         taskPatternUpdate(
-            state: userTask,
+            state: userInfo,
             action: PayloadAction<{
                 newChecked: number[];
                 index: number;
@@ -495,7 +527,7 @@ const tasksModule = createSlice({
                     let content = task.patternInfo.find(
                         (info) => info.patternID == add
                     );
-                    Max < content.patternID ? (Max = content.patternID) : "";
+                    Max < content.order ? (Max = content.order) : "";
                 });
 
                 const pushContent = { patternID: add, order: Max + 1 };
@@ -508,9 +540,10 @@ const tasksModule = createSlice({
             state.userTaskInfo.tasks[
                 action.payload.index
             ].patternInfo = updateArray;
+            DBCRUD(`tasks/${action.payload.index}/patternInfo`, 'register', updateArray);
         },
         // タスクを削除する処理。引数には削除対象タスクのインデックス番号が格納されている。
-        taskDelete(state: userTask, action: PayloadAction<number>) {
+        taskDelete(state: userInfo, action: PayloadAction<number>) {
             // const deleteTask = state.userTaskInfo.tasks.splice(
             //     action.payload,
             //     1
@@ -523,15 +556,19 @@ const tasksModule = createSlice({
             });
             console.log(deleteTask);
             state.userTaskInfo.tasks = deleteTask;
+            DBCRUD(`tasks`, 'register', deleteTask);
         },
         // タスクをパターンから除外する処理。引数のオブジェクトにはパターンIDと削除対象タスクの名称が格納されている。
         taskRemovePattern(
-            state: userTask,
+            state: userInfo,
             action: PayloadAction<{ patternId: number; detailTitle: string }>
         ) {
+            console.log(action.payload.detailTitle);
+
             const index = state.userTaskInfo.tasks.findIndex((content) => {
                 return content.detail["タスク名"] == action.payload.detailTitle;
             });
+            console.log(index);
             const deletedTask = state.userTaskInfo.tasks[
                 index
             ].patternInfo.filter(function (content) {
@@ -539,10 +576,11 @@ const tasksModule = createSlice({
             });
             state.userTaskInfo.tasks[index].patternInfo = deletedTask;
             console.log(deletedTask);
+            DBCRUD(`tasks/${index}/patternInfo`, 'register', deletedTask);
             // futurePatternUpdate(state);
         },
         // パターンを追加する処理。引数にはパターン名称が格納されている。
-        patternRegister(state: userTask, action: PayloadAction<string>) {
+        patternRegister(state: userInfo, action: PayloadAction<string>) {
             let MaxId: number = 0;
             state.userTaskInfo.pattern.map((patternContent) => {
                 patternContent.patternId > MaxId
@@ -553,10 +591,11 @@ const tasksModule = createSlice({
                 patternId: MaxId + 1,
                 patternName: action.payload,
             };
-            state.userTaskInfo.pattern.push(addPattern);
+            state.userTaskInfo.pattern = [...state.userTaskInfo.pattern, addPattern];
+            DBCRUD('pattern', 'register', state.userTaskInfo.pattern);
         },
         // パターンを削除する処理。引数にはパターンIDが格納されている。
-        patternDelete(state: userTask, action: PayloadAction<number>) {
+        patternDelete(state: userInfo, action: PayloadAction<number>) {
             const updatePatternList = state.userTaskInfo.pattern.filter(
                 (patternContent) => {
                     // console.log(patternContent.patternId);
@@ -623,7 +662,7 @@ const tasksModule = createSlice({
                     keyMonth.map((month) => {
                         const keyDate = Object.keys(
                             state.userTaskInfo.calendar[parseInt(year)][
-                                parseInt(month)
+                            parseInt(month)
                             ]
                         );
                         keyDate.map((date) => {
@@ -635,7 +674,7 @@ const tasksModule = createSlice({
                     keyMonth.map((month) => {
                         const keyDate = Object.keys(
                             state.userTaskInfo.calendar[parseInt(year)][
-                                parseInt(month)
+                            parseInt(month)
                             ]
                         );
                         if (parseInt(month) > nowMonth) {
@@ -656,10 +695,11 @@ const tasksModule = createSlice({
                     });
                 }
             });
+            DBCRUD('', 'register', state.userTaskInfo);
         },
         // パターン名称を編集する処理。引数にはパターンIDとパターン名称が格納されている。
         patternNameEdit(
-            state: userTask,
+            state: userInfo,
             action: PayloadAction<{
                 editPatternId: number;
                 patternName: string;
@@ -671,8 +711,10 @@ const tasksModule = createSlice({
                     patternContent.patternId == action.payload.editPatternId
             );
             // 取得したインデックス番号を目印に、引数の新しい名称で更新する。
-            state.userTaskInfo.pattern[editPatternIndex].patternName =
-                action.payload.patternName;
+            state.userTaskInfo.pattern[editPatternIndex].patternName = action.payload.patternName;
+
+            DBCRUD(`pattern/${editPatternIndex}`, 'update', state.userTaskInfo.pattern[editPatternIndex]);
+
         },
     },
 });

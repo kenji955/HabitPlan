@@ -67,7 +67,7 @@ export default function PatternList(props: { choice: number }) {
                             button
                         >
                             <ListItemIcon>
-                                <IconButton edge="end" aria-label="comments" onClick={patternRemoveHandler(task.detail['title'])}>
+                                <IconButton edge="end" aria-label="comments" onClick={patternRemoveHandler(task.detail['タスク名'])}>
                                     <RemoveCircleIcon color="secondary" />
                                 </IconButton>
                             </ListItemIcon>

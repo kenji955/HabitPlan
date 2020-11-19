@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export default function PatternSwitchList(props: {checked: number[],setChecked: React.Dispatch<React.SetStateAction<number[]>>,index:number}) {
+export default function PatternSwitchList(props: { checked: number[], setChecked: React.Dispatch<React.SetStateAction<number[]>>, index: number, checkNew: boolean }) {
     const classes = useStyles();
     const { userTaskInfo } = useSelector((state: RootState) => state.tasks);
     const dispatch = useDispatch();
@@ -43,7 +43,9 @@ export default function PatternSwitchList(props: {checked: number[],setChecked: 
         console.log('newChecked');
         console.log(newChecked);
         const index = props.index;
-        dispatch(taskPatternUpdate({newChecked,index}));
+        if (!props.checkNew) {
+            dispatch(taskPatternUpdate({ newChecked, index }));
+        }
     };
 
     return (
@@ -53,7 +55,7 @@ export default function PatternSwitchList(props: {checked: number[],setChecked: 
         >
             {userTaskInfo.pattern.map((content) => {
                 return (
-                    <ListItem key={content.patternName+'_'+props.checked}>
+                    <ListItem key={content.patternName + '_' + props.checked}>
                         {/* <ListItemIcon>
                             <WifiIcon />
                         </ListItemIcon> */}

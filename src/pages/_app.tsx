@@ -1,12 +1,15 @@
-import React from "react";
+import React, { createContext } from "react";
 import { AppProps } from "next/app";
 import { Provider } from "react-redux";
-import store from "../modules/store";
+import store, { StoreProvider } from "../modules/store";
 
+export const UserContext = createContext('');
 const HabitPlanApp = ({ Component, pageProps }: AppProps) => {
     return (
         <Provider store={store}>
-            <Component {...pageProps} />
+            <StoreProvider>
+                <Component {...pageProps} />
+            </StoreProvider>
         </Provider>
     );
 };

@@ -11,6 +11,7 @@ import DenseAppBar from '../components/view/DenseAppBar';
 import CheckboxList from '../components/view/CheckBoxList';
 import ResponsiveDrawer from '../components/view/ResponsiveDrawer';
 import DateList from '../components/view/DateList';
+import ScrollableTabsButtonAuto from '../components/view/ScrollableTabsButtonAuto';
 
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 
@@ -37,6 +38,7 @@ const useStyles = makeStyles(
                     paddingLeft: '0px',
                     justifyContent:'center',
                     [theme.breakpoints.up('sm')]: {
+                        width:theme.spacing(131),
                         paddingLeft: '240px',
                     }
                 },
@@ -64,7 +66,8 @@ const DayPlanPC = () => {
                 {/* <CheckBoxOutlineBlankIcon />test
                 <br></br>
                 <CheckBoxOutlineBlankIcon /> */}
-                <DateList today={today} setChoiceDate={setChoiceDate} />
+                {/* <DateList today={today} setChoiceDate={setChoiceDate} /> */}
+                <ScrollableTabsButtonAuto today={today} setChoiceDate={setChoiceDate} />
             </Container>
             <Container className={classes.checkboxList}>
                 <CheckboxList choiceDate={choiceDate}/>
