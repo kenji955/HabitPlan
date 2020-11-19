@@ -1,97 +1,59 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Menu, { MenuProps } from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import SendIcon from '@material-ui/icons/Send';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Menu, { MenuProps } from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { useDispatch } from "react-redux";
+import { signOut } from "../test/firebaseTest/FirebaseAuthComponent";
 
 const StyledMenu = withStyles({
     paper: {
-        border: '1px solid #d3d4d5',
+        border: "1px solid #d3d4d5",
     },
 })((props: MenuProps) => (
     <Menu
         elevation={0}
         getContentAnchorEl={null}
         anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center',
+            vertical: "bottom",
+            horizontal: "center",
         }}
         transformOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
+            vertical: "top",
+            horizontal: "center",
         }}
         {...props}
     />
 ));
 
-const StyledMenuItem = withStyles((theme) => ({
-    root: {
-        //   color: theme.palette.common.white,
-        // '&:focus': {
-        // //   backgroundColor: theme.palette.primary.main,
-        //   '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-        //     color: theme.palette.common.white,
-        //   },
-        // },
-    },
-}))(MenuItem);
-
-export default function settingMenu(props: { anchorEl: HTMLElement, setAnchorEl: React.Dispatch<React.SetStateAction<HTMLElement>> }) {
-    //   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-    //   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    //     setAnchorEl(event.currentTarget);
-    //   };
+export default function settingMenu(props: {
+    anchorEl: HTMLElement;
+    setAnchorEl: React.Dispatch<React.SetStateAction<HTMLElement>>;
+}) {
+    const dispatch = useDispatch();
 
     const handleClose = () => {
-        console.log('check');
+        console.log("check");
         props.setAnchorEl(null);
+        signOut(dispatch);
     };
 
     return (
-        <div>
-            {/* <Button
-        aria-controls="customized-menu"
-        aria-haspopup="true"
-        variant="contained"
-        color="primary"
-        onClick={handleClick}
-      >
-        Open Menu
-      </Button> */}
-            <StyledMenu
-                id="customized-menu"
-                anchorEl={props.anchorEl}
-                // keepMounted
-                open={Boolean(props.anchorEl)}
-                onClose={handleClose}
-            >
-                <StyledMenuItem onClick={handleClose}>
-                    <ListItemIcon>
-
-                        <ExitToAppIcon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText primary="ログアウト" />
-                </StyledMenuItem>
-                {/* <StyledMenuItem>
-          <ListItemIcon>
-            <DraftsIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Drafts" />
-        </StyledMenuItem>
-        <StyledMenuItem>
-          <ListItemIcon>
-            <InboxIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Inbox" />
-        </StyledMenuItem> */}
-            </StyledMenu>
-        </div>
+        <StyledMenu
+            id="customized-menu"
+            anchorEl={props.anchorEl}
+            // keepMounted
+            open={Boolean(props.anchorEl)}
+            onClose={handleClose}
+        >
+            <MenuItem onClick={handleClose}>
+                <ListItemIcon>
+                    <ExitToAppIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="ログアウト" />
+            </MenuItem>
+        </StyledMenu>
     );
 }

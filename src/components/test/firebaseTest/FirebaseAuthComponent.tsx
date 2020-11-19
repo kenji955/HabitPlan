@@ -21,7 +21,7 @@ export default function FirebaseAuthComponent() {
         return <button onClick={() => signInWithPopup()}>ログイン</button>;
     }
     // ログインしているならログアウトボタンを表示
-    return <button onClick={() => useSignOut(dispatch)}>ログアウト</button>;
+    return <button onClick={() => signOut(dispatch)}>ログアウト</button>;
 }
 
 // ログイン処理
@@ -36,7 +36,7 @@ const signInWithPopup = () => {
 };
 
 // ログアウト処理
-const useSignOut = (dispatch: Dispatch<any>) => {
+export const signOut = (dispatch: Dispatch<any>) => {
     // signOutを呼び出すだけでOK
     // const dispatch = useReduxFetch();
     dispatch(logout());

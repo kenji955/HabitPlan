@@ -13,7 +13,7 @@ import BottomNavigation from "../components/view/BottomNavigation";
 import DayPlanPC from "./DayPlan";
 import Tasks from "./tasks";
 import FirebaseAuthComponent from "../components/test/firebaseTest/FirebaseAuthComponent";
-import SignIn from '../components/view/SignIn'
+import SignIn from './SignIn'
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../modules/rootReducer";
 import { login } from "../modules/userModule";
@@ -59,13 +59,6 @@ const App = () => {
         }
     });
 
-    // useMemo(() => {
-    //     if (userId == "") {
-    //         RenderComponent = <FirebaseAuthComponent />;
-    //     } else {
-    //         RenderComponent = <DayPlanPC />;
-    //     }
-    // }, [userId]);
 
     return RenderComponent;
     // <DayPlanPC />
