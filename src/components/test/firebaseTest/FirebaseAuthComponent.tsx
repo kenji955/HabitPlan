@@ -25,14 +25,33 @@ export default function FirebaseAuthComponent() {
 }
 
 // ログイン処理
-const signInWithPopup = () => {
+export const signInWithPopup = () => {
     // Googleプロバイダオブジェクトのインスタンスを作成
     const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 
     // dispatch(login(userIdCheck));
     // 別タブでログイン画面に飛ばしたいため、signInWithPopupを使う
     // リダイレクトでログイン画面に飛ばしたい場合はsignInWithRedirectを使う
-    return firebase.auth().signInWithPopup(googleAuthProvider);
+    firebase.auth().signInWithPopup(googleAuthProvider);
+    // return firebase.auth().signInWithPopup(googleAuthProvider);
+};
+
+export const signInWithEmailAndPassword = (email: string, password: string) => {
+    console.log(email);
+    console.log(password);
+    firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .catch(function (error) {
+            // Handle Errors here.
+            const errorCode = error.code;
+            console.log(error.code);
+            const errorMessage = error.message;
+            console.log(error.message);
+            if(errorCode == 'auth/user-not-found'){
+                firebase.auth().createUserWithEmailAndPassword(email, password);
+            }
+        });
 };
 
 // ログアウト処理
@@ -57,14 +76,14 @@ const useFirebaseLogin = () => {
         firebase.auth().onAuthStateChanged((user) => {
             // ユーザ情報が取れればログイン状態
             let userIdCheck: string;
-            console.log('FAC !!user');
+            console.log("FAC !!user");
             console.log(!!user);
             if (!!user) {
                 userIdCheck = user.uid;
                 // console.log('data');
                 // console.log(data);
                 // dispatch(init(data));
-                console.log('FAC userTaskInfo.calendar[0].PatternId');
+                console.log("FAC userTaskInfo.calendar[0].PatternId");
                 // console.log(userTaskInfo.calendar[0].PatternId);
                 // これをreduxで管理する
                 // dispatch(login(userIdCheck));

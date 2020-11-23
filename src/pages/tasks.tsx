@@ -71,4 +71,4 @@ const Tasks = () => {
     );
 };
 
-export default withAuth(Tasks);
+export default withAuth(Tasks,'Tasks');

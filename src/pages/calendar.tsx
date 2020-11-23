@@ -56,4 +56,4 @@ const Calendar = () => {
     );
 };
 
-export default withAuth(Calendar);
+export default withAuth(Calendar,'Calendar');

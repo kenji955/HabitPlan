@@ -9,6 +9,8 @@ import ProductValues from './modules/views/ProductValues';
 import ProductHowItWorks from './modules/views/ProductHowItWorks';
 import ProductCTA from './modules/views/ProductCTA';
 import AppAppBar from './modules/views/AppAppBar';
+import Divider from '@material-ui/core/Divider';
+
 
 function Index() {
   return (
@@ -16,11 +18,13 @@ function Index() {
       <AppAppBar />
       <ProductHero />
       <ProductValues />
-      <ProductCategories />
+      {/* <ProductCategories /> */}
+      {/* <ProductHowItWorks /> */}
+      <Divider />
       <ProductHowItWorks />
-      <ProductCTA />
-      <ProductSmokingHero />
-      <AppFooter />
+      {/* <ProductCTA /> */}
+      {/* <ProductSmokingHero /> */}
+      {/* <AppFooter /> */}
     </React.Fragment>
   );
 }

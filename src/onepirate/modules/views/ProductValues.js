@@ -1,110 +1,131 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
-import Typography from '../components/Typography';
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
+import Button from "../components/Button";
+import Typography from "../components/Typography";
 
 const styles = (theme) => ({
-  root: {
-    display: 'flex',
-    overflow: 'hidden',
-    backgroundColor: theme.palette.secondary.light,
-  },
-  container: {
-    marginTop: theme.spacing(15),
-    marginBottom: theme.spacing(30),
-    display: 'flex',
-    position: 'relative',
-  },
-  item: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: theme.spacing(0, 5),
-  },
-  image: {
-    height: 55,
-  },
-  title: {
-    marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5),
-  },
-  curvyLines: {
-    pointerEvents: 'none',
-    position: 'absolute',
-    top: -180,
-  },
+    root: {
+        display: "flex",
+        backgroundColor: theme.palette.secondary.light,
+        overflow: "hidden",
+    },
+    container: {
+        marginTop: theme.spacing(10),
+        marginBottom: theme.spacing(15),
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+    },
+    item: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: theme.spacing(0, 5),
+    },
+    title: {
+        marginBottom: theme.spacing(14),
+    },
+    number: {
+        fontSize: 24,
+        fontFamily: theme.typography.fontFamily,
+        color: theme.palette.secondary.main,
+        fontWeight: theme.typography.fontWeightMedium,
+    },
+    image: {
+        height: theme.spacing(25),
+    },
+    curvyLines: {
+        pointerEvents: "none",
+        position: "absolute",
+        top: -180,
+        opacity: 0.7,
+    },
+    button: {
+        marginTop: theme.spacing(8),
+    },
 });
 
 function ProductValues(props) {
-  const { classes } = props;
+    const { classes } = props;
 
-  return (
-    <section className={classes.root}>
-      <Container className={classes.container}>
-        <img
-          src="/static/themes/onepirate/productCurvyLines.png"
-          className={classes.curvyLines}
-          alt="curvy lines"
-        />
-        <Grid container spacing={5}>
-          <Grid item xs={12} md={4}>
-            <div className={classes.item}>
-              <img
-                className={classes.image}
-                src="/static/themes/onepirate/productValues1.svg"
-                alt="suitcase"
-              />
-              <Typography variant="h6" className={classes.title}>
-                The best luxury hotels
-              </Typography>
-              <Typography variant="h5">
-                {'From the latest trendy boutique hotel to the iconic palace with XXL pool'}
-                {', go for a mini-vacation just a few subway stops away from your home.'}
-              </Typography>
-            </div>
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <div className={classes.item}>
-              <img
-                className={classes.image}
-                src="/static/themes/onepirate/productValues2.svg"
-                alt="graph"
-              />
-              <Typography variant="h6" className={classes.title}>
-                New experiences
-              </Typography>
-              <Typography variant="h5">
-                {'Privatize a pool, take a Japanese bath or wake up in 900m2 of garden… '}
-                {'your Sundays will not be alike.'}
-              </Typography>
-            </div>
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <div className={classes.item}>
-              <img
-                className={classes.image}
-                src="/static/themes/onepirate/productValues3.svg"
-                alt="clock"
-              />
-              <Typography variant="h6" className={classes.title}>
-                Exclusive rates
-              </Typography>
-              <Typography variant="h5">
-                {'By registering, you will access specially negotiated rates '}
-                {'that you will not find anywhere else.'}
-              </Typography>
-            </div>
-          </Grid>
-        </Grid>
-      </Container>
-    </section>
-  );
+    return (
+        <section className={classes.root}>
+            <Container className={classes.container}>
+                <Typography
+                    variant="h4"
+                    marked="center"
+                    className={classes.title}
+                    component="h2"
+                >
+                    Habit Planでは何ができるのか
+                </Typography>
+                <div>
+                    <Grid container spacing={5}>
+                        <Grid item xs={12} md={4}>
+                            <div className={classes.item}>
+                                <div className={classes.number}>1.自由を作り出す</div>
+                                <img
+                                    src="/static/free.svg"
+                                    alt="free"
+                                    className={classes.image}
+                                />
+                                <Typography variant="h5" align="center">
+                                    習慣化で自由を作り出す
+                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Exercitationem quod nisi qui autem similique fugiat quia veritatis consectetur, commodi ipsa nam earum voluptatem consequuntur fuga.
+                                </Typography>
+                            </div>
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <div className={classes.item}>
+                                <div className={classes.number}>2.アイデンティティ構築</div>
+                                <img
+                                    src="/static/identity.svg"
+                                    alt="identity"
+                                    className={classes.image}
+                                />
+                                <Typography variant="h5" align="center">
+                                    アイデンティティーを構築できる。
+                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Exercitationem quod nisi qui autem similique fugiat quia veritatis consectetur, commodi ipsa nam earum voluptatem consequuntur fuga.
+                                </Typography>
+                            </div>
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <div className={classes.item}>
+                                <div className={classes.number}>3.実行できる</div>
+                                <img
+                                    src="/static/action.svg"
+                                    alt="clock"
+                                    className={classes.image}
+                                />
+                                <Typography variant="h5" align="center">
+                                    計画だけでなく実行できる
+                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Exercitationem quod nisi qui autem similique fugiat quia veritatis consectetur, commodi ipsa nam earum voluptatem consequuntur fuga.
+                                </Typography>
+                            </div>
+                        </Grid>
+                    </Grid>
+                </div>
+                {/* <Button
+          color="secondary"
+          size="large"
+          variant="contained"
+          className={classes.button}
+          component="a"
+          href="/premium-themes/onepirate/sign-up/"
+        >
+          Get started
+        </Button> */}
+            </Container>
+        </section>
+    );
 }
 
 ProductValues.propTypes = {
-  classes: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(ProductValues);

@@ -49,7 +49,7 @@ const useStyles = makeStyles(
 // memo
 // DateListには当日分のDate型を渡す。渡した先で繰り返し分を作成し、14日前(getDate()-ｘ)まで計算する。作成時に年、月、日を引数に保管する。クリック時にstateに保管する。
 // CheckboxListには文字列配列を渡す。[年、月、日]。stateで管理しているもの。これを基に表示内容を決定する。万が一に備え、未登録時はエラーにならないようにする。
-const DayPlanPC = () => {
+const DayPlan = () => {
     const classes = useStyles();
     const today = new Date();
     const [choiceDate, setChoiceDate] = useState<number[]>([today.getFullYear(),today.getMonth()+1,today.getDate()]);
@@ -80,4 +80,4 @@ const DayPlanPC = () => {
     );
 };
 
-export default withAuth(DayPlanPC);
+export default withAuth(DayPlan,'DayPlan');

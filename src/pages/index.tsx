@@ -10,10 +10,11 @@ import Container from "@material-ui/core/Container";
 
 import FloatingActionButtonZoom from "../components/view/FloatingActionButton";
 import BottomNavigation from "../components/view/BottomNavigation";
-import DayPlanPC from "./DayPlan";
+import DayPlan from "./DayPlan";
 import Tasks from "./tasks";
 import FirebaseAuthComponent from "../components/test/firebaseTest/FirebaseAuthComponent";
-import SignIn from './SignIn'
+import SignIn from '../components/view/SignIn'
+import Home from './Home';
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../modules/rootReducer";
 import { login } from "../modules/userModule";
@@ -29,14 +30,15 @@ const App = () => {
     // const { data } = useMemo(() => useFetchAllData(), [userId]);
     const { data } = useFetchAllData();
     
-    let RenderComponent: JSX.Element = <SignIn />;
+    // let RenderComponent: JSX.Element = <SignIn />;
+    let RenderComponent: JSX.Element = <Home />;
     
     auth.onAuthStateChanged((authUser) => {
         if (authUser) {
             // this.setState({
             //   status: "SIGNED_IN"
             // });
-            RenderComponent = <DayPlanPC />;
+            RenderComponent = <DayPlan />;
             console.log('check 1');
             console.log(authUser.uid);
             if(!!authUser.uid){
@@ -53,7 +55,8 @@ const App = () => {
             }
         } else {
             // RenderComponent = <FirebaseAuthComponent />;
-            RenderComponent = <SignIn />;
+            RenderComponent = <Home />;
+            // RenderComponent = <SignIn />;
             console.log('check 2');
             return RenderComponent;
         }
@@ -61,7 +64,7 @@ const App = () => {
 
 
     return RenderComponent;
-    // <DayPlanPC />
+    // <DayPlan />
     // <Tasks />
     // <BrowserRouter>{routes}</BrowserRouter>
     // <Container fixed>

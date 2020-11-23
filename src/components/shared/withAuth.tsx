@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import router from "next/router";
 import { auth } from "../test/firebaseTest/firebaseTest";
+import DayPlan from "../../pages/DayPlan";
+import App from '../../pages/index';
 
-export default function withAuth(Component: any) {
+
+export default function withAuth(Component: any,pageName:string) {
     // const [status,setStatus] = useState('LOADING');
     return class extends React.Component<any, {status: string}> {
         constructor(props: any) {
@@ -14,13 +17,18 @@ export default function withAuth(Component: any) {
 
         componentDidMount() {
             auth.onAuthStateChanged((authUser) => {
+                console.log(authUser);
                 if (authUser) {
                     this.setState({
                         status: "SIGNED_IN",
                     });
                     //   setStatus('SIGNED_IN')
                 } else {
-                    router.push("/");
+                    if(pageName == 'SignIn'){
+                        router.push("/SignIn");
+                    }else {
+                        router.push("/Home");
+                    }
                 }
             });
         }
@@ -29,8 +37,15 @@ export default function withAuth(Component: any) {
             const status  = this.state.status;
             console.log(status);
             if (status == "LOADING") {
-                // return <h1>Loading ......</h1>;
+                if(pageName == 'SignIn' || pageName == 'Home'){
+                    return <Component {...this.props} />;
+                }
+                return <h1>Loading ......</h1>;
             } else if (status == "SIGNED_IN") {
+                if(pageName == 'SignIn'){
+                    // router.push("/DayPlan");
+                    return <App />
+                }
                 return <Component {...this.props} />;
             }
         }

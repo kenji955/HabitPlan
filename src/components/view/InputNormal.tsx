@@ -46,7 +46,6 @@ export default function FormPropsTextFields(props: props) {
     const { userTaskInfo } = useSelector((state: RootState) => state.tasks);
     // const onChangeHandler = (event: any) => {
     //     // console.log(event.target.value);
-    //     // ここでevent.target.valueとラベル(連想配列のキー)を送って処理する。処理も未作成
     //     dispatch(
     //         taskDetailRegister([event.target.value, props.label, props.index])
     //     );
