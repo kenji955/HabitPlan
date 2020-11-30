@@ -2,56 +2,36 @@
 
 出社や在宅、休日など、生活のパターンに合わせて習慣化ができるアプリです。
 
-### DEMO
+### 操作方法
 
-"hoge"の魅力が直感的に伝えわるデモ動画や図解を載せる
+以下の三ステップで習慣化したい項目を追加できます。
+1：パターンを作成する
+2：カレンダーにパターンを登録する
+3：デイリー画面でリストを確認する
+
+パターン画面
+![パターン画面](https://user-images.githubusercontent.com/66927394/100561864-576fee00-32fd-11eb-9a5d-0ef54ef16fea.png)
+カレンダー画面
+![カレンダー画面](https://user-images.githubusercontent.com/66927394/100561902-70789f00-32fd-11eb-9639-0878026d0597.png)
+デイリー画面
+![デイリー画面](https://user-images.githubusercontent.com/66927394/100561906-73738f80-32fd-11eb-9932-5afaa9f999c4.png)
 
 ### Features
 
-"hoge"のセールスポイントや差別化などを説明する
-
-# Requirement
-
-"hoge"を動かすのに必要なライブラリなどを列挙する
-
-* huga 3.5.2
-* hogehuga 1.0.2
-
-# Installation
-
-Requirementで列挙したライブラリなどのインストール方法を説明する
-
-```bash
-pip install huga_package
-```
-
-# Usage
-
-DEMOの実行方法など、"hoge"の基本的な使い方を説明する
-
-```bash
-git clone https://github.com/hoge/~
-cd examples
-python demo.py
-```
+タスク管理アプリや習慣化アプリはありますが、その繰り返し方法は一定です。
+例えば毎日だったり、毎週水曜日だったり、2日毎だったり。
+コロナの影響で出社だったり在宅だったりと不定期に暮らす中、一定の法則では管理が難しくなりました。
+そこで、カレンダーにパターンを登録することで日々に合ったタスクを管理できるようなアプリを作りました。
 
 # Note
 
-注意点などがあれば書く
+最低限の機能が完成した段階でデプロイしたため、まだ改善点が多く残っております。
 
 # Author
 
-作成情報を列挙する
+作成者：颯
 
-* 作成者
-* 所属
-* E-mail
 
 # License
-ライセンスを明示する
 
-"hoge" is under [MIT license](https://en.wikipedia.org/wiki/MIT_License).
-
-社内向けなら社外秘であることを明示してる
-
-"hoge" is Confidential.
+"HabitPlan" is under [MIT license](https://en.wikipedia.org/wiki/MIT_License).
